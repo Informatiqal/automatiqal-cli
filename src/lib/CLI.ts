@@ -33,7 +33,7 @@ export class AutomatiqalCLI {
 
   async run() {
     this.result = { whatever: 123 };
-    if (this.argv.output) this.writeOut();
+    if (this.argv.output || this.argv.o) this.writeOut();
   }
 
   private writeOut() {

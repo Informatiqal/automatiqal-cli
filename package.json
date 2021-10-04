@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -10,6 +10,10 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "preferGlobal": true,
+  "bin": {
+    "automatiqal": "./bin/automatiqal.js"
+  },
   "scripts": {
     "start": "node dist/app.js",
     "prestart": "npm run build-tsc",

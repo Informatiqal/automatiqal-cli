@@ -9,9 +9,11 @@
         "sourceMap": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
+        "resolveJsonModule": true
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "package.json"
     ],
     "exclude": [
         "node_modules"
