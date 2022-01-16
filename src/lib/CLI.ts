@@ -1,12 +1,16 @@
 import { readFileSync, writeFileSync } from "fs";
 import yaml from "js-yaml";
+import { Automatiqal } from "../../../automatiqal/src/index";
+
+import { IRunBook } from "../../../automatiqal/src/RunBook/RunBook.interfaces";
+import { IRunBookResult } from "../../../automatiqal/src/RunBook/Runner";
 
 import { IArguments } from "./interfaces";
 
 export class AutomatiqalCLI {
   private argv: IArguments;
-  private runBook: any;
-  private result: any;
+  private runBook: IRunBook;
+  private result: IRunBookResult[];
   constructor(argv: IArguments) {
     this.argv = argv;
 
@@ -32,7 +36,8 @@ export class AutomatiqalCLI {
   }
 
   async run() {
-    this.result = { whatever: 123 };
+    const automatiqal = new Automatiqal(this.runBook);
+    this.result = await automatiqal.run();
     if (this.argv.output || this.argv.o) this.writeOut();
   }
 

@@ -1,6 +1,5 @@
 import { existsSync } from "fs";
 import { minimist } from "@p-mcgowan/minimist";
-// import { Automatiqal } from "../../automatiqal/src/index";
 
 import { AutomatiqalCLI } from "./lib/CLI";
 import { printHelp } from "./lib/help";
