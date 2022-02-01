@@ -1,4 +1,5 @@
-const pkg = require("../package.json");
+// const pkg = require("../package.json");
+const pkg = { version: "0.0.3" };
 
 export function printHelp() {
   const messages = [

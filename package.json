@@ -1,6 +1,6 @@
 {
-  "name": "automatiqal-cli",
-  "version": "0.0.2",
+  "name": "automatiqal_cli",
+  "version": "0.0.3",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -17,9 +17,10 @@
   "scripts": {
     "start": "node dist/app.js",
     "prestart": "npm run build-tsc",
-    "build-tsc": "tsc",
+    "build-tsc": "tsc --p tsconfig.debug.json",
     "build": "rollup -c",
     "watch": "rollup -cw",
+    "debug": "tsc --sourcemap",
     "docs": "npx typedoc src/index.doc.ts --name \"Automatiqal\" --excludePrivate --hideGenerator"
   },
   "keywords": [
@@ -51,6 +52,7 @@
   },
   "homepage": "https://informatiqal.com/automatiqal-cli/",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@types/chai": "^4.2.19",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.0",

@@ -4,13 +4,10 @@
         "target": "ES2018",
         "declaration": true,
         "declarationDir": "./dist",
-        "module": "ESNext",
+        "module": "CommonJS",
         "noImplicitAny": false,
         "sourceMap": true,
         "moduleResolution": "node",
-        "lib": [
-            "es2017"
-        ],
     },
     "include": [
         "src/**/*",

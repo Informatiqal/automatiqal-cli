@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-var automatiqal = require("../dist/index");
+var automatiqal_cli = require("../dist/index");

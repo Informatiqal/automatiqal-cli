@@ -4,5 +4,12 @@
         "Informatiqal",
         "prestart",
         "qseow"
-    ]
+    ],
+    "yaml.schemas": {
+        "D:\\DEV\\GHQ_ROOT\\github.com\\Informatiqal\\automatiqal-cli-schema\\runbook.json": ".qrac.yaml",
+        "D:\\DEV\\Qlik\\QRaC\\QRaC\\schemas\\runbook.json": [
+            ".qrac.yaml",
+            "file:///d%3A/DEV/GHQ_ROOT/github.com/Informatiqal/automatiqal-cli/automatiqalCLI-sample.qrac.yaml"
+        ]
+    }
 }

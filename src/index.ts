@@ -43,7 +43,7 @@ runner
     process.exit(0);
   })
   .catch((e) => {
-    console.log(`\u274C ERROR 9999: UNEXPECTED error!`);
+    // console.log(`\u274C ERROR 9999: UNEXPECTED error!`);
     console.log(e.message);
     process.exit(1);
   });
