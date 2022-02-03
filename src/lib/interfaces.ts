@@ -8,5 +8,6 @@ export interface IArguments {
   o?: boolean;
   s?: string;
   var?: string;
+  variables?: string;
   v?: string;
 }

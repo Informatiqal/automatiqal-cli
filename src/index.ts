@@ -17,7 +17,7 @@ if (argv.help || argv.h) {
 if (argv.sample || argv.s) {
   generateSample(argv.sample || argv.s);
   console.log(`\u2705 "automatiqalCLI-sample.yaml" generated`);
-  console.log(`\u2705 "automatiqalCLI-variables.yaml" generated`);
+  console.log(`\u2705 "automatiqalCLI.variables.yaml" generated`);
   process.exit(0);
 }
 

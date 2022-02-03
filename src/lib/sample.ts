@@ -74,5 +74,5 @@ export function generateSample(format: string) {
   };
 
   writeFileSync("automatiqalCLI-sample.yaml", yaml.dump(qseowSample, null, 4));
-  writeFileSync("automatiqalCLI-variables.yaml", yaml.dump(variables, null, 4));
+  writeFileSync("automatiqalCLI.variables.yaml", yaml.dump(variables, null, 4));
 }

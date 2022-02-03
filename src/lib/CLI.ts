@@ -19,14 +19,38 @@ export class AutomatiqalCLI {
   private result: ITaskResult[];
   private httpsAgent: any;
   private automatiqal: Automatiqal;
+  private rawRunBook: string;
+  private rawVariables: string;
   constructor(argv: IArguments) {
     this.argv = argv;
 
+    try {
+      this.rawRunBook = readFileSync(this.argv.file, "utf8").toString();
+    } catch (e) {
+      console.log(`\u274C ERROR 1000: while reading the runbook file`);
+      console.log(e.message);
+      process.exit(1);
+    }
+
+    this.replaceVariables();
     this.runbookSet();
     this.prepareCertificates();
     this.readBuffers();
 
-    this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
+    try {
+      this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
+    } catch (e) {
+      if (e.context) {
+        console.log(e.context);
+        process.exit(1);
+      }
+
+      if (e.message) {
+        console.log(e.message);
+        process.exit(1);
+      }
+    }
+
     this.emittersSet();
   }
 
@@ -45,7 +69,7 @@ export class AutomatiqalCLI {
     // if the config is yaml
     if (!this.argv.json) {
       try {
-        this.runBook = yaml.load(readFileSync(this.argv.file, "utf8"));
+        this.runBook = yaml.load(this.rawRunBook);
       } catch (e) {
         console.log(`\u274C ERROR 1003: while parsing the yaml file`);
         console.log(e.message);
@@ -56,7 +80,7 @@ export class AutomatiqalCLI {
     // if the config is json
     if (this.argv.json) {
       try {
-        this.runBook = JSON.parse(readFileSync(this.argv.file).toString());
+        this.runBook = JSON.parse(this.rawRunBook);
       } catch (e) {
         console.log(`\u274C ERROR 1004: while parsing the json file`);
         console.log(e.message);
@@ -145,6 +169,38 @@ export class AutomatiqalCLI {
           console.log(e.message);
           process.exit(1);
         }
+      }
+    }
+  }
+
+  /**
+   * @description replace all runbook variables with their content
+   */
+  private replaceVariables() {
+    if (this.argv.var || this.argv.v || this.argv.variables) {
+      let variablesFileLocation =
+        this.argv.var || this.argv.v || this.argv.variables;
+      let rawVariables: string[];
+
+      try {
+        rawVariables = readFileSync(variablesFileLocation)
+          .toString()
+          .split(/\r?\n/);
+      } catch (e) {
+        console.log(
+          `\u274C ERROR 1008: reading variables file "${variablesFileLocation}"`
+        );
+        console.log(e.message);
+        process.exit(1);
+      }
+
+      for (let line of rawVariables) {
+        let [varName, varContent] = line.split("=");
+
+        const v = "\\$\\{" + varName + "\\}";
+        const re = new RegExp(v, "g");
+
+        this.rawRunBook = this.rawRunBook.replace(re, varContent);
       }
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "automatiqal_cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -21,6 +21,7 @@
     "build": "rollup -c",
     "watch": "rollup -cw",
     "debug": "tsc --sourcemap",
+    "test": "set TS_NODE_PROJECT=tsconfig.test.json&mocha --require ts-node/register test/**/*.spec.ts",
     "docs": "npx typedoc src/index.doc.ts --name \"Automatiqal\" --excludePrivate --hideGenerator"
   },
   "keywords": [

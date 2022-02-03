@@ -27,6 +27,32 @@
                 // "--output",
                 // "./test.txt"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Variables",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-1.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+                // "--output",
+                // "./test.txt"
+            ]
         }
     ]
 }

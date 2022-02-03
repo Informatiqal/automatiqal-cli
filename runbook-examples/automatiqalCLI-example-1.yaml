@@ -1,0 +1,56 @@
+name: Sample run book
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Import application
+    description: Import brand new qvf
+    operation: app.upload
+    details:
+      file: ${qvfLocation}
+      name: Something New
+  - name: Create stream
+    operation: stream.create
+    details:
+      name: New Stream
+  - name: Publish app
+    operation: app.publish
+    source: Import application
+    details:
+      stream: New Stream
+      name: Something New (Published)
+  - name: Remove imported application
+    operation: app.remove
+    source: Import application
+  - name: Remove created stream
+    operation: stream.remove
+    source: Create stream
+
+  # - name: update stream
+  #   operation: stream.update
+  #   filter: name eq 'whatever123'
+  #   options:
+  #     appendCustomProps: true
+  #     appendTags: true
+  #   details:
+  #     tags:
+  #       # - my new tag2
+  #       - blah1
+  #       # - blah
+  #     customProperties:
+  #       - TestCustomProperty=value 1
+  #       - TestCustomProperty=value 2
+  #       - TestCustomProperty=value 3
+  # - name: Get all streams
+  #   operation: stream.getAll
+  # # - name: delete stream
+  # #   source: Create stream
+  # # operation: stream.remove
+  # - name: Get all streams (after deletion)
+  #   operation: stream.getAll
