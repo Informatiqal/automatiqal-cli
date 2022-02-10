@@ -1,0 +1,25 @@
+name: Tasks operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all tasks
+    operation: task.getAll
+  - name: Get Ops Monitor task
+    operation: task.get
+    filter: name so 'Operations Monitor'
+  - name: Start Ops Monitor task
+    operation: task.start
+    source: Get Ops Monitor task
+  - name: Stop Ops Monitor task
+    operation: task.stop
+    source: Get Ops Monitor task
+  - name: Start Ops Monitor task (Synchronous)
+    operation: task.startSynchronous
+    source: Get Ops Monitor task
