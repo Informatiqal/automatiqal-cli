@@ -55,6 +55,9 @@ export class AutomatiqalCLI {
   }
 
   async run() {
+    console.log(
+      `${new Date().toISOString()}\t\t"${this.runBook.name}"\tStarted`
+    );
     this.result = await this.automatiqal.run();
 
     if (this.argv.output || this.argv.o) this.writeOut();
@@ -94,8 +97,11 @@ export class AutomatiqalCLI {
    */
   private emittersSet() {
     this.automatiqal.emitter.on("task:result", function (a) {
-      // console.log(a);
-      let a1 = 1;
+      const b: ITaskResult = a as any;
+      console.log(
+        `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
+      );
+      // let a1 = 1;
     });
 
     this.automatiqal.emitter.on("runbook:result", function (a) {
@@ -104,7 +110,7 @@ export class AutomatiqalCLI {
     });
 
     this.automatiqal.emitter.on("runbook:log", function (a) {
-      console.log(a);
+      // console.log(a);
       // let a1 = 1;
     });
 
@@ -169,6 +175,25 @@ export class AutomatiqalCLI {
           console.log(e.message);
           process.exit(1);
         }
+      }
+
+      if (task.details && (task.details as any).length > 0) {
+        task.details = (task.details as any).map((d) => {
+          if (d.file) {
+            try {
+              d.file = readFileSync(d.file);
+              return d;
+            } catch (e) {
+              console.log(
+                `\u274C ERROR 1007: reading file failed in task "${task.name}"`
+              );
+              console.log(e.message);
+              process.exit(1);
+            }
+          }
+
+          return d;
+        });
       }
     }
   }

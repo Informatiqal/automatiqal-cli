@@ -1,0 +1,37 @@
+name: Extension operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all extensions
+    operation: extension.getAll
+  - name: Get all "qlik-" extensions
+    operation: extension.get
+    filter: name sw 'qlik-'
+  - name: Create temp tags
+    operation: tag.createMany
+    details:
+      names: ["Some tag 1", "Some tag2"]
+  - name: Import extension
+    operation: extension.import
+    details:
+      file: ${extension_path}
+  - name: Update extension
+    operation: extension.update
+    source: Import extension
+    details:
+      tags: ["Some tag 1", "Some tag2"]
+  - name: Remove extension
+    operation: extension.remove
+    source: Import extension
+  - name: Remove created tags
+    operation: tag.remove
+    source: Create temp tags
+    options:
+      multiple: true

@@ -1,0 +1,62 @@
+name: Content library operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all content libraries
+    operation: contentLibrary.getAll
+  - name: Create temp tags
+    operation: tag.createMany
+    details:
+      names: ["Some tag 1", "Some tag2"]
+  - name: Create content library
+    operation: contentLibrary.create
+    details:
+      name: Temp content library
+  - name: Get content library
+    operation: contentLibrary.get
+    filter: name sw 'Temp content library'
+  - name: Update content library
+    operation: contentLibrary.update
+    source: Create content library
+    details:
+      tags: ["Some tag 1", "Some tag2"]
+  - name: Upload file to content library
+    filter: name eq 'Temp content library'
+    operation: contentLibrary.importFile
+    details:
+      file: ${contentLib_file1}
+      externalPath: ${contentLib_file1_name}
+  - name: Remove file to content library
+    filter: name eq 'Temp content library'
+    operation: contentLibrary.removeFile
+    details:
+      externalPath: ${contentLib_file1_name}
+  - name: Upload multiple files to content library
+    filter: name eq 'Temp content library'
+    operation: contentLibrary.importFileMany
+    details:
+      - file: ${contentLib_file1}
+        externalPath: ${contentLib_file1_name}
+      - file: ${contentLib_file2}
+        externalPath: ${contentLib_file2_name}
+  - name: Remove multiple files to content library
+    filter: name eq 'Temp content library'
+    operation: contentLibrary.removeFileMany
+    details:
+      - ${contentLib_file1_name}
+      - ${contentLib_file2_name}
+  - name: Remove content library
+    operation: contentLibrary.remove
+    source: Create content library
+  - name: Remove created tags
+    operation: tag.remove
+    source: Create temp tags
+    options:
+      multiple: true

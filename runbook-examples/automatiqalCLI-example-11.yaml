@@ -1,0 +1,43 @@
+name: Virtual Proxy operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all virtual proxies
+    operation: virtualProxy.getAll
+  - name: Get Central virtual proxy
+    operation: virtualProxy.get
+    filter: description sw 'Central Proxy'
+  - name: Create virtual proxy
+    operation: virtualProxy.create
+    details:
+      description: New VP
+      prefix: test
+      sessionCookieHeaderName: X-Qlik-Session-Test
+      authenticationMethod: HeaderDynamicUserDirectory
+      loadBalancingServerNodes:
+        - ${host}
+      websocketCrossOriginWhiteList:
+        - ${host}
+      headerAuthenticationHeaderName: hdr-usr
+      headerAuthenticationDynamicUserDirectory: $ud\\$id
+      hasSecureAttributeHttp: false
+      hasSecureAttributeHttps: true
+      sameSiteAttributeHttps: None
+      extendedSecurityEnvironment: true
+  - name: VP Update
+    operation: virtualProxy.update
+    source: Create virtual proxy
+    details:
+      prefix: something
+      description: New VP (Updated)
+      sessionCookieHeaderName: X-Qlik-Session-Test-New
+  - name: Delete VP
+    operation: virtualProxy.remove
+    source: Create virtual proxy

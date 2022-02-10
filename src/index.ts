@@ -39,11 +39,12 @@ const runner = new AutomatiqalCLI(argv);
 runner
   .run()
   .then((data) => {
-    console.log(`\u2705 Completed!`);
+    console.log(`${new Date().toISOString()}\tFinished successfully`);
     process.exit(0);
   })
   .catch((e) => {
     // console.log(`\u274C ERROR 9999: UNEXPECTED error!`);
+    console.log(`${new Date().toISOString()}\t\t\tFinished with ERROR(s)`);
     console.log(e.message);
     process.exit(1);
   });

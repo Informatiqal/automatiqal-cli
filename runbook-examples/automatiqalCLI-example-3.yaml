@@ -1,0 +1,24 @@
+name: Certificate operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Export certificate
+    description: >
+      Export new set of certificates
+      for the listed machineNames
+    operation: certificate.export
+    details:
+      machineNames:
+        - ${host}
+        - some other value
+      exportFormat: Pem
+      includeSecretsKey: true
+  - name: Get distribution path
+    operation: certificate.distributionPathGet

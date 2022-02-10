@@ -1,0 +1,16 @@
+name: Node operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all nodes
+    operation: node.getAll
+  - name: Get the central node
+    operation: node.get
+    filter: isCentral eq True

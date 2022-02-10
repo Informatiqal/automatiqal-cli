@@ -50,8 +50,246 @@
                 "./runbook-examples/automatiqalCLI-example-1.yaml",
                 "--variables",
                 "./runbook-examples/automatiqalCLI.variables.yaml",
-                // "--output",
-                // "./test.txt"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "automatiqalCLI-example-2",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-2.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Certificates Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-3.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Node Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-4.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "User Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-5.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Tasks Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-6.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "System Rule Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-7.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Data Connection Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-8.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Extensions Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-9.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Content Library Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-10.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Virtual Proxy Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-11.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
             ]
         }
     ]

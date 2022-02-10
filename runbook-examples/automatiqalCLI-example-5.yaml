@@ -1,0 +1,48 @@
+name: User operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all users
+    operation: user.getAll
+  - name: Get only users from specific user directory
+    operation: user.get
+    filter: userDirectory eq '${user_dir}'
+  - name: Create user custom property
+    operation: customProperty.create
+    details:
+      name: UserCPTemp
+      choiceValues:
+        - value 1
+        - value 2
+      objectTypes:
+        - User
+  - name: Create new user
+    operation: user.create
+    details:
+      userId: testUser
+      userDirectory: TEST
+      name: Test User
+      roles: ["ContentAdmin", "AuditAdmin"]
+      customProperties:
+        - UserCPTemp=value1
+        - UserCPTemp=value2
+  - name: Update user
+    operation: user.update
+    source: Create new user
+    details:
+      name: Test User Updated
+      roles:
+        - RootAdmin
+  - name: Remove custom property
+    operation: customProperty.remove
+    source: Create user custom property
+  - name: Remove user
+    operation: user.remove
+    source: Create new user

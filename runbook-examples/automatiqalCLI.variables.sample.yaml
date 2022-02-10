@@ -1,0 +1,11 @@
+host=my-sense-instance.com
+certificate=path\to\client.pem
+certificate_key=path\to\client_key.pem
+user_dir=USER_DIR
+user_name=user_name
+qvfLocation=.\runbook-examples\Cars.qvf
+extension_path=.\runbook-examples\Test.zip
+contentLib_file1=.\runbook-examples\ko-fi.png
+contentLib_file1_name=ko-fi.png
+contentLib_file2=.\runbook-examples\ko-fi-blue.png
+contentLib_file2_name=ko-fi-blue.png

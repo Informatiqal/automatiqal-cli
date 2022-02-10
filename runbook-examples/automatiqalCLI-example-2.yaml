@@ -1,0 +1,72 @@
+# This runbook will:
+# create stream, create new custom properties and tags,
+# will update the stream by adding
+# used in "automatiqalCLI-example-1" test
+
+name: Sample run book 2
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Create custom property
+    description: create new custom property with 3 values and applied to streams
+    operation: customProperty.create
+    details:
+      name: NewCustomProperty
+      choiceValues:
+        - value 1
+        - value 2
+        - value 3
+      objectTypes:
+        - Stream
+  - name: Create Tags
+    description: create 3 new tags
+    operation: tag.createMany
+    details:
+      names:
+        - Some Tag 1
+        - Some Tag 2
+        - Some Tag 3
+  - name: Create stream
+    description: create new stream and apply 2 CP values and 2 tags
+    operation: stream.create
+    details:
+      name: New Stream
+      customProperties:
+        - NewCustomProperty=value 1
+        - NewCustomProperty=value 2
+      tags:
+        - Some Tag 1
+        - Some Tag 2
+  - name: Update stream
+    description: >
+      update the created stream by appending new 
+      custom property value
+      and overwriting the existing tags
+    operation: stream.update
+    filter: name eq 'New Stream'
+    options:
+      appendCustomProps: true
+      appendTags: false
+    details:
+      tags:
+        - Some Tag 3
+      customProperties:
+        - NewCustomProperty=value 3
+  - name: Remove created stream
+    operation: stream.remove
+    source: Create stream
+  - name: Remove created custom property
+    operation: customProperty.remove
+    source: Create custom property
+  - name: Remove created tags
+    operation: tag.remove
+    source: Create Tags
+    options:
+      multiple: true

@@ -1,3 +1,9 @@
+# This runbook will:
+# import qvf, create stream,
+# publish the imported app to the stream (under new name)
+# and then will delete both the app and the stream
+# used in "automatiqalCLI-example-1" test
+
 name: Sample run book
 edition: windows
 environment:
@@ -31,26 +37,3 @@ tasks:
   - name: Remove created stream
     operation: stream.remove
     source: Create stream
-
-  # - name: update stream
-  #   operation: stream.update
-  #   filter: name eq 'whatever123'
-  #   options:
-  #     appendCustomProps: true
-  #     appendTags: true
-  #   details:
-  #     tags:
-  #       # - my new tag2
-  #       - blah1
-  #       # - blah
-  #     customProperties:
-  #       - TestCustomProperty=value 1
-  #       - TestCustomProperty=value 2
-  #       - TestCustomProperty=value 3
-  # - name: Get all streams
-  #   operation: stream.getAll
-  # # - name: delete stream
-  # #   source: Create stream
-  # # operation: stream.remove
-  # - name: Get all streams (after deletion)
-  #   operation: stream.getAll

@@ -1,0 +1,29 @@
+name: Data connections operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all data connections
+    operation: dataConnection.getAll
+  - name: Get all "monitor" data connections
+    operation: dataConnection.get
+    filter: name sw 'monitor_'
+  - name: Create data connection
+    operation: dataConnection.create
+    details:
+      name: Test data connection
+      connectionString: CUSTOM CONNECT TO "provider=QvRestConnector.exe;url=https://localhost/qrs/app/full;timeout=900;method=GET;autoDetectResponseType=true;keyGenerationStrategy=0;authSchema=ntlm;skipServerCertificateValidation=true;useCertificate=No;certificateStoreLocation=LocalMachine;certificateStoreName=My;trustedLocations=qrs-proxy%2https://localhost:4244;queryParameters=xrfkey%20000000000000000;addMissingQueryParametersToFinalRequest=false;queryHeaders=X-Qlik-XrfKey%20000000000000000%1User-Agent%2Windows;PaginationType=None;"
+  - name: Update data connection
+    operation: dataConnection.update
+    filter: name eq 'Test data connection'
+    details:
+      name: Test data connection (Updated)
+  - name: Remove data connection
+    operation: dataConnection.remove
+    source: Create data connection

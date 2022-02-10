@@ -1,0 +1,57 @@
+name: System (security and license) rules operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Get all rules
+    operation: systemRule.getAll
+  - name: Create new tag
+    operation: tag.create
+    description: >
+      create new tag to use when updating
+      the security rule. To test the update method
+    details:
+      name: Some test tag
+  - name: Create new security rule
+    operation: systemRule.create
+    details:
+      name: New security rule
+      category: "Security"
+      rule: ((user.name="${user_name}"))
+      resourceFilter: Stream_*
+      actions: ["Read", "Update", "Publish"]
+      comment: >
+        Security rule that allow Read, Update and "Publish"
+        to a specific user: ${user_name}
+  - name: Update security rule
+    operation: systemRule.update
+    source: Create new security rule
+    details:
+      tags: ["Some test tag"]
+  - name: Get the new security rule
+    operation: systemRule.get
+    filter: name eq 'New security rule'
+  - name: Delete security rule
+    operation: systemRule.remove
+    source: Create new security rule
+  - name: Delete the temp tag
+    operation: tag.remove
+    source: Create new tag
+  - name: Create new license rule
+    operation: systemRule.licenseCreate
+    details:
+      name: New license rule
+      type: "Professional"
+      rule: ((user.name="${user_name}"))
+      comment: >
+        License rule that allocate Professional
+        license to a specific user: ${user_name}
+  - name: Delete license rule
+    operation: systemRule.remove
+    source: Create new license rule

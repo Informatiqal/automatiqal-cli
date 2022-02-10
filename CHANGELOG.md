@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5] - 2022-02-10
+
+### Added
+
+- small print/console messages changes
+- more examples added (`runbook-examples` folder). More will follow
+
 ## [0.0.4] - 2022-02-03
 
 ### Added
