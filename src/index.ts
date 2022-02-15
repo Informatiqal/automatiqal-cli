@@ -27,9 +27,20 @@ if (!argv.file) {
   process.exit(1);
 }
 
+if (argv.v || argv.var || argv.variables) {
+  if (!existsSync(argv.v || argv.var || argv.variables)) {
+    console.log(
+      `\u274C ERROR 1011: Variables file not found: "${
+        argv.v || argv.var || argv.variables
+      }"`
+    );
+    process.exit(1);
+  }
+}
+
 // file argument provided but the file do not exists
 if (!existsSync(argv.file)) {
-  console.log(`\u274C ERROR 1002: File not found: "${argv.file}"`);
+  console.log(`\u274C ERROR 1002: Runbook file not found: "${argv.file}"`);
   process.exit(1);
 }
 

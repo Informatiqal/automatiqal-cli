@@ -17,11 +17,12 @@ Install as global module:
 
   ```
   ...
-  --file           Location of the file, containing the run book data
-  --json           Indicates that the run book file is in JSON format
-  --output, -o     Saves the result in the provided path
-  --sample, -s     Generate sample run book file in the current folder
-  --help,   -h     Shows this message
+  --file              Location of the file, containing the run book data
+  --variables, -v     Location of the variable file (if needed)
+  --json              Indicates that the run book file is in JSON format
+  --output,    -o     Saves the result in the provided path
+  --sample,    -s     Generate sample run book file in the current folder
+  --help,      -h     Shows this message
   ...
   ```
 

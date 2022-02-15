@@ -1,0 +1,16 @@
+name: Export operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Export app
+    operation: app.export
+    filter: id eq 93124a11-6a7b-43e0-a6ae-30831a799513
+    details:
+      fileName: test.qvf

@@ -8,12 +8,10 @@ name: Sample run book
 edition: windows
 environment:
   host: ${host}
-  port: 4242
+  port: 443
+  proxy: jwt
   authentication:
-    cert: ${certificate}
-    key: ${certificate_key}
-    user_dir: ${user_dir}
-    user_name: ${user_name}
+    token: ${jwt_token}
 tasks:
   - name: Import application
     description: Import brand new qvf
@@ -31,6 +29,19 @@ tasks:
     details:
       stream: New Stream
       name: Something New (Published)
+  - name: Export application
+    operation: app.export
+    source: Import application
+    location: ${export_location}
+  - name: Get all Monitoring apps
+    operation: app.get
+    filter: stream.name eq 'Monitoring apps'
+  - name: Export Monitoring applications
+    operation: app.exportMany
+    location: ${export_location}
+    source: Get all Monitoring apps
+    details:
+      skipData: true
   - name: Remove imported application
     operation: app.remove
     source: Import application

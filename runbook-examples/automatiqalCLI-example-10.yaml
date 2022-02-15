@@ -2,12 +2,10 @@ name: Content library operations
 edition: windows
 environment:
   host: ${host}
-  port: 4242
+  port: 443
+  proxy: jwt
   authentication:
-    cert: ${certificate}
-    key: ${certificate_key}
-    user_dir: ${user_dir}
-    user_name: ${user_name}
+    token: ${jwt_token}
 tasks:
   - name: Get all content libraries
     operation: contentLibrary.getAll
@@ -46,6 +44,10 @@ tasks:
         externalPath: ${contentLib_file1_name}
       - file: ${contentLib_file2}
         externalPath: ${contentLib_file2_name}
+  - name: Export files from content library
+    operation: contentLibrary.exportMany
+    location: ${export_location}
+    filter: name eq 'Temp content library'
   - name: Remove multiple files to content library
     filter: name eq 'Temp content library'
     operation: contentLibrary.removeFileMany

@@ -1,0 +1,65 @@
+name: External Task operations
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  - name: Create temp tags
+    operation: tag.createMany
+    details:
+      names: ["Tag Value 1", "Tag Value 2"]
+  - name: Get all external tasks
+    operation: externalTask.getAll
+  - name: Create external task
+    operation: externalTask.create
+    details:
+      name: New external task
+      path: c:\ProgramFiles\Qlik\Sense\ServiceDispatcher\Node\node.exe
+      parameters: d:\dev\temp\index.js
+  - name: Add trigger schema to task
+    operation: externalTask.addTriggerSchema
+    filter: name eq 'New external task'
+    details:
+      name: Simple daily trigger
+      repeat: Daily
+      repeatEvery: 1
+      startDate: 2022-02-07T14:30:00.000
+  - name: Add multiple trigger schema to task
+    operation: externalTask.addTriggerMany
+    filter: name eq 'New external task'
+    details:
+      - name: Weekly trigger
+        repeat: Weekly
+        startDate: 2022-02-07T12:30:00.000
+        daysOfWeek:
+          - Monday
+          - Wednesday
+          - Sunday
+      - name: Monthly trigger
+        repeat: Monthly
+        enabled: false
+        startDate: 2022-02-07T13:30:00.000
+        daysOfMonth: [1, 5, 10]
+  - name: Update external task
+    operation: externalTask.update
+    filter: name eq 'New external task'
+    details:
+      tags:
+        - Tag Value 1
+        - Tag Value 2
+  - name: Get external task
+    operation: externalTask.get
+    filter: name eq 'New external task'
+  - name: Delete external task
+    operation: externalTask.remove
+    source: Create external task
+  - name: Delete temp tags
+    operation: tag.remove
+    source: Create temp tags
+    options:
+      multiple: true

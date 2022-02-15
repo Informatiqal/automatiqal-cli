@@ -31,7 +31,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Variables",
+            "name": "App Example",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
             "preLaunchTask": "npm: build-tsc",
@@ -312,6 +312,54 @@
             "args": [
                 "--file",
                 "./runbook-examples/automatiqalCLI-example-12.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "External Task Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-13.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Exports Example",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-14.yaml",
                 "--variables",
                 "./runbook-examples/automatiqalCLI.variables.yaml",
             ]

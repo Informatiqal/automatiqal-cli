@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.6] - 2022-02-15
+
+- more examples
+- handling the `export` and `exportMany` operations and saving the file(s)
+- new task property `location`. Used with the export ops to point where to save the files
+
+### Added
+
 ## [0.0.5] - 2022-02-10
 
 ### Added

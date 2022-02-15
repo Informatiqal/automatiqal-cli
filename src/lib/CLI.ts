@@ -20,7 +20,6 @@ export class AutomatiqalCLI {
   private httpsAgent: any;
   private automatiqal: Automatiqal;
   private rawRunBook: string;
-  private rawVariables: string;
   constructor(argv: IArguments) {
     this.argv = argv;
 
@@ -96,12 +95,30 @@ export class AutomatiqalCLI {
    * @description create all required emitters
    */
   private emittersSet() {
-    this.automatiqal.emitter.on("task:result", function (a) {
+    const _this = this;
+    this.automatiqal.emitter.on("task:result", async function (a) {
       const b: ITaskResult = a as any;
+
+      if (b.task.operation.indexOf(".export") > -1) {
+        if (!b.task.location) {
+          console.log(
+            `\u274C ERROR 1009: "${b.task.name}" is missing "location" parameter`
+          );
+          process.exit(1);
+        }
+        try {
+          _this.writeExports(b.data, b.task.location);
+        } catch (e) {
+          console.log(
+            `\u274C ERROR 1010: Error in "${b.task.name}". Failed to write file: "${e.path}" `
+          );
+          process.exit(1);
+        }
+      }
+
       console.log(
         `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
       );
-      // let a1 = 1;
     });
 
     this.automatiqal.emitter.on("runbook:result", function (a) {
@@ -155,6 +172,10 @@ export class AutomatiqalCLI {
         rejectUnauthorized: false,
         cert: cert,
         key: key,
+      });
+    } else {
+      this.httpsAgent = new https.Agent({
+        rejectUnauthorized: false,
       });
     }
   }
@@ -228,5 +249,28 @@ export class AutomatiqalCLI {
         this.rawRunBook = this.rawRunBook.replace(re, varContent);
       }
     }
+  }
+
+  private writeExports(files: any[], location: string) {
+    if (!Array.isArray(files)) {
+      writeFileSync(`${location}\\${(files as any).name}`, (files as any).file);
+
+      return true;
+    }
+
+    files.map((f) => {
+      if (Array.isArray(f)) {
+        f.map((f1) =>
+          writeFileSync(`${location}\\${(f1 as any).name}`, (f1 as any).file)
+        );
+
+        return true;
+      }
+
+      let a = 1;
+      writeFileSync(`${location}\\${(f as any).name}`, (f as any).file);
+    });
+
+    return true;
   }
 }
