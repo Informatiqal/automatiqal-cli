@@ -1,6 +1,6 @@
 # Automatiqal CLI
 
-`Automatiqal CLI` is a `NodeJS` wrapper around [Automatiqal](https://github.com/informatiqal/automatiqal) package that allows automating `Qlik Sense` administration/deployment tasks by describing them im `yaml`/`json` file.
+`Automatiqal CLI` is a `NodeJS` wrapper around [Automatiqal](https://github.com/informatiqal/automatiqal) package that allows automating `Qlik Sense` administration/deployment tasks by describing them in `yaml`/`json` files.
 
 As the name suggests `Automatiqal CLI` is a command line/terminal tool.
 

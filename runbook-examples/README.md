@@ -1,8 +1,17 @@
 # Examples description
 
-- `automatiqalCLI-example-1` - import/publish/remove
-  - create new stream
-  - import qvf file
-  - publish the imported qvf file to the new stream
-  - delete imported qvf
-  - delete created stream
+- `automatiqalCLI.variables.sample` - TBA
+- `automatiqalCLI-example-1` - TBA
+- `automatiqalCLI-example-2` - TBA
+- `automatiqalCLI-example-3` - TBA
+- `automatiqalCLI-example-4` - TBA
+- `automatiqalCLI-example-5` - TBA
+- `automatiqalCLI-example-6` - TBA
+- `automatiqalCLI-example-7` - TBA
+- `automatiqalCLI-example-8` - TBA
+- `automatiqalCLI-example-9` - TBA
+- `automatiqalCLI-example-10` - TBA
+- `automatiqalCLI-example-11` - TBA
+- `automatiqalCLI-example-12` - TBA
+- `automatiqalCLI-example-13` - TBA
+- `automatiqalCLI-example-14` - TBA
