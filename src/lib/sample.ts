@@ -10,6 +10,7 @@ export function generateSample(format: string) {
     environment: {
       host: "${host}",
       port: 4242,
+      edition: "windows",
       authentication: {
         cert: "${certificate}",
         key: "${certificate_key}",
@@ -21,7 +22,7 @@ export function generateSample(format: string) {
       {
         name: "Import application",
         description: "Import brand new qvf",
-        operation: "apps.import",
+        operation: "app.import",
         details: {
           file: "path/to/the/app/qvf",
           name: "Import Name",
@@ -30,7 +31,7 @@ export function generateSample(format: string) {
       {
         name: "Create new stream",
         description: "create brand new stream for our app",
-        operation: "streams.create",
+        operation: "stream.create",
         details: {
           name: "My new stream",
         },
@@ -43,7 +44,7 @@ export function generateSample(format: string) {
         details: {
           name: "My new stream",
         },
-        config: {
+        options: {
           multiple: false,
         },
       },
@@ -52,7 +53,10 @@ export function generateSample(format: string) {
         description:
           "add some custom properties and tags to the imported and published app",
         filter: "name eq 'Import Name'",
-        operation: "apps.update",
+        operation: "app.update",
+        options: {
+          multiple: true,
+        },
         details: {
           customProperties: [
             "customProperty1=value1",
@@ -65,14 +69,27 @@ export function generateSample(format: string) {
     ],
   };
 
-  const variables = {
-    host: "my-qlik-host.com",
-    certificate: "path/to/client.pem",
-    certificate_key: "path/to/client_key.pem",
-    user_dir: "SOME-USER-DIR",
-    user_name: "SOME-USER",
-  };
+  const variables = `host=my-qlik-host.com
+certificate=path/to/client.pem
+certificate_key=path/to/client_key.pem
+user_dir=SOME-USER-DIR
+user_name=SOME-USER`;
 
-  writeFileSync("automatiqalCLI-sample.yaml", yaml.dump(qseowSample, null, 4));
-  writeFileSync("automatiqalCLI.variables.yaml", yaml.dump(variables, null, 4));
+  try {
+    writeFileSync(
+      ".\\automatiqal-sample.yaml",
+      yaml.dump(qseowSample, null, 4)
+    );
+  } catch (e) {
+    console.log(`\u274C ERROR: Unable to create sample file"`);
+  }
+
+  try {
+    writeFileSync(
+      ".\\automatiqal-sample.variables.yaml",
+      yaml.dump(variables, null, 4)
+    );
+  } catch (e) {
+    console.log(`\u274C ERROR: Unable to create sample variables file"`);
+  }
 }

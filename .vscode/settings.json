@@ -3,7 +3,8 @@
         "automatiqal",
         "Informatiqal",
         "prestart",
-        "qseow"
+        "qseow",
+        "runbooks"
     ],
     "yaml.schemas": {
         "D:\\DEV\\GHQ_ROOT\\github.com\\Informatiqal\\automatiqal-cli-schema\\runbook.json": ".qrac.yaml",

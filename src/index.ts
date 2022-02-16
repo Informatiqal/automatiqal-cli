@@ -7,6 +7,11 @@ import { generateSample } from "./lib/sample";
 
 import { IArguments } from "./lib/interfaces";
 
+if (process.argv.length == 2) {
+  printHelp();
+  process.exit(0);
+}
+
 const argv: IArguments = minimist(process.argv.slice(2));
 
 if (argv.help || argv.h) {
@@ -16,13 +21,17 @@ if (argv.help || argv.h) {
 
 if (argv.sample || argv.s) {
   generateSample(argv.sample || argv.s);
-  console.log(`\u2705 "automatiqalCLI-sample.yaml" generated`);
-  console.log(`\u2705 "automatiqalCLI.variables.yaml" generated`);
+  console.log(`\u2705 "automatiqal-sample.yaml" generated!`);
+  console.log(`\u2705 "automatiqal-sample.variables.yaml" generated!`);
+  console.log("");
+  console.log(
+    `\u2705 \x1b[33mMore examples can be found at https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples\x1b[0m`
+  );
   process.exit(0);
 }
 
 // file argument not provided
-if (!argv.file) {
+if (!argv.file && !argv.f) {
   console.log(`\u274C ERROR 1001: Please provide file location`);
   process.exit(1);
 }

@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.7] - 2022-02-16
+
+### Added
+
+- `-f` is added as alternative to `--file`
+
+### Fixed
+
+- sample and sample variable are updated to reflect the latest changes in the structure
+
+### Changed
+
+- moved the non-yaml example files to `assets` folder
+- the help info is shown if no arguments are passed
+- the help message is updated
+
 ## [0.0.6] - 2022-02-15
 
 - more examples

@@ -1,6 +1,6 @@
 {
-  "name": "automatiqal_cli",
-  "version": "0.0.6",
+  "name": "automatiqal-cli",
+  "version": "0.0.7",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -42,7 +42,8 @@
     "LICENSE",
     "!CHANGELOG.md",
     "!tsconfig.json",
-    "!tsconfig.test.json"
+    "!tsconfig.test.json",
+    "!tsconfig.debug.json"
   ],
   "repository": {
     "type": "git",

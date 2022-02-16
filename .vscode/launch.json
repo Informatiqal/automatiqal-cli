@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Show help",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
             "preLaunchTask": "npm: build-tsc",
@@ -22,11 +22,26 @@
                 "--preserve-symlinks"
             ],
             "args": [
-                "--file",
-                "./automatiqalCLI-sample.qrac.yaml",
-                // "--output",
-                // "./test.txt"
+                "--help"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "No arguments",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
         },
         {
             "type": "node",

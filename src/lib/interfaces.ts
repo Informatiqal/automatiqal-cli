@@ -1,5 +1,6 @@
 export interface IArguments {
-  file: string;
+  file?: string;
+  f?: string;
   json?: boolean;
   output?: string;
   sample?: string;
