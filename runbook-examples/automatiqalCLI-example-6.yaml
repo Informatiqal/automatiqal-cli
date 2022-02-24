@@ -9,35 +9,43 @@ environment:
     user_dir: ${user_dir}
     user_name: ${user_name}
 tasks:
-  # - name: Import application
-  #   operation: app.upload
-  #   details:
-  #     file: ${qvfLocation}
-  #     name: New application
-  # - name: Create reload task
-  #   operation: reloadTask.create
-  #   details:
-  #     name: Test reload task
-  #     appFilter: "id eq 93124a11-6a7b-43e0-a6ae-30831a799513"
-  # - name: Update reload task
-  #   operation: reloadTask.update
-  #   filter: name eq 'Test reload task'
-  #   details:
-  #     name: Test reload task
-  #     appFilter: "id eq 1570a46a-2d1b-42e2-b185-417df33db657"
-  # - name: Add composite trigger to task
-  #   operation: reloadTask.addTriggerComposite
-  #   filter: id eq 48fbfe36-fe80-487f-96b4-ad8c270d6228
-  #   details:
-  #     name: New composite trigger
-  #     eventTasks:
-  #       - state: success
-  #         id: 123
-  #       - state: fail
-
+  - name: Import application
+    operation: app.upload
+    details:
+      file: ${qvfLocation}
+      name: New application
+  - name: Create reload task
+    operation: reloadTask.create
+    details:
+      name: Test reload task
+      appFilter: "name eq 'New application'"
+  - name: Update reload task
+    operation: reloadTask.update
+    filter: name eq 'Test reload task'
+    details:
+      name: Test reload task (Updated)
+  - name: Add composite trigger to task
+    operation: reloadTask.addTriggerComposite
+    source: Create reload task
+    details:
+      name: New composite trigger
+      eventTasks:
+        - state: success
+          name: Reload License Monitor
+  - name: Update composite trigger
+    operation: compositeTrigger.update
+    source: Add composite trigger to task
+    details:
+      name: New composite trigger (Updated)
+      eventTasks:
+        - state: fail
+          name: Reload License Monitor
+  - name: Remove composite trigger
+    operation: compositeTrigger.remove
+    source: Add composite trigger to task
   - name: Add trigger schema to task
     operation: reloadTask.addTriggerSchema
-    filter: id eq 48fbfe36-fe80-487f-96b4-ad8c270d6228
+    source: Create reload task
     details:
       name: Simple daily trigger
       repeat: Daily
@@ -45,7 +53,7 @@ tasks:
       startDate: 2022-02-07T14:30:00.000
   - name: Add multiple trigger schema to task
     operation: reloadTask.addTriggerMany
-    filter: id eq 48fbfe36-fe80-487f-96b4-ad8c270d6228
+    source: Create reload task
     details:
       - name: Weekly trigger
         repeat: Weekly
@@ -59,11 +67,9 @@ tasks:
         enabled: false
         startDate: 2022-02-07T13:30:00.000
         daysOfMonth: [1, 5, 10] # different way to specify list/array items
-
-
-  # - name: Start reload task
-  # operation: reloadTask.start
-  # operation: reloadTask.startSynchronous
-  # operation: reloadTask.waitExecution
-  # filter: name eq 'Test reload task'
-#1570a46a-2d1b-42e2-b185-417df33db657
+  - name: Remove reload task
+    operation: reloadTask.remove
+    source: Create reload task
+  - name: Remove imported app
+    operation: app.remove
+    source: Import application
