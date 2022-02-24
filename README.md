@@ -47,3 +47,9 @@ Have a look at the [examples folder](https://github.com/Informatiqal/automatiqal
 ## Documentation
 
 Have a look at `Automatiqal` package [wiki pages](https://github.com/Informatiqal/automatiqal/wiki) on how to structure the file and list of operations. More information will be added soon here as well
+
+## Limitations
+
+- no way to test the runbook (aka `dry run`) [automatiqal #6](https://github.com/Informatiqal/automatiqal/issues/6)
+- rollback / error handling workflow. At the moment if error is encountered the whole process will terminate. There should be a way to define additional tasks (for each task) that to be executed in case of error [automatiqal #3](https://github.com/Informatiqal/automatiqal/issues/3)
+- handling large files. In the current implementation all external files are read before the runbook is executed. This can be a problem when uploading large files [automatiqal #4](https://github.com/Informatiqal/automatiqal/issues/4)
