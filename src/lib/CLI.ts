@@ -1,15 +1,10 @@
 import { readFileSync, writeFileSync } from "fs";
 import * as https from "https";
 import * as yaml from "js-yaml";
-// import { Automatiqal } from "../../../automatiqal/src/index";
 import { Automatiqal } from "automatiqal";
 
-// import { IRunBook } from "../../../automatiqal/src/RunBook/RunBook.interfaces";
 import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
-import {
-  IRunBookResult,
-  ITaskResult,
-} from "../../../automatiqal/src/RunBook/Runner";
+import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 import { IArguments } from "./interfaces";
 
@@ -121,15 +116,9 @@ export class AutomatiqalCLI {
       );
     });
 
-    this.automatiqal.emitter.on("runbook:result", function (a) {
-      // console.log(a);
-      let a1 = 1;
-    });
+    this.automatiqal.emitter.on("runbook:result", function (r) {});
 
-    this.automatiqal.emitter.on("runbook:log", function (a) {
-      // console.log(a);
-      // let a1 = 1;
-    });
+    this.automatiqal.emitter.on("runbook:log", function (l) {});
 
     this.automatiqal.emitter.on("error", function (errorMessage) {
       console.log(errorMessage);

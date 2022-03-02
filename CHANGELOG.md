@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.9] - 2022-03-02
+
+### Fixed
+
+- import dependencies - import from the package and not from the local location
+
+## [0.0.8] - 2022-02-24
+
+- dependency and readme update
+
 ## [0.0.7] - 2022-02-16
 
 ### Added

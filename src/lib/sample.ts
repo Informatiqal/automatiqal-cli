@@ -3,7 +3,6 @@ import yaml from "js-yaml";
 
 export function generateSample(format: string) {
   if (!format) format = "yaml";
-  //   const allFormat = format.split(",");
 
   const qseowSample = {
     name: "Sample run book",
