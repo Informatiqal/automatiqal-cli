@@ -1,0 +1,25 @@
+name: Sample run book
+edition: windows
+environment:
+  host: ${host}
+  port: 443
+  proxy: jwt
+  authentication:
+    token: ${jwt_token}
+tasks:
+  - name: Import application
+    description: Import brand new qvf
+    operation: app.upload
+    details:
+      file: ${qvfLocation}
+      name: Something New
+  - name: Update app (false positive)
+    operation: app.update
+    filter: name eq 'Non existing application'
+    details:
+      name: Something new (Updated)
+    onError:
+      tasks:
+        - name: Delete imported app
+          operation: app.remove
+          source: Import application

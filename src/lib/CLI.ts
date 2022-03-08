@@ -122,7 +122,7 @@ export class AutomatiqalCLI {
 
     this.automatiqal.emitter.on("error", function (errorMessage) {
       console.log(errorMessage);
-      process.exit(1);
+      // process.exit(1);
     });
   }
 
