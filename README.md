@@ -51,6 +51,5 @@ Have a look at `Automatiqal` package [wiki pages](https://github.com/Informatiqa
 ## Limitations
 
 - no way to test the runbook (aka `dry run`) [automatiqal #6](https://github.com/Informatiqal/automatiqal/issues/6)
-- rollback / error handling workflow. At the moment if error is encountered the whole process will terminate. There should be a way to define additional tasks (for each task) that to be executed in case of error [automatiqal #3](https://github.com/Informatiqal/automatiqal/issues/3)
 - handling large files. In the current implementation all external files are read before the runbook is executed. This can be a problem when uploading large files [automatiqal #4](https://github.com/Informatiqal/automatiqal/issues/4)
 - schema. It will be very helpful to have dedicated runbook schema. Such schema will ease the writing of the runbook by suggesting operation names, tasks parameters, task detail parameters and indicate their type and if they are optional. Its being worked on schema. When its in a bit better shape it will be published in its own repository with instructions how to be used
