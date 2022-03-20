@@ -54,7 +54,7 @@
   },
   "homepage": "https://informatiqal.com/automatiqal-cli/",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "21.0.1",
+    "@rollup/plugin-commonjs": "21.0.2",
     "@types/chai": "4.2.22",
     "@types/mocha": "8.2.3",
     "@types/node": "15.14.9",
