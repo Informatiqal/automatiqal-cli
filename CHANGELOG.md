@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.11] - 2022-03-XX
+
+### Fixed
+
+- check for `-f` argument file existence. At the moment only `--file` was checked
+
+## [0.0.10] - 2022-03-08
+
+### Fixed
+
+- do not exit on error thrown. The task that throw the error might have `onError` block that should be executed
+
 ## [0.0.9] - 2022-03-02
 
 ### Fixed
