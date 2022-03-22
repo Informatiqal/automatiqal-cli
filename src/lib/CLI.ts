@@ -26,10 +26,25 @@ export class AutomatiqalCLI {
       process.exit(1);
     }
 
+    // match all strings in between ${ and }
+    const variables = this.rawRunBook.match(/(?<=\${)(.*?)(?=})/g);
+
+    if (variables.length > 0 && !this.argv.v && !this.argv.variables) {
+      console.log(
+        `\u274C ERROR 1012: Variable(s) declaration found but no variables file was provided `
+      );
+      console.log("");
+      console.log("Variables found:");
+      variables.forEach((v) => console.log(`  ${v}`));
+      process.exit(1);
+    }
+
     this.replaceVariables();
     this.runbookSet();
     this.prepareCertificates();
-    this.readBuffers();
+
+    // no need to read any files if only connection is being tested
+    if (!this.argv.c && !this.argv.connect) this.readBuffers();
 
     try {
       this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
@@ -83,6 +98,12 @@ export class AutomatiqalCLI {
         console.log(e.message);
         process.exit(1);
       }
+    }
+
+    if (this.argv.c || this.argv.connect) {
+      this.runBook.tasks = [
+        { name: "Test connectivity", operation: "about.get" },
+      ];
     }
   }
 

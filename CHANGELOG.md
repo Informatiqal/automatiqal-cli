@@ -1,6 +1,18 @@
 # Changelog
 
-## [0.0.11] - 2022-03-XX
+## [0.0.12] - 2022-03-22
+
+### Added
+
+- `-c`/`--connect` arguments to test runbook connectivity [#19](https://github.com/Informatiqal/automatiqal-cli/issues/19)
+- initial check - variable(s) are defined in the runbook but no variables file is passed [#20](https://github.com/Informatiqal/automatiqal-cli/issues/20)
+- because of [#19](https://github.com/Informatiqal/automatiqal-cli/issues/19) no files will be read if connection is testing (certificates are exclusion)
+
+### Fixed
+
+- colors in the help menu
+
+## [0.0.11] - 2022-03-21
 
 ### Fixed
 

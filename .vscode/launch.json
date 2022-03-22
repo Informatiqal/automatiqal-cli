@@ -65,6 +65,8 @@
                 "./runbook-examples/automatiqalCLI-example-1.yaml",
                 "--variables",
                 "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--output",
+                "test.json"
             ]
         },
         {
@@ -401,6 +403,31 @@
                 "./runbook-examples/automatiqalCLI-example-15.yaml",
                 "--variables",
                 "./runbook-examples/automatiqalCLI.variables.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Connectivity test",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-15.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--connect",
             ]
         }
     ]

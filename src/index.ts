@@ -48,7 +48,6 @@ if (argv.v || argv.var || argv.variables) {
 }
 
 // file argument provided but the file do not exists
-
 if (!existsSync(argv.file || argv.f)) {
   console.log(
     `\u274C ERROR 1002: Runbook file not found: "${argv.file || argv.f}"`
