@@ -277,7 +277,6 @@ export class AutomatiqalCLI {
         return true;
       }
 
-      let a = 1;
       writeFileSync(`${location}\\${(f as any).name}`, (f as any).file);
     });
 
