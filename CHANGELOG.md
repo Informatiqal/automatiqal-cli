@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.14] - 2022-03-29
+
+### Fixed
+
+- Tasks for `XXX.export` commands no longer output the content of the binary, if `--output` argument is specified [#21](https://github.com/Informatiqal/automatiqal-cli/issues/21)
+
 ## [0.0.13] - 2022-03-23
 
 ### Fixed

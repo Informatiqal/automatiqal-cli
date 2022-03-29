@@ -8,6 +8,7 @@ yarn-error.log*
 lerna-debug.log*
 *.variables.yaml
 .npmrc
+test.json
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

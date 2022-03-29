@@ -1,4 +1,4 @@
-const pkg = { version: "0.0.13" };
+const pkg = { version: "0.0.14" };
 
 export function printHelp() {
   const messages = [

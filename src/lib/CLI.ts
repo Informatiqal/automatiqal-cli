@@ -17,6 +17,7 @@ export class AutomatiqalCLI {
   private rawRunBook: string;
   constructor(argv: IArguments) {
     this.argv = argv;
+    this.result = [];
 
     try {
       this.rawRunBook = readFileSync(this.argv.file, "utf8").toString();
@@ -67,7 +68,8 @@ export class AutomatiqalCLI {
     console.log(
       `${new Date().toISOString()}\t\t"${this.runBook.name}"\tStarted`
     );
-    this.result = await this.automatiqal.run();
+
+    await this.automatiqal.run();
 
     if (this.argv.output || this.argv.o) this.writeOut();
 
@@ -124,6 +126,13 @@ export class AutomatiqalCLI {
         }
         try {
           _this.writeExports(b.data, b.task.location);
+
+          if (b.data && b.data.length > 0) {
+            b.data = b.data.map((r: any) => {
+              if (r.file) r.file = "BINARY CONTENT REPLACED!";
+              return r;
+            });
+          }
         } catch (e) {
           console.log(
             `\u274C ERROR 1010: Error in "${b.task.name}". Failed to write file: "${e.path}" `
@@ -131,6 +140,8 @@ export class AutomatiqalCLI {
           process.exit(1);
         }
       }
+
+      _this.result.push(b);
 
       console.log(
         `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
