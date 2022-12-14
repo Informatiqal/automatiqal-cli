@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -57,18 +57,18 @@
   "homepage": "https://informatiqal.com/automatiqal-cli/",
   "devDependencies": {
     "@rollup/plugin-commonjs": "23.0.0",
-    "@types/chai": "4.3.3",
-    "@types/mocha": "10.0.0",
-    "@types/node": "17.0.35",
-    "chai": "4.3.6",
+    "@types/chai": "4.3.4",
+    "@types/mocha": "10.0.1",
+    "@types/node": "18.11.15",
+    "chai": "4.3.7",
     "dotenv": "16.0.3",
-    "mocha": "10.1.0",
+    "mocha": "10.2.0",
     "nyc": "15.1.0",
     "rollup": "2.79.1",
     "rollup-plugin-delete": "2.0.0",
     "rollup-plugin-typescript2": "0.34.1",
     "ts-node": "10.9.1",
-    "typedoc": "0.23.17",
+    "typedoc": "0.23.22",
     "typescript": "^4.5.5"
   },
   "dependencies": {
