@@ -74,7 +74,7 @@
   "dependencies": {
     "@p-mcgowan/minimist": "^2.1.0",
     "@types/js-yaml": "^4.0.5",
-    "automatiqal": "^0.0.15",
+    "automatiqal": "^0.0.16",
     "js-yaml": "^4.1.0"
   }
 }
