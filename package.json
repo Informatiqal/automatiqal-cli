@@ -9,6 +9,7 @@
   },
   "license": "MIT",
   "main": "dist/index.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "preferGlobal": true,
   "bin": {
@@ -22,7 +23,12 @@
     "watch": "rollup -cw",
     "debug": "tsc --sourcemap",
     "test": "set TS_NODE_PROJECT=tsconfig.test.json&mocha --require ts-node/register test/**/*.spec.ts",
-    "docs": "npx typedoc src/index.doc.ts --name \"Automatiqal\" --excludePrivate --hideGenerator"
+    "docs": "npx typedoc src/index.doc.ts --name \"Automatiqal\" --excludePrivate --hideGenerator",
+    "requirements-check": "node check-version.js",
+    "postinstall": "npm run requirements-check"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "keywords": [
     "qlik",
@@ -41,6 +47,7 @@
     "*.md",
     "LICENSE",
     "CHANGELOG.md",
+    "check-version.js",
     "!tsconfig.json",
     "!tsconfig.test.json",
     "!tsconfig.debug.json",
@@ -56,25 +63,26 @@
   },
   "homepage": "https://informatiqal.com/automatiqal-cli/",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "24.0.0",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@types/chai": "4.3.4",
+    "@types/js-yaml": "^4.0.5",
     "@types/mocha": "10.0.1",
     "@types/node": "18.11.17",
     "chai": "4.3.7",
     "dotenv": "16.0.3",
     "mocha": "10.2.0",
     "nyc": "15.1.0",
-    "rollup": "2.79.1",
+    "rollup": "3.8.1",
     "rollup-plugin-delete": "2.0.0",
-    "rollup-plugin-typescript2": "0.34.1",
     "ts-node": "10.9.1",
+    "tslib": "^2.4.1",
     "typedoc": "0.23.23",
-    "typescript": "^4.5.5"
+    "typescript": "^4.9.4"
   },
   "dependencies": {
     "@p-mcgowan/minimist": "^2.1.0",
-    "@types/js-yaml": "^4.0.5",
-    "automatiqal": "^0.0.15",
+    "automatiqal": "^0.0.16",
     "js-yaml": "^4.1.0"
   }
 }
