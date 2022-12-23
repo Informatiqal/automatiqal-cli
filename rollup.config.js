@@ -1,14 +1,17 @@
-import typescript from "rollup-plugin-typescript2";
+import typescript from "@rollup/plugin-typescript";
 import del from "rollup-plugin-delete";
-import commonjs from "@rollup/plugin-commonjs";
-import pkg from "./package.json";
+import replace from "@rollup/plugin-replace";
+import { readFileSync } from "fs";
+
+const pkg = JSON.parse(readFileSync("./package.json"));
 
 export default {
   input: "src/index.ts",
   output: [
     {
+      sourcemap: true,
       file: pkg.main,
-      format: "cjs",
+      format: "es",
     },
   ],
   external: [
@@ -18,12 +21,15 @@ export default {
     "https",
   ],
   plugins: [
-    commonjs(),
     del({
       targets: "dist/*",
     }),
-    typescript({
-      typescript: require("typescript"),
+    typescript(),
+    replace({
+      values: {
+        __VERSION: pkg.version,
+      },
+      preventAssignment: true,
     }),
   ],
 };

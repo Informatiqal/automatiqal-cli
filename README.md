@@ -1,5 +1,7 @@
 # Automatiqal CLI
 
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T0148ZP)
+
 `Automatiqal CLI` is a `NodeJS` wrapper around [Automatiqal](https://github.com/informatiqal/automatiqal) package that allows automating `Qlik Sense` administration/deployment tasks by describing them in `yaml`/`json` files.
 
 As the name suggests `Automatiqal CLI` is a command line/terminal tool.
@@ -16,11 +18,12 @@ Install as global module:
   `$ automatiqal --help`
   `$ automatiqal`
 
-  ```
+  ```text
   --file       -f     Location of the file, containing the run book data
   --variables, -v     Location of the variable file (if needed)
   --json              Indicates that the run book file is in JSON format
   --output,    -o     Saves the result in the provided path
+  --connect,   -c     Test the connectivity. No tasks are ran
   --sample,    -s     Generate sample run book and variables files in the current folder
   --help,      -h     Shows this message
   ```
@@ -48,8 +51,11 @@ Have a look at the [examples folder](https://github.com/Informatiqal/automatiqal
 
 Have a look at `Automatiqal` package [wiki pages](https://github.com/Informatiqal/automatiqal/wiki) on how to structure the file and list of operations. More information will be added soon here as well
 
+## Schema
+
+Great little addition is the availability of [YAML schema](https://github.com/Informatiqal/automatiqal-cli-schema). The schema greatly helps when writing runbooks. Please refer to the schema's repo on how to use it (in `VSCode`)
+
 ## Limitations
 
 - no way to test the runbook (aka `dry run`) [automatiqal #6](https://github.com/Informatiqal/automatiqal/issues/6)
 - handling large files. In the current implementation all external files are read before the runbook is executed. This can be a problem when uploading large files [automatiqal #4](https://github.com/Informatiqal/automatiqal/issues/4)
-- schema. It will be very helpful to have dedicated runbook schema. Such schema will ease the writing of the runbook by suggesting operation names, tasks parameters, task detail parameters and indicate their type and if they are optional. Its being worked on schema. When its in a bit better shape it will be published in its own repository with instructions how to be used

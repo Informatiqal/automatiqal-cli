@@ -21,7 +21,7 @@ async function runProcess(args: string[]): Promise<IProcessReturn> {
       reject({ code: err });
     });
 
-    process.on("close", function (code) {
+    process.on("close", function (code: number) {
       resolve({ code, output: output.split("\n") });
     });
   });

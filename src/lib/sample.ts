@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import yaml from "js-yaml";
+import { dump } from "js-yaml";
 
 export function generateSample(format: string) {
   if (!format) format = "yaml";
@@ -77,18 +77,22 @@ user_name=SOME-USER`;
   try {
     writeFileSync(
       ".\\automatiqal-sample.yaml",
-      yaml.dump(qseowSample, null, 4)
+      `# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook.json?raw=true
+
+${dump(qseowSample, {
+  // indent: 4,
+  lineWidth: 300,
+})}`
     );
   } catch (e) {
     console.log(`\u274C ERROR: Unable to create sample file"`);
+    console.log(e.message);
   }
 
   try {
-    writeFileSync(
-      ".\\automatiqal-sample.variables.yaml",
-      yaml.dump(variables, null, 4)
-    );
+    writeFileSync(".\\automatiqal-sample.variables.yaml", variables);
   } catch (e) {
     console.log(`\u274C ERROR: Unable to create sample variables file"`);
+    console.log(e.message);
   }
 }

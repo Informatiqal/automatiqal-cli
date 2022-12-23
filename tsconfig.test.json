@@ -4,14 +4,16 @@
         "target": "ES6",
         "declaration": true,
         "declarationDir": "./dist",
-        "module": "CommonJS",
+        "module": "ES2020",
         "noImplicitAny": false,
         "sourceMap": true,
         "moduleResolution": "node",
-        "esModuleInterop": true,
+        "lib": [
+            "es2021"
+        ],
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
     ],
     "exclude": [
         "node_modules"
