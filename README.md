@@ -163,3 +163,10 @@ Great little addition is the availability of [YAML schema](https://github.com/In
 Short video how writing the runbook feels (with the json schema)
 
 ![demo](./demo.gif)
+
+## Related projects
+
+- [Automatiqal](https://github.com/Informatiqal/automatiqal/) - `Automatiqal CLI` is the CLI wrapper of `Automatiqal`. The heavy lifting is done by the `Automatiqal` package. `Automatiqal` package can be used programmatically to process runbooks
+- [Qlik Repo API](https://github.com/Informatiqal/qlik-repo-api) - `Automatiqal` itself is using `Qlik Repo API` under the hood to communicate with Qlik Repo Service. `Qlik Repo API` abstracts the raw HTTP requests and exposes multiple methods that can be used without knowing the Qlik Repository Rest API specifics
+- [Qlik SaaS API](https://github.com/Informatiqal/qlik-saas-api/) - `Qlik SaaS API` abstracts the raw HTTP requests and exposes multiple methods that can be used without knowing the Qlik SaaS Rest API specifics (to be used in `Automatiqal` to write SaaS runbooks)
+- [Qlik Rest API](https://github.com/Informatiqal/qlik-rest-api/) - this package is the at the bottom of all. It allows communicating with various Qlik Rest API endpoints (Repository, Proxy, Engine etc)
