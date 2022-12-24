@@ -2,9 +2,15 @@
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T0148ZP)
 
+> **Warning**
+> UNDER DEVELOPMENT
+
 `Automatiqal CLI` is a `NodeJS` wrapper around [Automatiqal](https://github.com/informatiqal/automatiqal) package that allows automating `Qlik Sense` administration/deployment tasks by describing them in `yaml`/`json` files.
 
 As the name suggests `Automatiqal CLI` is a command line/terminal tool.
+
+> **Note**
+> At the moment only `Qlik Sense Enterprise on Windows` is supported! SaaS support is on the roadmap
 
 ## Installation
 
@@ -43,7 +49,7 @@ Install as global module:
 - `--sample` - generate sample `yaml` file in the current folder
   `$ automatiqal --sample`
 
-## Examples
+## Runbook examples
 
 Have a look at the [examples folder](https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples) for list of example `yaml` files (btw these runbooks are used to test `Automatiqal CLI` itself)
 
@@ -143,6 +149,9 @@ Have a look at `Automatiqal` package [wiki pages](https://github.com/Informatiqa
 ## Schema
 
 Great little addition is the availability of [YAML schema](https://github.com/Informatiqal/automatiqal-cli-schema). The schema greatly helps when writing runbooks. Please refer to the schema's repo on how to use it (in `VSCode`)
+
+> **Warning**
+> The schema is also under development and some bugs/issues are possible/expected
 
 ## Limitations
 
