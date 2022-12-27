@@ -1,4 +1,4 @@
-import chai from "chai";
+import * as chai from "chai";
 import { spawn } from "child_process";
 
 const expect = chai.expect;

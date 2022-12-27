@@ -12,5 +12,10 @@
             ".qrac.yaml",
             "file:///d%3A/DEV/GHQ_ROOT/github.com/Informatiqal/automatiqal-cli/automatiqalCLI-sample.qrac.yaml"
         ]
-    }
+    },
+    "mochaExplorer.nodeArgv": [
+        "--loader=ts-node/esm",
+        "--no-warnings=ExperimentalWarning",
+        "--experimental-specifier-resolution=node",
+    ],
 }

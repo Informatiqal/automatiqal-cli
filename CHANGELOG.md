@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.1] - 2022-12-27
+
+- dependency updates
+- required NodeJS version >= 16.0.0
+
 ## [0.1.0] - 2022-12-23
 
 - the schema link added to all examples

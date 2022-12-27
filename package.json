@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -22,7 +22,7 @@
     "build": "rollup -c",
     "watch": "rollup -cw",
     "debug": "tsc --sourcemap",
-    "test": "set TS_NODE_PROJECT=tsconfig.test.json&mocha --require ts-node/register test/**/*.spec.ts",
+    "test": "set TS_NODE_PROJECT=tsconfig.test.json&mocha --require ts-node/register test/**/*.spec.ts --loader=ts-node/esm --no-warnings=ExperimentalWarning --experimental-specifier-resolution=node --ignore test/playground.spec.ts",
     "docs": "npx typedoc src/index.doc.ts --name \"Automatiqal\" --excludePrivate --hideGenerator",
     "requirements-check": "node check-version.js",
     "postinstall": "npm run requirements-check"
@@ -30,6 +30,7 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "engineStrict": true,
   "keywords": [
     "qlik",
     "sense",
@@ -71,6 +72,7 @@
     "@types/node": "18.11.18",
     "chai": "4.3.7",
     "dotenv": "16.0.3",
+    "esm": "^3.2.25",
     "mocha": "10.2.0",
     "nyc": "15.1.0",
     "rollup": "3.8.1",
@@ -82,7 +84,7 @@
   },
   "dependencies": {
     "@p-mcgowan/minimist": "^2.1.0",
-    "automatiqal": "^0.0.16",
+    "automatiqal": "^0.0.17",
     "js-yaml": "^4.1.0"
   }
 }
