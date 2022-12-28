@@ -7,6 +7,53 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "TEST",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "-f",
+                "./runbook-examples/automatiqalCLI-example-16.yaml",
+                "--output",
+                "test.json",
+                "-v",
+                "./runbook-examples/automatiqalCLI.variables.yaml"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Sample",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "-s"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Show help",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
@@ -428,6 +475,50 @@
                 "--variables",
                 "./runbook-examples/automatiqalCLI.variables.yaml",
                 "--connect",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Schema test",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "..\\automatiqal-cli-schema\\test1.yaml",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "No variables file",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-16.yaml",
             ]
         }
     ]

@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook.json?raw=true
+
 name: Certificate operations
 edition: windows
 environment:
@@ -13,7 +15,7 @@ tasks:
     description: >
       Export new set of certificates
       for the listed machineNames
-    operation: certificate.export
+    operation: certificate.generate
     details:
       machineNames:
         - ${host}

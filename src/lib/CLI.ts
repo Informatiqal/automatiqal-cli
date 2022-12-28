@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
-import * as https from "https";
-import * as yaml from "js-yaml";
+import { Agent } from "https";
+import { load as yamlLoad } from "js-yaml";
 import { Automatiqal } from "automatiqal";
 
 import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
@@ -20,7 +20,10 @@ export class AutomatiqalCLI {
     this.result = [];
 
     try {
-      this.rawRunBook = readFileSync(this.argv.file, "utf8").toString();
+      this.rawRunBook = readFileSync(
+        this.argv.file || this.argv.f,
+        "utf8"
+      ).toString();
     } catch (e) {
       console.log(`\u274C ERROR 1000: while reading the runbook file`);
       console.log(e.message);
@@ -30,9 +33,14 @@ export class AutomatiqalCLI {
     // match all strings in between ${ and }
     const variables = this.rawRunBook.match(/(?<=\${)(.*?)(?=})/g);
 
-    if (variables.length > 0 && !this.argv.v && !this.argv.variables) {
+    if (
+      variables &&
+      variables.length > 0 &&
+      !this.argv.v &&
+      !this.argv.variables
+    ) {
       console.log(
-        `\u274C ERROR 1012: Variable(s) declaration found but no variables file was provided `
+        `\u274C ERROR 1012: Variable(s) declaration found but no variables file was provided`
       );
       console.log("");
       console.log("Variables found:");
@@ -40,9 +48,18 @@ export class AutomatiqalCLI {
       process.exit(1);
     }
 
-    this.replaceVariables();
+    if (this.argv.var || this.argv.v || this.argv.variables)
+      this.replaceVariables();
+
     this.runbookSet();
-    this.prepareCertificates();
+
+    if ((this.runBook.environment.authentication as any).cert) {
+      this.prepareCertificates();
+    } else {
+      this.httpsAgent = new Agent({
+        rejectUnauthorized: false,
+      });
+    }
 
     // no need to read any files if only connection is being tested
     if (!this.argv.c && !this.argv.connect) this.readBuffers();
@@ -83,7 +100,7 @@ export class AutomatiqalCLI {
     // if the config is yaml
     if (!this.argv.json) {
       try {
-        this.runBook = yaml.load(this.rawRunBook);
+        this.runBook = yamlLoad(this.rawRunBook) as IRunBook;
       } catch (e) {
         console.log(`\u274C ERROR 1003: while parsing the yaml file`);
         console.log(e.message);
@@ -125,13 +142,18 @@ export class AutomatiqalCLI {
           process.exit(1);
         }
         try {
-          _this.writeExports(b.data, b.task.location);
+          _this.writeExports(
+            Array.isArray(b.data) ? b.data : [b.data],
+            b.task.location
+          );
 
-          if (b.data && b.data.length > 0) {
-            b.data = b.data.map((r: any) => {
-              if (r.file) r.file = "BINARY CONTENT REPLACED!";
-              return r;
-            });
+          if (Array.isArray(b.data)) {
+            if (b.data && b.data.length > 0) {
+              b.data = b.data.map((r: any) => {
+                if (r.file) r.file = "BINARY CONTENT REPLACED!";
+                return r;
+              });
+            }
           }
         } catch (e) {
           console.log(
@@ -163,7 +185,10 @@ export class AutomatiqalCLI {
    */
   private writeOut() {
     try {
-      writeFileSync(this.argv.output, JSON.stringify(this.result, null, 4));
+      writeFileSync(
+        this.argv.output || this.argv.o,
+        JSON.stringify(this.result, null, 4)
+      );
     } catch (e) {
       console.log(`\u274C ERROR 1005: while writing the output file`);
       console.log(e.message);
@@ -176,27 +201,27 @@ export class AutomatiqalCLI {
    *     read the certificates and prepare the httpsAgent
    */
   private prepareCertificates() {
-    if (this.runBook.environment.authentication.cert) {
+    {
       let cert: Buffer;
       let key: Buffer;
 
       try {
-        cert = readFileSync(this.runBook.environment.authentication.cert);
-        key = readFileSync(this.runBook.environment.authentication.key);
+        cert = readFileSync(
+          (this.runBook.environment.authentication as any).cert
+        );
+        key = readFileSync(
+          (this.runBook.environment.authentication as any).key
+        );
       } catch (e) {
         console.log(`\u274C ERROR 1006: reding certificates`);
         console.log(e.message);
         process.exit(1);
       }
 
-      this.httpsAgent = new https.Agent({
+      this.httpsAgent = new Agent({
         rejectUnauthorized: false,
         cert: cert,
         key: key,
-      });
-    } else {
-      this.httpsAgent = new https.Agent({
-        rejectUnauthorized: false,
       });
     }
   }
@@ -244,31 +269,29 @@ export class AutomatiqalCLI {
    * @description replace all runbook variables with their content
    */
   private replaceVariables() {
-    if (this.argv.var || this.argv.v || this.argv.variables) {
-      let variablesFileLocation =
-        this.argv.var || this.argv.v || this.argv.variables;
-      let rawVariables: string[];
+    let variablesFileLocation =
+      this.argv.var || this.argv.v || this.argv.variables;
+    let rawVariables: string[];
 
-      try {
-        rawVariables = readFileSync(variablesFileLocation)
-          .toString()
-          .split(/\r?\n/);
-      } catch (e) {
-        console.log(
-          `\u274C ERROR 1008: reading variables file "${variablesFileLocation}"`
-        );
-        console.log(e.message);
-        process.exit(1);
-      }
+    try {
+      rawVariables = readFileSync(variablesFileLocation)
+        .toString()
+        .split(/\r?\n/);
+    } catch (e) {
+      console.log(
+        `\u274C ERROR 1008: reading variables file "${variablesFileLocation}"`
+      );
+      console.log(e.message);
+      process.exit(1);
+    }
 
-      for (let line of rawVariables) {
-        let [varName, varContent] = line.split("=");
+    for (let line of rawVariables) {
+      let [varName, varContent] = line.split("=");
 
-        const v = "\\$\\{" + varName + "\\}";
-        const re = new RegExp(v, "g");
+      const v = "\\$\\{" + varName + "\\}";
+      const re = new RegExp(v, "g");
 
-        this.rawRunBook = this.rawRunBook.replace(re, varContent);
-      }
+      this.rawRunBook = this.rawRunBook.replace(re, varContent);
     }
   }
 

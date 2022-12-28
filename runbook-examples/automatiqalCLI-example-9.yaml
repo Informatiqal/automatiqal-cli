@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook.json?raw=true
+
 name: Extension operations
 edition: windows
 environment:

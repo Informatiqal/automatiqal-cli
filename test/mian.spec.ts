@@ -1,4 +1,4 @@
-import chai from "chai";
+import * as chai from "chai";
 import { spawn } from "child_process";
 
 const expect = chai.expect;
@@ -21,7 +21,7 @@ async function runProcess(args: string[]): Promise<IProcessReturn> {
       reject({ code: err });
     });
 
-    process.on("close", function (code) {
+    process.on("close", function (code: number) {
       resolve({ code, output: output.split("\n") });
     });
   });

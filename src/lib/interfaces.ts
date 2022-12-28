@@ -6,7 +6,7 @@ export interface IArguments {
   sample?: string;
   help?: boolean;
   h?: boolean;
-  o?: boolean;
+  o?: string;
   s?: string;
   var?: string;
   variables?: string;
