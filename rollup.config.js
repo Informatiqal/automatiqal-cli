@@ -19,6 +19,7 @@ export default {
     ...Object.keys(pkg.peerDependencies || {}),
     "fs",
     "https",
+    "os",
   ],
   plugins: [
     del({
