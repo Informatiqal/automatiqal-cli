@@ -7,6 +7,7 @@ import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 import { IArguments } from "./interfaces";
+import { homedir } from "os";
 
 export class AutomatiqalCLI {
   private argv: IArguments;
@@ -15,9 +16,11 @@ export class AutomatiqalCLI {
   private httpsAgent: any;
   private automatiqal: Automatiqal;
   private rawRunBook: string;
+  private variables: { [k: string]: any };
   constructor(argv: IArguments) {
     this.argv = argv;
     this.result = [];
+    this.variables = {};
 
     try {
       this.rawRunBook = readFileSync(
@@ -37,7 +40,10 @@ export class AutomatiqalCLI {
       variables &&
       variables.length > 0 &&
       !this.argv.v &&
-      !this.argv.variables
+      !this.argv.variables &&
+      !this.argv.var &&
+      !this.argv.g &&
+      !this.argv.global
     ) {
       console.log(
         `\u274C ERROR 1012: Variable(s) declaration found but no variables file was provided`
@@ -47,6 +53,10 @@ export class AutomatiqalCLI {
       variables.forEach((v) => console.log(`  ${v}`));
       process.exit(1);
     }
+
+    // global variables should be read before the variables file
+    // variables file have priority over the global variables
+    if (this.argv.g || this.argv.global) this.readGlobalVariables();
 
     if (this.argv.var || this.argv.v || this.argv.variables)
       this.replaceVariables();
@@ -266,6 +276,32 @@ export class AutomatiqalCLI {
   }
 
   /**
+   * @description read the global variables
+   */
+  // global variables should be read before the variables file
+  // variables file have priority over the global variables
+  private readGlobalVariables() {
+    let fileContent;
+
+    try {
+      fileContent = readFileSync(`${homedir()}/.automatiqal`)
+        .toString()
+        .split(/\r?\n/);
+    } catch (e) {
+      console.log(
+        `\u274C ERROR: 1013 Global parameter is provided but global variables file was not found`
+      );
+      process.exit(1);
+    }
+
+    for (const line of fileContent) {
+      const [varName, varContent] = line.toString().split("=");
+
+      if (varName && varContent) this.variables[varName] = varContent;
+    }
+  }
+
+  /**
    * @description replace all runbook variables with their content
    */
   private replaceVariables() {
@@ -285,13 +321,23 @@ export class AutomatiqalCLI {
       process.exit(1);
     }
 
+    // Overwrite the global variables (if there is an overlap)
     for (let line of rawVariables) {
       let [varName, varContent] = line.split("=");
 
-      const v = "\\$\\{" + varName + "\\}";
-      const re = new RegExp(v, "g");
+      if (varName && varContent) this.variables[varName] = varContent;
+    }
 
-      this.rawRunBook = this.rawRunBook.replace(re, varContent);
+    try {
+      Object.entries(this.variables).map(([key, value]) => {
+        const v = "\\$\\{" + key + "\\}";
+        const re = new RegExp(v, "g");
+
+        this.rawRunBook = this.rawRunBook.replace(re, value.toString());
+      });
+    } catch (e) {
+      console.log(`\u274C INTERNAL ERROR: ${e.message}`);
+      process.exit(1);
     }
   }
 
