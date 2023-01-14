@@ -17,6 +17,8 @@ export class AutomatiqalCLI {
   private automatiqal: Automatiqal;
   private rawRunBook: string;
   private variables: { [k: string]: any };
+  private runbookVariablesList: RegExpMatchArray;
+
   constructor(argv: IArguments) {
     this.argv = argv;
     this.result = [];
@@ -34,11 +36,11 @@ export class AutomatiqalCLI {
     }
 
     // match all strings in between ${ and }
-    const variables = this.rawRunBook.match(/(?<=\${)(.*?)(?=})/g);
+    this.runbookVariablesList = this.rawRunBook.match(/(?<=\${)(.*?)(?=})/g);
 
     if (
-      variables &&
-      variables.length > 0 &&
+      this.runbookVariablesList &&
+      this.runbookVariablesList.length > 0 &&
       !this.argv.v &&
       !this.argv.variables &&
       !this.argv.var &&
@@ -50,7 +52,7 @@ export class AutomatiqalCLI {
       );
       console.log("");
       console.log("Variables found:");
-      variables.forEach((v) => console.log(`  ${v}`));
+      this.runbookVariablesList.forEach((v) => console.log(`  ${v}`));
       process.exit(1);
     }
 
@@ -325,7 +327,17 @@ export class AutomatiqalCLI {
     for (let line of rawVariables) {
       let [varName, varContent] = line.split("=");
 
-      if (varName && varContent) this.variables[varName] = varContent;
+      if (varName && varContent) {
+        this.variables[varName] = varContent;
+
+        try {
+          // Find any unused variables - in the variable file but not in the runbook
+          if (!this.runbookVariablesList.includes(varName))
+            console.log(
+              `\x1b[33;1mWARNING: Unused variable "${varName}"\x1b[0m`
+            );
+        } catch (e) {}
+      }
     }
 
     try {
