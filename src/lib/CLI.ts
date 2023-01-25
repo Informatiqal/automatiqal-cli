@@ -1,13 +1,14 @@
 import { readFileSync, writeFileSync } from "fs";
 import { Agent } from "https";
+import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
 import { Automatiqal } from "automatiqal";
+import { varLoader } from "@informatiqal/variables-loader";
 
 import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 import { IArguments } from "./interfaces";
-import { homedir } from "os";
 
 export class AutomatiqalCLI {
   private argv: IArguments;
@@ -18,6 +19,7 @@ export class AutomatiqalCLI {
   private rawRunBook: string;
   private variables: { [k: string]: any };
   private runbookVariablesList: RegExpMatchArray;
+  private variablesValues: { [x: string]: string };
 
   constructor(argv: IArguments) {
     this.argv = argv;
@@ -45,7 +47,11 @@ export class AutomatiqalCLI {
       !this.argv.variables &&
       !this.argv.var &&
       !this.argv.g &&
-      !this.argv.global
+      !this.argv.global &&
+      !this.argv.e &&
+      !this.argv.env &&
+      !this.argv.i &&
+      !this.argv.inline
     ) {
       console.log(
         `\u274C ERROR 1012: Variable(s) declaration found but no variables file was provided`
@@ -58,9 +64,44 @@ export class AutomatiqalCLI {
 
     // global variables should be read before the variables file
     // variables file have priority over the global variables
-    if (this.argv.g || this.argv.global) this.readGlobalVariables();
+    // if (this.argv.g || this.argv.global) this.readGlobalVariables();
 
-    if (this.argv.var || this.argv.v || this.argv.variables)
+    const variablesData = varLoader({
+      sources: {
+        environment: this.argv.e || this.argv.env,
+        file: this.argv.v || this.argv.var || this.argv.variables,
+        global:
+          this.argv.g || this.argv.global
+            ? `${homedir()}/.automatiqal`
+            : undefined,
+        inline: this.argv.i || this.argv.inline,
+      },
+      variables: Array.from(this.runbookVariablesList),
+    });
+
+    if (variablesData.missing) {
+      console.log(`\u274C ERROR 1014: Variable(s) value not found`);
+      variablesData.missing.forEach((v) => console.log(`  - ${v}`));
+      process.exit(1);
+    }
+
+    this.variablesValues = variablesData.values;
+
+    // TODO: simplify this maybe?
+    if (
+      this.argv.var ||
+      this.argv.v ||
+      this.argv.variables ||
+      this.argv.v ||
+      this.argv.variables ||
+      this.argv.var ||
+      this.argv.g ||
+      this.argv.global ||
+      this.argv.e ||
+      this.argv.env ||
+      this.argv.i ||
+      this.argv.inline
+    )
       this.replaceVariables();
 
     this.runbookSet();
@@ -278,79 +319,20 @@ export class AutomatiqalCLI {
   }
 
   /**
-   * @description read the global variables
-   */
-  // global variables should be read before the variables file
-  // variables file have priority over the global variables
-  private readGlobalVariables() {
-    let fileContent;
-
-    try {
-      fileContent = readFileSync(`${homedir()}/.automatiqal`)
-        .toString()
-        .split(/\r?\n/);
-    } catch (e) {
-      console.log(
-        `\u274C ERROR: 1013 Global parameter is provided but global variables file was not found`
-      );
-      process.exit(1);
-    }
-
-    for (const line of fileContent) {
-      const [varName, varContent] = line.toString().split("=");
-
-      if (varName && varContent) this.variables[varName] = varContent;
-    }
-  }
-
-  /**
    * @description replace all runbook variables with their content
    */
   private replaceVariables() {
-    let variablesFileLocation =
-      this.argv.var || this.argv.v || this.argv.variables;
-    let rawVariables: string[];
-
-    try {
-      rawVariables = readFileSync(variablesFileLocation)
-        .toString()
-        .split(/\r?\n/);
-    } catch (e) {
-      console.log(
-        `\u274C ERROR 1008: reading variables file "${variablesFileLocation}"`
-      );
-      console.log(e.message);
-      process.exit(1);
-    }
-
-    // Overwrite the global variables (if there is an overlap)
-    for (let line of rawVariables) {
-      let [varName, varContent] = line.split("=");
-
-      if (varName && varContent) {
-        this.variables[varName] = varContent;
-
-        try {
-          // Find any unused variables - in the variable file but not in the runbook
-          if (!this.runbookVariablesList.includes(varName))
-            console.log(
-              `\x1b[33;1mWARNING: Unused variable "${varName}"\x1b[0m`
-            );
-        } catch (e) {}
-      }
-    }
-
-    try {
-      Object.entries(this.variables).map(([key, value]) => {
-        const v = "\\$\\{" + key + "\\}";
+    Object.entries(this.variablesValues).forEach(([varName, varValue]) => {
+      try {
+        const v = "\\$\\{" + varName + "\\}";
         const re = new RegExp(v, "g");
 
-        this.rawRunBook = this.rawRunBook.replace(re, value.toString());
-      });
-    } catch (e) {
-      console.log(`\u274C INTERNAL ERROR: ${e.message}`);
-      process.exit(1);
-    }
+        this.rawRunBook = this.rawRunBook.replace(re, varValue.toString());
+      } catch (e) {
+        console.log(`\u274C INTERNAL ERROR: ${e.message}`);
+        process.exit(1);
+      }
+    });
   }
 
   private writeExports(files: any[], location: string) {

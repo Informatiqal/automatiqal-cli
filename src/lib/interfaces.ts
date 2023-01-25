@@ -15,4 +15,8 @@ export interface IArguments {
   connect?: boolean;
   g?: string;
   global?: string;
+  e?: boolean;
+  env: boolean;
+  i?: string;
+  inline?: string;
 }
