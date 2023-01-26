@@ -95,4 +95,12 @@ ${dump(qseowSample, {
     console.log(`\u274C ERROR: Unable to create sample variables file"`);
     console.log(e.message);
   }
+
+  console.log(`\u2705 "automatiqal-sample.yaml" generated!`);
+  console.log(`\u2705 "automatiqal-sample.variables.yaml" generated!`);
+  console.log("");
+  console.log(
+    `\u2705 \x1b[33mMore examples can be found at https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples\x1b[0m`
+  );
+  process.exit(0);
 }

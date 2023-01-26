@@ -21,20 +21,25 @@ export class AutomatiqalCLI {
   private runbookVariablesList: RegExpMatchArray;
   private variablesValues: { [x: string]: string };
 
-  constructor(argv: IArguments) {
+  constructor(argv: IArguments, downloadedRunbook) {
     this.argv = argv;
     this.result = [];
     this.variables = {};
+    this.rawRunBook = downloadedRunbook;
 
-    try {
-      this.rawRunBook = readFileSync(
-        this.argv.file || this.argv.f,
-        "utf8"
-      ).toString();
-    } catch (e) {
-      console.log(`\u274C ERROR 1000: while reading the runbook file`);
-      console.log(e.message);
-      process.exit(1);
+    // if the runbook was not an url
+    // try and read the file
+    if (!this.rawRunBook) {
+      try {
+        this.rawRunBook = readFileSync(
+          this.argv.file || this.argv.f,
+          "utf8"
+        ).toString();
+      } catch (e) {
+        console.log(`\u274C ERROR 1000: while reading the runbook file`);
+        console.log(e.message);
+        process.exit(1);
+      }
     }
 
     // match all strings in between ${ and }

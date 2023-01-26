@@ -10,6 +10,9 @@ export function printHelp() {
     "Options:",
     "--file,      -f     Location of the file, containing the run book data",
     "--variables, -v     Location of the variable file (if needed)",
+    "--global,    -g     Use global variable file as source of variables values ($HOME/.automatiqal)",
+    "--env,       -e     Use environment variables as source of variables values",
+    "--inline,    -i     Provide inline/command variables values",
     "--json              Indicates that the run book file is in JSON format",
     "--output,    -o     Saves the result in the provided path",
     "--connect,   -c     Test the connectivity. No tasks are ran",
@@ -21,6 +24,8 @@ export function printHelp() {
     "$ automatiqal --file ./deployment.yaml --variables ./runbook-variables.yaml",
     "$ automatiqal --file ./deployment.json --json",
     "$ automatiqal --file ./deployment.yaml --output ./deployment_result.json",
+    "$ automatiqal --file http://something.com/deployment.yaml --output ./deployment_result.json",
+    `$ automatiqal --file ./deployment.yaml --inline "my-variable=value123; another-variable = 456"`,
     "",
     "\x1b[33;1mIf you find Automatiqal CLI useful, please consider sponsoring the project:",
     "https://github.com/informatiqal/automatiqal-cli\x1b[0m",
@@ -30,4 +35,6 @@ export function printHelp() {
   messages.forEach((message) => {
     console.log(message);
   });
+
+  process.exit(0);
 }
