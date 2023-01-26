@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0] - 2023-01-26
+
+- ability to download the runbook from http(s)
+- help command updated
+
+## [0.4.0] - 2023-01-25
+
+- environment and inline/command variables flags
+
+## [0.3.0] - 2023-01-14
+
+- warning is printed for unused variables
+
+## [0.2.0] - 2023-01-13
+
+- global variables flag
+
 ## [0.1.1] - 2022-12-27
 
 - dependency updates
