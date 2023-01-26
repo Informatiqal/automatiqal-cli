@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -70,6 +70,7 @@
     "@types/js-yaml": "^4.0.5",
     "@types/mocha": "10.0.1",
     "@types/node": "18.11.18",
+    "@types/node-fetch": "^2.6.2",
     "chai": "4.3.7",
     "dotenv": "16.0.3",
     "esm": "^3.2.25",
@@ -86,6 +87,7 @@
     "@informatiqal/variables-loader": "^0.0.4",
     "@p-mcgowan/minimist": "^2.1.0",
     "automatiqal": "^0.0.17",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "node-fetch": "^3.3.0"
   }
 }
