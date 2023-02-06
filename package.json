@@ -86,7 +86,7 @@
   "dependencies": {
     "@informatiqal/variables-loader": "^0.0.4",
     "@p-mcgowan/minimist": "^2.1.0",
-    "automatiqal": "^0.0.17",
+    "automatiqal": "^0.2.0",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.0"
   }
