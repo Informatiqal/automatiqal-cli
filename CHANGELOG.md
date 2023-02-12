@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0] - 2023-02-XX
+
+- flag to store the run output in a file [#99](https://github.com/Informatiqal/automatiqal-cli/issues/99)
+- throw an error if unknown argument(s) are passed
+
+## [0.5.2] - 2023-02-10
+
+- fix issue with the post install script
+
+## [0.5.1] - 2023-02-10
+
+- do not flag the special values as missing
+
 ## [0.5.0] - 2023-01-26
 
 - ability to download the runbook from http(s)

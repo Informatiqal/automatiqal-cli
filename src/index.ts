@@ -5,11 +5,14 @@ import fetch from "node-fetch";
 import { AutomatiqalCLI } from "./lib/CLI";
 import { printHelp } from "./lib/help";
 import { generateSample } from "./lib/sample";
+import { Logger } from "./lib/Logger";
 
 import { IArguments } from "./lib/interfaces";
 
 (async function () {
   const argv: IArguments = minimist(process.argv.slice(2));
+  const logger = Logger.getInstance(argv.r || argv.result);
+  checkArguments(argv, logger);
 
   if (process.argv.length == 2) printHelp();
   if (argv.help || argv.h) printHelp();
@@ -17,20 +20,13 @@ import { IArguments } from "./lib/interfaces";
 
   // file argument not provided
   if (!argv.file && !argv.f) {
-    console.log(`\u274C ERROR 1001: Please provide file location`);
-    process.exit(1);
+    logger.error(undefined, 1001);
   }
 
   // variables file argument is provided but the file is not found
   if (argv.v || argv.var || argv.variables) {
-    if (!existsSync(argv.v || argv.var || argv.variables)) {
-      console.log(
-        `\u274C ERROR 1011: Variables file not found: "${
-          argv.v || argv.var || argv.variables
-        }"`
-      );
-      process.exit(1);
-    }
+    if (!existsSync(argv.v || argv.var || argv.variables))
+      logger.error("", 1011);
   }
 
   let downloadedRunbook: string | undefined = undefined;
@@ -44,24 +40,58 @@ import { IArguments } from "./lib/interfaces";
         downloadedRunbook = text;
       })
       .catch((e) => {
-        console.log(`\u274C ERROR 1013: while reading the runbook file`);
-        console.log(e.message);
-        process.exit(1);
+        logger.error(e.message, 1013);
       });
-  }
+  }  
 
-  // TODO: throw an error when unknown argument is passed?
   const runner = new AutomatiqalCLI(argv, downloadedRunbook);
   runner
     .run()
     .then((data) => {
-      console.log(`${new Date().toISOString()}\tFinished successfully`);
+      const msg = `${new Date().toISOString()}\tFinished successfully`;
+      console.log(msg);
+      logger.info(msg);
+
+      if (argv.r || argv.result) logger.writeOutput();
+
       process.exit(0);
     })
     .catch((e) => {
-      // console.log(`\u274C ERROR 9999: UNEXPECTED error!`);
-      console.log(`${new Date().toISOString()}\t\t\tFinished with ERROR(s)`);
-      console.log(e.message);
-      process.exit(1);
+      logger.error(e.message);
     });
 })();
+
+function checkArguments(argv: IArguments, logger: Logger): void {
+  const validArguments = [
+    "_",
+    "file",
+    "f",
+    "json",
+    "output",
+    "o",
+    "sample",
+    "s",
+    "help",
+    "h",
+    "variables",
+    "var",
+    "v",
+    "connect",
+    "c",
+    "global",
+    "g",
+    "env",
+    "e",
+    "inline",
+    "i",
+    "result",
+    "r",
+  ];
+
+  const unknownArguments = Object.keys(argv).filter(
+    (a) => !validArguments.includes(a)
+  );
+
+  if (unknownArguments.length > 0)
+    logger.error(`Unknown argument(s): \n${unknownArguments.join("\n")}`);
+}

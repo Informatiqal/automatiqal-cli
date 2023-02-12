@@ -3,8 +3,7 @@
         "outDir": "./dist",
         "target": "ES6",
         "declaration": true,
-        "declarationDir": "./dist",
-        "module": "ES2020",
+        "module": "ES6",
         "noImplicitAny": false,
         "sourceMap": true,
         "moduleResolution": "node",
@@ -13,7 +12,7 @@
         ],
     },
     "include": [
-        "src/**/*",
+        "src/**/*"
     ],
     "exclude": [
         "node_modules"

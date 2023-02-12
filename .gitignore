@@ -13,6 +13,7 @@ automatiqalCLI-example-16.yaml
 automatiqal-sample.yaml
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+output.txt
 
 # Runtime data
 pids
