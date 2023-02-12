@@ -48,7 +48,7 @@
     "*.md",
     "LICENSE",
     "CHANGELOG.md",
-    "check-version.js",
+    "dist/check-version.js",
     "!tsconfig.json",
     "!tsconfig.test.json",
     "!tsconfig.debug.json",
