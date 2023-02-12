@@ -12,7 +12,7 @@ export interface IArguments {
    */
   json?: boolean;
   /**
-   * Path where to store the info result
+   * Path where to store the FULL result
    */
   output?: string;
   /**
@@ -86,4 +86,12 @@ export interface IArguments {
    * See: inline
    */
   i?: string;
+  /**
+   * Path where to store the runbook messages output
+   */
+  result: string;
+  /**
+   * See result
+   */
+  r: string;
 }

@@ -7,25 +7,35 @@ import { varLoader } from "@informatiqal/variables-loader";
 
 import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
+import { Logger } from "./Logger";
 
 import { IArguments } from "./interfaces";
 
 export class AutomatiqalCLI {
   private argv: IArguments;
   private runBook: IRunBook;
+  private logger: Logger;
   private result: ITaskResult[];
   private httpsAgent: any;
   private automatiqal: Automatiqal;
   private rawRunBook: string;
-  private variables: { [k: string]: any };
-  private runbookVariablesList: RegExpMatchArray;
+  private runbookVariablesList: string[];
   private variablesValues: { [x: string]: string };
+  private emitterMessages: string[];
+  private specialVariables = [
+    "GUID",
+    "TODAY",
+    "NOW",
+    "INCREMENT",
+    "DECREMENT",
+    "RANDOM",
+  ];
 
   constructor(argv: IArguments, downloadedRunbook) {
     this.argv = argv;
     this.result = [];
-    this.variables = {};
     this.rawRunBook = downloadedRunbook;
+    this.logger = Logger.getInstance(this.argv.r || this.argv.result);
 
     // if the runbook was not an url
     // try and read the file
@@ -36,15 +46,16 @@ export class AutomatiqalCLI {
           "utf8"
         ).toString();
       } catch (e) {
-        console.log(`\u274C ERROR 1000: while reading the runbook file`);
-        console.log(e.message);
-        process.exit(1);
+        this.logger.error(e.message, 1000);
       }
     }
 
     // match all strings in between ${ and }
     this.runbookVariablesList = this.rawRunBook.match(/(?<=\${)(.*?)(?=})/g);
 
+    // TODO: simplify this maybe?
+    // Check if there are variables in the runbook
+    // but no variables sources was provided
     if (
       this.runbookVariablesList &&
       this.runbookVariablesList.length > 0 &&
@@ -58,19 +69,17 @@ export class AutomatiqalCLI {
       !this.argv.i &&
       !this.argv.inline
     ) {
-      console.log(
-        `\u274C ERROR 1012: Variable(s) declaration found but no variables file was provided`
+      this.logger.error(
+        `\nVariables found:\n${this.runbookVariablesList
+          .map((v) => `  ${v}`)
+          .join("\n")}`,
+        1012
       );
-      console.log("");
-      console.log("Variables found:");
-      this.runbookVariablesList.forEach((v) => console.log(`  ${v}`));
-      process.exit(1);
     }
 
     // global variables should be read before the variables file
     // variables file have priority over the global variables
     // if (this.argv.g || this.argv.global) this.readGlobalVariables();
-
     const variablesData = varLoader({
       sources: {
         environment: this.argv.e || this.argv.env,
@@ -82,13 +91,14 @@ export class AutomatiqalCLI {
         inline: this.argv.i || this.argv.inline,
       },
       variables: Array.from(this.runbookVariablesList),
+      ignore: this.specialVariables,
     });
 
-    if (variablesData.missing) {
-      console.log(`\u274C ERROR 1014: Variable(s) value not found`);
-      variablesData.missing.forEach((v) => console.log(`  - ${v}`));
-      process.exit(1);
-    }
+    if (variablesData.missing)
+      this.logger.error(
+        variablesData.missing.map((v) => `  - ${v}`).join("\n"),
+        1014
+      );
 
     this.variablesValues = variablesData.values;
 
@@ -125,22 +135,15 @@ export class AutomatiqalCLI {
     try {
       this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
     } catch (e) {
-      if (e.context) {
-        console.log(e.context);
-        process.exit(1);
-      }
-
-      if (e.message) {
-        console.log(e.message);
-        process.exit(1);
-      }
+      if (e.context) this.logger.error(e.context);
+      if (e.message) this.logger.error(e.message);
     }
 
     this.emittersSet();
   }
 
   async run() {
-    console.log(
+    this.logger.info(
       `${new Date().toISOString()}\t\t"${this.runBook.name}"\tStarted`
     );
 
@@ -160,9 +163,7 @@ export class AutomatiqalCLI {
       try {
         this.runBook = yamlLoad(this.rawRunBook) as IRunBook;
       } catch (e) {
-        console.log(`\u274C ERROR 1003: while parsing the yaml file`);
-        console.log(e.message);
-        process.exit(1);
+        this.logger.error(e.message, 1003);
       }
     }
 
@@ -171,9 +172,7 @@ export class AutomatiqalCLI {
       try {
         this.runBook = JSON.parse(this.rawRunBook);
       } catch (e) {
-        console.log(`\u274C ERROR 1004: while parsing the json file`);
-        console.log(e.message);
-        process.exit(1);
+        this.logger.error(e.message, 1003);
       }
     }
 
@@ -194,10 +193,9 @@ export class AutomatiqalCLI {
 
       if (b.task.operation.indexOf(".export") > -1) {
         if (!b.task.location) {
-          console.log(
-            `\u274C ERROR 1009: "${b.task.name}" is missing "location" parameter`
+          _this.logger.error(
+            `ERROR: ${b.task.name}" is missing "location" parameter`
           );
-          process.exit(1);
         }
         try {
           _this.writeExports(
@@ -214,16 +212,15 @@ export class AutomatiqalCLI {
             }
           }
         } catch (e) {
-          console.log(
-            `\u274C ERROR 1010: Error in "${b.task.name}". Failed to write file: "${e.path}" `
+          _this.logger.error(
+            `Error in "${b.task.name}". Failed to write file: "${e.path}"`
           );
-          process.exit(1);
         }
       }
 
       _this.result.push(b);
 
-      console.log(
+      _this.logger.info(
         `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
       );
     });
@@ -248,9 +245,7 @@ export class AutomatiqalCLI {
         JSON.stringify(this.result, null, 4)
       );
     } catch (e) {
-      console.log(`\u274C ERROR 1005: while writing the output file`);
-      console.log(e.message);
-      process.exit(1);
+      this.logger.error(e.message, 1005);
     }
   }
 
@@ -271,9 +266,7 @@ export class AutomatiqalCLI {
           (this.runBook.environment.authentication as any).key
         );
       } catch (e) {
-        console.log(`\u274C ERROR 1006: reding certificates`);
-        console.log(e.message);
-        process.exit(1);
+        this.logger.error(e.message, 1006);
       }
 
       this.httpsAgent = new Agent({
@@ -294,11 +287,7 @@ export class AutomatiqalCLI {
         try {
           (task.details as any).file = readFileSync((task.details as any).file);
         } catch (e) {
-          console.log(
-            `\u274C ERROR 1007: reading file failed in task "${task.name}"`
-          );
-          console.log(e.message);
-          process.exit(1);
+          this.logger.error(e.message, 1007);
         }
       }
 
@@ -309,11 +298,7 @@ export class AutomatiqalCLI {
               d.file = readFileSync(d.file);
               return d;
             } catch (e) {
-              console.log(
-                `\u274C ERROR 1007: reading file failed in task "${task.name}"`
-              );
-              console.log(e.message);
-              process.exit(1);
+              this.logger.error(e.message, 1007);
             }
           }
 
@@ -334,8 +319,7 @@ export class AutomatiqalCLI {
 
         this.rawRunBook = this.rawRunBook.replace(re, varValue.toString());
       } catch (e) {
-        console.log(`\u274C INTERNAL ERROR: ${e.message}`);
-        process.exit(1);
+        this.logger.error(e.message, 9999);
       }
     });
   }
@@ -361,4 +345,6 @@ export class AutomatiqalCLI {
 
     return true;
   }
+
+  private;
 }
