@@ -1,6 +1,10 @@
 # Changelog
 
-## [0.6.0] - 2023-02-XX
+## [0.6.0] - 2023-03-04
+
+- do not flag the inline variables as missing variables
+
+## [0.6.0] - 2023-02-12
 
 - flag to store the run output in a file [#99](https://github.com/Informatiqal/automatiqal-cli/issues/99)
 - throw an error if unknown argument(s) are passed
