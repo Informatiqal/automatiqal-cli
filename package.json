@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -89,7 +89,7 @@
   "dependencies": {
     "@informatiqal/variables-loader": "0.0.6",
     "@p-mcgowan/minimist": "^2.1.0",
-    "automatiqal": "^0.2.3",
+    "automatiqal": "^0.2.4",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.0",
     "semver": "^7.3.8"

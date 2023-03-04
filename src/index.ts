@@ -42,7 +42,7 @@ import { IArguments } from "./lib/interfaces";
       .catch((e) => {
         logger.error(e.message, 1013);
       });
-  }  
+  }
 
   const runner = new AutomatiqalCLI(argv, downloadedRunbook);
   runner

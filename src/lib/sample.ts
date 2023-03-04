@@ -21,7 +21,7 @@ export function generateSample(format: string) {
       {
         name: "Import application",
         description: "Import brand new qvf",
-        operation: "app.import",
+        operation: "app.upload",
         details: {
           file: "path/to/the/app/qvf",
           name: "Import Name",

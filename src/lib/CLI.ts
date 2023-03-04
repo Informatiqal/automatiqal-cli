@@ -51,7 +51,8 @@ export class AutomatiqalCLI {
     }
 
     // match all strings in between ${ and }
-    this.runbookVariablesList = this.rawRunBook.match(/(?<=\${)(.*?)(?=})/g);
+    // and exclude $${...} ones
+    this.runbookVariablesList = this.rawRunBook.match(/(?<!\$)(\${)(.*?)(?=})/g).map(v => v.substring(2));
 
     // TODO: simplify this maybe?
     // Check if there are variables in the runbook
