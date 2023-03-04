@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.6.0] - 2023-03-04
+## [0.6.1] - 2023-03-04
 
 - do not flag the inline variables as missing variables
 
