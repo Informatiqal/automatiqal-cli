@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.6.4] - 2023-03-16
+
+- dependency updates
+
 ## [0.6.2] - 2023-03-04
 
 - core dependency updates
