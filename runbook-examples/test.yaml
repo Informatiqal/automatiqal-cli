@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook_expanded.json?raw=true
+
+name: Publish app
+description: Import and publish an app workflow
+edition: windows
+environment:
+  host: ${host}
+  port: 4242
+  authentication:
+    cert: ${certificate}
+    key: ${certificate_key}
+    user_dir: ${user_dir}
+    user_name: ${user_name}
+tasks:
+  # - name: Upload QVF
+  #   operation: app.upload
+  #   details:
+  #     file: ${qvfLocation}
+  #     name: My new app
+  - name: Get existing app
+    description: Get the existing app that will be replaced
+    operation: app.get
+    filter: stream.name eq 'Test Stream' and name eq 'WhatsNewFeb2021'  
+  - name: Publish the imported app by replacing existing app
+    operation: app.switch
+    filter: id eq 884a73c4-4c93-47eb-b445-e0bf94fdb96e
+    details:
+      targetAppId: $${Get existing app}
+# name: Sample run book
+# description: test
+# trace: error
+# edition: windows
+# environment:
+#   host: ${host}
+#   port: 4242
+#   authentication:
+#     cert: ${certificate}
+#     key: ${certificate_key}
+#     user_dir: ${user_dir}
+#     user_name: ${user_name}
+# tasks:
+#   - name: Create release tag
+#     operation: tag.create
+#     skip: true
+#     details:
+#       name: ${tag}
+#   - name: Upload QVF
+#     operation: app.upload
+#     skip: true
+#     details:
+#       file: ${qvfLocation}
+#       name: My new app
+#     onError:
+#       tasks:
+#         - name: Remove release tag
+#           operation: tag.remove
+#           source: Create release tag
+#   - name: Add release tag to the imported app
+#     operation: app.update
+#     skip: true
+#     source: Upload QVF
+#     details:
+#       tags:
+#         - ${tag}
+#   - name: Get existing app
+#     description: Get the existing app that will be replaced
+#     operation: app.get
+#     skip: true
+#     filter: ${filter}
+# - name: Publish the imported app by replacing existing app
+#   operation: app.switch
+#   skip: true
+#   details:
+#     targetAppId: $${Get existing app}

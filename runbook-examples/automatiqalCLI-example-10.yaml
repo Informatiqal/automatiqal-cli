@@ -52,7 +52,7 @@ tasks:
     filter: name eq 'Temp content library'
     details:
       files:
-        - ""
+        - sourceFileName: asd
   - name: Remove multiple files to content library
     filter: name eq 'Temp content library'
     operation: contentLibrary.removeFileMany

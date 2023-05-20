@@ -54,8 +54,8 @@ tasks:
     operation: stream.update
     filter: name eq 'New Stream'
     options:
-      appendCustomProps: true
-      appendTags: false
+      customPropertyOperation: add
+      tagOperation: set
     details:
       tags:
         - Some Tag 3

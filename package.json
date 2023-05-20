@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.6.4",
+  "version": "0.6.6",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -65,15 +65,15 @@
   },
   "homepage": "https://informatiqal.com/automatiqal-cli/",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-typescript": "^11.0.0",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@types/chai": "4.3.5",
     "@types/js-yaml": "^4.0.5",
     "@types/mocha": "10.0.1",
-    "@types/node": "18.16.8",
-    "@types/node-fetch": "^2.6.2",
+    "@types/node": "20.1.0",
+    "@types/node-fetch": "^2.6.3",
     "@types/semver": "^7.3.13",
     "chai": "4.3.7",
     "dotenv": "16.0.3",
@@ -82,17 +82,18 @@
     "nyc": "15.1.0",
     "rollup": "3.21.6",
     "rollup-plugin-delete": "2.0.0",
+    "rollup-plugin-polyfill-node": "^0.12.0",
     "ts-node": "10.9.1",
     "tslib": "^2.5.0",
-    "typedoc": "0.24.7",
-    "typescript": "^5.0.0"
+    "typedoc": "0.24.6",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@informatiqal/variables-loader": "0.0.6",
     "@p-mcgowan/minimist": "^2.1.0",
-    "automatiqal": "^0.2.8",
+    "automatiqal": "^0.2.10",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.1",
-    "semver": "^7.3.8"
+    "semver": "^7.5.0"
   }
 }

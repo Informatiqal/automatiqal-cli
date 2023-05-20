@@ -96,7 +96,7 @@
             "name": "App Example",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
-            "preLaunchTask": "npm: build-tsc",
+            "preLaunchTask": "npm: build",
             "outFiles": [
                 "${workspaceRoot}/dist/**/*.js"
             ],
@@ -113,7 +113,142 @@
                 "--variables",
                 "./runbook-examples/automatiqalCLI.variables.yaml",
                 "--output",
-                "test.json"
+                "test.json",
+                "--global"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "App Example Environment Variables",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "host": "sense-apr-2019"
+            },
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-1.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--output",
+                "test.json",
+                "-r",
+                "./runbook-examples/output.txt"
+                // "--global",
+                // "--env"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Unknown arguments",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "host": "sense-apr-2019"
+            },
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-1.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--output",
+                "test.json",
+                "-r",
+                "./runbook-examples/output.txt",
+                "-test"
+                // "--global",
+                // "--env"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "App Example Command Variables",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "host": "sense-apr-2019"
+            },
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/automatiqalCLI-example-1.yaml",
+                // "--variables",
+                // "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--output",
+                "test.json",
+                "--inline",
+                "host=sense-apr-2019 ; virtual-proxy = jwt"
+                // "--global",
+                // "--env"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "App Example HTTP",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "host": "sense-apr-2019"
+            },
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                //"https://raw.githubusercontent.com/Informatiqal/automatiqal-cli/main/runbook-examples/automatiqalCLI-example-1.yaml",
+                "https://github.com/Informatiqal/automatiqal-cli/blob/main/runbook-examples/automatiqalCLI-example-1.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--output",
+                "test.json",
+                "--inline",
+                "host=sense-apr-2019 ; virtual-proxy = jwt"
+                // "--global",
+                // "--env"
             ]
         },
         {
@@ -520,6 +655,56 @@
                 "--file",
                 "./runbook-examples/automatiqalCLI-example-16.yaml",
             ]
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "TEST 1",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build-tsc",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/test.yaml",
+                "--variables",
+                "./runbook-examples/test.variables.txt"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "App Example111",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/test.yaml",
+                // "./runbook-examples/automatiqalCLI-example-1.yaml",
+                "--variables",
+                "./runbook-examples/test.variables.yaml"
+                // "./runbook-examples/automatiqalCLI.variables.yaml"
+            ]
+        },
     ]
 }
