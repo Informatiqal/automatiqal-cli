@@ -100,7 +100,9 @@ ${dump(qseowSample, {
   console.log(`\u2705 "automatiqal-sample.variables.yaml" generated!`);
   console.log("");
   console.log(
-    `\u2705 \x1b[33mMore examples can be found at https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples\x1b[0m`
+    `\u2705 \x1b[33mMore examples can be found at:\x1b[0m`
   );
+  console.log("    - https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples")
+  console.log("    - https://github.com/Informatiqal/automatiqal-recipes")
   process.exit(0);
 }
