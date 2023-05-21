@@ -41,7 +41,7 @@ export function generateSample(format: string) {
         operation: "app.publish",
         filter: "name eq 'Import Name'",
         details: {
-          name: "My new stream",
+          stream: "My new stream",
         },
         options: {
           multiple: false,
