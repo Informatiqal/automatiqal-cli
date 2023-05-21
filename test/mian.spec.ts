@@ -1,7 +1,5 @@
-import * as chai from "chai";
+import { describe, it, expect } from "vitest";
 import { spawn } from "child_process";
-
-const expect = chai.expect;
 
 interface IProcessReturn {
   code: number;

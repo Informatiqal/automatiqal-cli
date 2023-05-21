@@ -69,16 +69,12 @@
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-typescript": "^11.1.1",
-    "@types/chai": "4.3.5",
     "@types/js-yaml": "^4.0.5",
-    "@types/mocha": "10.0.1",
     "@types/node": "20.2.1",
     "@types/node-fetch": "^2.6.4",
     "@types/semver": "^7.5.0",
-    "chai": "4.3.7",
     "dotenv": "16.0.3",
     "esm": "^3.2.25",
-    "mocha": "10.2.0",
     "nyc": "15.1.0",
     "rollup": "3.22.0",
     "rollup-plugin-delete": "2.0.0",
@@ -86,7 +82,8 @@
     "ts-node": "10.9.1",
     "tslib": "^2.5.2",
     "typedoc": "0.24.7",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.1"
   },
   "dependencies": {
     "@informatiqal/variables-loader": "0.0.6",
