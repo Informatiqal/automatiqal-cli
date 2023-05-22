@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -22,7 +22,7 @@
     "build": "rollup -c",
     "watch": "rollup -cw",
     "debug": "tsc --sourcemap",
-    "test": "set TS_NODE_PROJECT=tsconfig.test.json&mocha --require ts-node/register test/**/*.spec.ts --loader=ts-node/esm --no-warnings=ExperimentalWarning --experimental-specifier-resolution=node --ignore test/playground.spec.ts",
+    "test": "vitest run",
     "docs": "npx typedoc src/index.doc.ts --name \"Automatiqal\" --excludePrivate --hideGenerator",
     "requirements-check": "node dist/check-version.js",
     "postinstall": "npm run requirements-check"
@@ -66,24 +66,24 @@
   "homepage": "https://informatiqal.com/automatiqal-cli/",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-typescript": "^11.1.1",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "20.2.1",
+    "@types/node": "20.2.3",
     "@types/node-fetch": "^2.6.4",
     "@types/semver": "^7.5.0",
     "dotenv": "16.0.3",
     "esm": "^3.2.25",
     "nyc": "15.1.0",
-    "rollup": "3.22.0",
+    "rollup": "3.22.1",
     "rollup-plugin-delete": "2.0.0",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "ts-node": "10.9.1",
     "tslib": "^2.5.2",
     "typedoc": "0.24.7",
-    "typescript": "^5.0.4",
-    "vitest": "^0.31.1"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@informatiqal/variables-loader": "0.0.6",
@@ -91,6 +91,7 @@
     "automatiqal": "^0.2.12",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.1",
-    "semver": "^7.5.1"
+    "semver": "^7.5.1",
+    "vitest": "^0.31.0"
   }
 }

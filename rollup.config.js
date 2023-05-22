@@ -4,8 +4,8 @@ import replace from "@rollup/plugin-replace";
 import { readFileSync } from "fs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
-// import polyfill from "rollup-plugin-polyfill-node";
 
 const pkg = JSON.parse(readFileSync("./package.json"));
 
@@ -24,7 +24,7 @@ export default [
       del({
         targets: "dist/*",
       }),
-      // polyfill(),
+      json(),
       resolve(),
       commonjs(),
       typescript(),

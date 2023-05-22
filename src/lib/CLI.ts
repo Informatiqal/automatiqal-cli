@@ -52,7 +52,9 @@ export class AutomatiqalCLI {
 
     // match all strings in between ${ and }
     // and exclude $${...} ones
-    this.runbookVariablesList = this.rawRunBook.match(/(?<!\$)(\${)(.*?)(?=})/g).map(v => v.substring(2));
+    this.runbookVariablesList = this.rawRunBook
+      .match(/(?<!\$)(\${)(.*?)(?=})/g)
+      .map((v) => v.substring(2));
 
     // TODO: simplify this maybe?
     // Check if there are variables in the runbook
@@ -144,9 +146,7 @@ export class AutomatiqalCLI {
   }
 
   async run() {
-    this.logger.info(
-      `${new Date().toISOString()}\t\t"${this.runBook.name}"\tStarted`
-    );
+    this.printRunbookDetails();
 
     await this.automatiqal.run();
 
@@ -221,9 +221,16 @@ export class AutomatiqalCLI {
 
       _this.result.push(b);
 
-      _this.logger.info(
-        `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
+      _this.logger.taskEntry(
+        b.timings.start,
+        b.timings.end,
+        `${b.timings.totalSeconds}(s)`,
+        b.task.name,
+        b.status
       );
+      // _this.logger.info(
+      //   `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
+      // );
     });
 
     this.automatiqal.emitter.on("runbook:result", function (r) {});
@@ -347,5 +354,25 @@ export class AutomatiqalCLI {
     return true;
   }
 
-  private;
+  private printRunbookDetails() {
+    this.logger.info(`CLI Version   : __VERSION`);
+    this.logger.info(`Runbook file  : ${this.argv.file || this.argv.f}`);
+    if (this.argv.v || this.argv.var || this.argv.variables)
+      this.logger.info(
+        `Variables file: ${this.argv.v || this.argv.var || this.argv.variables}`
+      );
+    this.logger.info(`Runbook name  : ${this.runBook.name}`);
+    if (this.runBook.description)
+      this.logger.info(`Description: ${this.runBook.description}`);
+    this.logger.info(`Start time    : ${new Date().toISOString()}`);
+    this.logger.info(`---`);
+    
+    this.logger.taskEntry(
+      "START TIME".padEnd(24, " "),
+      "END TIME".padEnd(24, " "),
+      "DURATION",
+      "TASK NAME".padEnd(30, " "),
+      "STATUS"
+    );
+  }
 }

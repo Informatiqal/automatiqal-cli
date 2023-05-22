@@ -48,8 +48,8 @@ import { IArguments } from "./lib/interfaces";
   runner
     .run()
     .then((data) => {
-      const msg = `${new Date().toISOString()}\tFinished successfully`;
-      console.log(msg);
+      logger.info(`---`);
+      const msg = `${new Date().toISOString()}\tFinished`;
       logger.info(msg);
 
       if (argv.r || argv.result) logger.writeOutput();

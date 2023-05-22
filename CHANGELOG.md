@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.7] - 2023-05-22
+
+- updated console output format
+- dependency updates
+
 ## [0.6.4] - 2023-03-16
 
 - dependency updates

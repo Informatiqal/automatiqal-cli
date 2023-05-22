@@ -52,6 +52,28 @@ export class Logger {
     this.messages.push(message);
   }
 
+  taskEntry(
+    startTime: string,
+    endTime: string,
+    duration: string,
+    taskName: string,
+    status: string
+  ) {
+    const message = [];
+    message.push(startTime);
+    message.push(endTime);
+    message.push(duration.padEnd(8, " "));
+
+    if (taskName.length <= 30) {
+      message.push(taskName.padEnd(30, " "));
+    } else {
+      message.push(`${taskName.slice(0, 30 - 3)}...`);
+    }
+    message.push(status);
+
+    console.log(message.join("\t"));
+  }
+
   writeOutput() {
     try {
       writeFileSync(this.saveOutput, this.messages.join("\n"));
