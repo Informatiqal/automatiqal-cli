@@ -27,6 +27,8 @@ export function printHelp() {
     "$ automatiqal --file http://something.com/deployment.yaml --output ./deployment_result.json",
     `$ automatiqal --file ./deployment.yaml --inline "my-variable=value123; another-variable = 456"`,
     "",
+    "\x1b[33;1mFor more info please check https://docs.informatiqal.com/automatiqal-cli/\x1b[0m",
+    "",
     "\x1b[33;1mIf you find Automatiqal CLI useful, please consider sponsoring the project:",
     "https://github.com/informatiqal/automatiqal-cli\x1b[0m",
     "",
