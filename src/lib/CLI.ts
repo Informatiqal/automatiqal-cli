@@ -146,7 +146,7 @@ export class AutomatiqalCLI {
   }
 
   async run() {
-    this.printRunbookDetails();
+    if (!this.argv.raw) this.printRunbookDetails();
 
     await this.automatiqal.run();
 
@@ -221,13 +221,14 @@ export class AutomatiqalCLI {
 
       _this.result.push(b);
 
-      _this.logger.taskEntry(
-        b.timings.start,
-        b.timings.end,
-        `${b.timings.totalSeconds}(s)`,
-        b.task.name,
-        b.status
-      );
+      if (!_this.argv.raw)
+        _this.logger.taskEntry(
+          b.timings.start,
+          b.timings.end,
+          `${b.timings.totalSeconds}(s)`,
+          b.task.name,
+          b.status
+        );
       // _this.logger.info(
       //   `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
       // );
@@ -239,7 +240,6 @@ export class AutomatiqalCLI {
 
     this.automatiqal.emitter.on("error", function (errorMessage) {
       console.log(errorMessage);
-      // process.exit(1);
     });
   }
 
@@ -366,7 +366,7 @@ export class AutomatiqalCLI {
       this.logger.info(`Description: ${this.runBook.description}`);
     this.logger.info(`Start time    : ${new Date().toISOString()}`);
     this.logger.info(`---`);
-    
+
     this.logger.taskEntry(
       "START TIME".padEnd(24, " "),
       "END TIME".padEnd(24, " "),

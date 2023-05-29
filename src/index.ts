@@ -48,11 +48,15 @@ import { IArguments } from "./lib/interfaces";
   runner
     .run()
     .then((data) => {
-      logger.info(`---`);
-      const msg = `${new Date().toISOString()}\tFinished`;
-      logger.info(msg);
+      if (!argv.raw) {
+        logger.info(`---`);
+        const msg = `${new Date().toISOString()}\tFinished`;
+        logger.info(msg);
 
-      if (argv.r || argv.result) logger.writeOutput();
+        if (argv.r || argv.result) logger.writeOutput();
+      }
+
+      if (argv.raw) printOut(data);
 
       process.exit(0);
     })
@@ -86,6 +90,7 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "i",
     "result",
     "r",
+    "raw",
   ];
 
   const unknownArguments = Object.keys(argv).filter(
@@ -94,4 +99,12 @@ function checkArguments(argv: IArguments, logger: Logger): void {
 
   if (unknownArguments.length > 0)
     logger.error(`Unknown argument(s): \n${unknownArguments.join("\n")}`);
+}
+
+function printOut(data) {
+  try {
+    console.log(JSON.stringify(data, null, 4));
+  } catch (e) {
+    // logger.error(e.message, 1005);
+  }
 }

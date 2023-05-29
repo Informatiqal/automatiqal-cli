@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.6.8] - 2023-05-29
+
+- raw output [#198](https://github.com/Informatiqal/automatiqal-cli/issues/198). If `raw` argument is provided then all other console messages are suppressed
+
 ## [0.6.7] - 2023-05-22
 
 - updated console output format

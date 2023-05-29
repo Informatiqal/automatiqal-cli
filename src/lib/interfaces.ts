@@ -94,4 +94,8 @@ export interface IArguments {
    * See result
    */
   r: string;
+  /**
+   * Output the full result directly in the console
+   */
+  raw?: boolean;
 }

@@ -15,6 +15,7 @@ export function printHelp() {
     "--inline,    -i     Provide inline/command variables values",
     "--json              Indicates that the run book file is in JSON format",
     "--output,    -o     Saves the result in the provided path",
+    "--raw               Print the result in the console. All other console messages are suppressed",
     "--connect,   -c     Test the connectivity. No tasks are ran",
     "--sample,    -s     Generate sample run book and variables files in the current folder",
     "--help,      -h     Shows this message",
