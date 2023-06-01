@@ -192,6 +192,9 @@ export class AutomatiqalCLI {
     this.automatiqal.emitter.on("task:result", async function (a) {
       const b: ITaskResult = a as any;
 
+      if (b.task.details.hasOwnProperty("file"))
+        (b.task.details as any).file = "<BINARY CONTENT>";
+
       if (b.task.operation.indexOf(".export") > -1) {
         if (!b.task.location) {
           _this.logger.error(
@@ -207,7 +210,7 @@ export class AutomatiqalCLI {
           if (Array.isArray(b.data)) {
             if (b.data && b.data.length > 0) {
               b.data = b.data.map((r: any) => {
-                if (r.file) r.file = "BINARY CONTENT REPLACED!";
+                if (r.file) r.file = "<BINARY CONTENT>";
                 return r;
               });
             }
