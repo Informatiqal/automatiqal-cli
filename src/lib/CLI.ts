@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
@@ -177,6 +177,8 @@ export class AutomatiqalCLI {
       }
     }
 
+    this.checkExportPaths(this.runBook.tasks);
+
     if (this.argv.c || this.argv.connect) {
       this.runBook.tasks = [
         { name: "Test connectivity", operation: "about.get" },
@@ -196,15 +198,16 @@ export class AutomatiqalCLI {
         (b.task.details as any).file = "<BINARY CONTENT>";
 
       if (b.task.operation.indexOf(".export") > -1) {
-        if (!b.task.location) {
-          _this.logger.error(
-            `ERROR: ${b.task.name}" is missing "location" parameter`
-          );
-        }
+        // TODO: is this needed? The schema validation should prevent this already?
+        // if ((!b.task.details as any).location) {
+        //   _this.logger.error(
+        //     `ERROR: "${b.task.name}" is missing "location" parameter`
+        //   );
+        // }
         try {
           _this.writeExports(
             Array.isArray(b.data) ? b.data : [b.data],
-            b.task.location
+            (b.task.details as any).location
           );
 
           if (Array.isArray(b.data)) {
@@ -377,5 +380,23 @@ export class AutomatiqalCLI {
       "TASK NAME".padEnd(30, " "),
       "STATUS"
     );
+  }
+
+  private checkExportPaths(tasks: any) {
+    let nonExistingPaths = [];
+
+    tasks.forEach((task) => {
+      if (task.details?.location) {
+        const isValidPath = existsSync(task.details?.location);
+
+        if (!isValidPath)
+          nonExistingPaths.push(
+            `Initial check: Export path for task "${task.name}" do not exists "${task.details.location}"`
+          );
+      }
+    });
+
+    if (nonExistingPaths.length > 0)
+      this.logger.error(nonExistingPaths.join("\n"));
   }
 }
