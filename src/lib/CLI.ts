@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
@@ -177,6 +177,8 @@ export class AutomatiqalCLI {
       }
     }
 
+    this.checkExportPaths(this.runBook.tasks);
+
     if (this.argv.c || this.argv.connect) {
       this.runBook.tasks = [
         { name: "Test connectivity", operation: "about.get" },
@@ -196,21 +198,23 @@ export class AutomatiqalCLI {
         (b.task.details as any).file = "<BINARY CONTENT>";
 
       if (b.task.operation.indexOf(".export") > -1) {
-        if (!b.task.location) {
-          _this.logger.error(
-            `ERROR: ${b.task.name}" is missing "location" parameter`
-          );
-        }
+        // TODO: is this needed? The schema validation should prevent this already?
+        // if ((!b.task.details as any).location) {
+        //   _this.logger.error(
+        //     `ERROR: "${b.task.name}" is missing "location" parameter`
+        //   );
+        // }
         try {
           _this.writeExports(
             Array.isArray(b.data) ? b.data : [b.data],
-            b.task.location
+            (b.task.details as any).location
           );
 
           if (Array.isArray(b.data)) {
             if (b.data && b.data.length > 0) {
               b.data = b.data.map((r: any) => {
                 if (r.file) r.file = "<BINARY CONTENT>";
+
                 return r;
               });
             }
@@ -219,6 +223,18 @@ export class AutomatiqalCLI {
           _this.logger.error(
             `Error in "${b.task.name}". Failed to write file: "${e.path}"`
           );
+        }
+      }
+
+      // TODO: move this section inside the try ... catch section above
+      if (b.task.operation == "contentLibrary.exportMany") {
+        if ((b.data as any).length > 0) {
+          b.data = (b.data as any).map((d) => {
+            return d.map((f) => {
+              f.file = "<BINARY CONTENT>";
+              return f;
+            });
+          });
         }
       }
 
@@ -377,5 +393,23 @@ export class AutomatiqalCLI {
       "TASK NAME".padEnd(30, " "),
       "STATUS"
     );
+  }
+
+  private checkExportPaths(tasks: any) {
+    let nonExistingPaths = [];
+
+    tasks.forEach((task) => {
+      if (task.details?.location) {
+        const isValidPath = existsSync(task.details?.location);
+
+        if (!isValidPath)
+          nonExistingPaths.push(
+            `Initial check: Export path for task "${task.name}" do not exists "${task.details.location}"`
+          );
+      }
+    });
+
+    if (nonExistingPaths.length > 0)
+      this.logger.error(nonExistingPaths.join("\n"));
   }
 }
