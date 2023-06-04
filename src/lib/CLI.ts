@@ -214,6 +214,7 @@ export class AutomatiqalCLI {
             if (b.data && b.data.length > 0) {
               b.data = b.data.map((r: any) => {
                 if (r.file) r.file = "<BINARY CONTENT>";
+
                 return r;
               });
             }
@@ -222,6 +223,18 @@ export class AutomatiqalCLI {
           _this.logger.error(
             `Error in "${b.task.name}". Failed to write file: "${e.path}"`
           );
+        }
+      }
+
+      // TODO: move this section inside the try ... catch section above
+      if (b.task.operation == "contentLibrary.exportMany") {
+        if ((b.data as any).length > 0) {
+          b.data = (b.data as any).map((d) => {
+            return d.map((f) => {
+              f.file = "<BINARY CONTENT>";
+              return f;
+            });
+          });
         }
       }
 

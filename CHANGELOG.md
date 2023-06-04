@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.1] - 2023-06-04
+
+- binary data for multiple exports (ex `contentLibrary.exportMany`) is replaced with placeholder message (in output)
+- dependency updates
+
+## [0.6.9] - 2023-06-01
+
+- binary data replace with placeholder message (in output) [#143](https://github.com/Informatiqal/automatiqal-cli/issues/143)
+
 ## [0.6.8] - 2023-05-29
 
 - raw output [#198](https://github.com/Informatiqal/automatiqal-cli/issues/198). If `raw` argument is provided then all other console messages are suppressed
