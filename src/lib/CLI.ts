@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
@@ -351,8 +351,12 @@ export class AutomatiqalCLI {
     });
   }
 
+  // TODO: dont like this much. Refactor at some point
   private writeExports(files: any[], location: string) {
+    let _this = this;
+
     if (!Array.isArray(files)) {
+      location = _this.prepareExportFolder((files as any).path, location);
       writeFileSync(`${location}\\${(files as any).name}`, (files as any).file);
 
       return true;
@@ -360,9 +364,16 @@ export class AutomatiqalCLI {
 
     files.map((f) => {
       if (Array.isArray(f)) {
-        f.map((f1) =>
-          writeFileSync(`${location}\\${(f1 as any).name}`, (f1 as any).file)
-        );
+        f.map((f1) => {
+          let baseLocation = location;
+          if (f1.path)
+            baseLocation = _this.prepareExportFolder(f1.path, baseLocation);
+
+          writeFileSync(
+            `${baseLocation}\\${(f1 as any).name}`,
+            (f1 as any).file
+          );
+        });
 
         return true;
       }
@@ -411,5 +422,18 @@ export class AutomatiqalCLI {
 
     if (nonExistingPaths.length > 0)
       this.logger.error(nonExistingPaths.join("\n"));
+  }
+
+  private prepareExportFolder(path: string, baseLocation: string) {
+    if (path) {
+      let paths = path.split("/");
+      paths.pop();
+
+      baseLocation += paths.join("/");
+
+      mkdirSync(baseLocation, { recursive: true });
+    }
+
+    return baseLocation;
   }
 }
