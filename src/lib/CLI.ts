@@ -1,4 +1,10 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import {
+  createReadStream,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
@@ -312,7 +318,9 @@ export class AutomatiqalCLI {
     for (let task of this.runBook.tasks) {
       if (task.details && (task.details as any).file) {
         try {
-          (task.details as any).file = readFileSync((task.details as any).file);
+          (task.details as any).file = createReadStream(
+            (task.details as any).file
+          );
         } catch (e) {
           this.logger.error(e.message, 1007);
         }
@@ -322,7 +330,7 @@ export class AutomatiqalCLI {
         task.details = (task.details as any).map((d) => {
           if (d.file) {
             try {
-              d.file = readFileSync(d.file);
+              d.file = createReadStream(d.file);
               return d;
             } catch (e) {
               this.logger.error(e.message, 1007);

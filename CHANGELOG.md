@@ -1,8 +1,12 @@
 # Changelog
 
+## [0.7.3] - 2023-06-07
+
+- when uploading files use `createReadStream` instead of `readFileSync`. This should lower the resource usage when dealing with large files
+
 ## [0.7.2] - 2023-06-05
 
-- If the export data have `path` property (ex. content libraries) then the same folder structure will be created  [#205](https://github.com/Informatiqal/automatiqal-cli/issues/205)
+- If the export data have `path` property (ex. content libraries) then the same folder structure will be created [#205](https://github.com/Informatiqal/automatiqal-cli/issues/205)
 
 ## [0.7.1] - 2023-06-04
 
