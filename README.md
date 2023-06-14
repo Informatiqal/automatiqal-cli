@@ -1,4 +1,4 @@
-# Automatiqal CLI
+# Automatiqal CLI (Beta)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T0148ZP)
 
@@ -144,7 +144,7 @@ tasks:
 
 ## Documentation
 
-Have a look at `Automatiqal` package [wiki pages](https://github.com/Informatiqal/automatiqal/wiki) on how to structure the file and list of operations. More information will be added soon here as well
+Have a look at `Automatiqal` package [wiki pages](https://github.com/Informatiqal/automatiqal/wiki) or the [official user documentation](https://docs.informatiqal.com/automatiqal-cli/) on how to structure the file and list of operations. More information will be added soon here as well
 
 ## Schema
 
@@ -156,7 +156,6 @@ Great little addition is the availability of [YAML schema](https://github.com/In
 ## Limitations
 
 - no way to test the runbook (aka `dry run`) [automatiqal #6](https://github.com/Informatiqal/automatiqal/issues/6)
-- handling large files. In the current implementation all external files are read before the runbook is executed. This can be a problem when uploading large files [automatiqal #4](https://github.com/Informatiqal/automatiqal/issues/4)
 
 ## Demonstration
 
