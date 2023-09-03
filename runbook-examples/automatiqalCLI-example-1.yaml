@@ -34,16 +34,17 @@ tasks:
   - name: Export application
     operation: app.export
     source: Import application
-    location: ${export_location}
+    details:
+      location: ${export_location}
   - name: Get all Monitoring apps
     operation: app.get
     filter: stream.name eq 'Monitoring apps'
   - name: Export Monitoring applications
     operation: app.exportMany
-    location: ${export_location}
     source: Get all Monitoring apps
     details:
       skipData: true
+      location: ${export_location}
   - name: Remove imported application
     operation: app.remove
     source: Import application

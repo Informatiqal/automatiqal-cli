@@ -700,10 +700,11 @@
             "args": [
                 "--file",
                 "./runbook-examples/test.yaml",
-                // "./runbook-examples/automatiqalCLI-example-1.yaml",
                 "--variables",
-                "./runbook-examples/test.variables.yaml"
-                // "./runbook-examples/automatiqalCLI.variables.yaml"
+                "./runbook-examples/test.variables.yaml",
+                "--raw"
+                // "--output",
+                // "test.json",
             ]
         },
     ]

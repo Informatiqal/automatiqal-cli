@@ -5,70 +5,37 @@ description: Import and publish an app workflow
 edition: windows
 environment:
   host: ${host}
-  port: 4242
+  # port: 4242
+  port: 443
+  proxy: jwt
   authentication:
-    cert: ${certificate}
-    key: ${certificate_key}
-    user_dir: ${user_dir}
-    user_name: ${user_name}
-tasks:
-  # - name: Upload QVF
-  #   operation: app.upload
-  #   details:
-  #     file: ${qvfLocation}
-  #     name: My new app
-  - name: Get existing app
-    description: Get the existing app that will be replaced
-    operation: app.get
-    filter: stream.name eq 'Test Stream' and name eq 'WhatsNewFeb2021'  
-  - name: Publish the imported app by replacing existing app
-    operation: app.switch
-    filter: id eq 884a73c4-4c93-47eb-b445-e0bf94fdb96e
+    token: ${token}
+    # cert: ${certificate}
+    # key: ${certificate_key}
+    # user_dir: ${user_dir}
+
+    # user_name: ${user_name}tasks:
+  - name: Upload app
+    operation: app.upload
     details:
-      targetAppId: $${Get existing app}
-# name: Sample run book
-# description: test
-# trace: error
-# edition: windows
-# environment:
-#   host: ${host}
-#   port: 4242
-#   authentication:
-#     cert: ${certificate}
-#     key: ${certificate_key}
-#     user_dir: ${user_dir}
-#     user_name: ${user_name}
-# tasks:
-#   - name: Create release tag
-#     operation: tag.create
-#     skip: true
-#     details:
-#       name: ${tag}
-#   - name: Upload QVF
-#     operation: app.upload
-#     skip: true
-#     details:
-#       file: ${qvfLocation}
-#       name: My new app
-#     onError:
-#       tasks:
-#         - name: Remove release tag
-#           operation: tag.remove
-#           source: Create release tag
-#   - name: Add release tag to the imported app
-#     operation: app.update
-#     skip: true
-#     source: Upload QVF
-#     details:
-#       tags:
-#         - ${tag}
-#   - name: Get existing app
-#     description: Get the existing app that will be replaced
-#     operation: app.get
-#     skip: true
-#     filter: ${filter}
-# - name: Publish the imported app by replacing existing app
-#   operation: app.switch
-#   skip: true
-#   details:
-#     targetAppId: $${Get existing app}
+      file: C:\Users\countnazgul\Downloads\License Monitor_26.19.1.0.qvf
+      name: ReadStream App Test
+  # - name: Export app
+  #   operation: app.export
+  #   filter: id eq 1570a46a-2d1b-42e2-b185-417df33db657
+  #   details:
+  #     location: d:\
+  # - name: Export content library
+  #   operation: contentLibrary.exportMany
+  #   filter: id eq 365cddf2-1181-4204-8800-e9a46fe3b127
+  #   details:
+  #     location: c:\users\countnazgul\downloads\test
+  #     sourceFileNames:
+  #       - Qlik_default_feathers.png
+  #       - Qlik_default_plant.png
+  # - name: Export content library file
+  #   operation: contentLibrary.export
+  #   filter: id eq 365cddf2-1181-4204-8800-e9a46fe3b127
+  #   details:
+  #     location: c:\users\countnazgul\downloads\test
+  #     sourceFileName: Qlik_default_feathers.png

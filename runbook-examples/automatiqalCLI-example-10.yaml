@@ -48,11 +48,10 @@ tasks:
         externalPath: ${contentLib_file2_name}
   - name: Export files from content library
     operation: contentLibrary.exportMany
-    location: ${export_location}
     filter: name eq 'Temp content library'
     details:
-      files:
-        - sourceFileName: asd
+      location: ${export_location}
+      sourceFileNames: [""]
   - name: Remove multiple files to content library
     filter: name eq 'Temp content library'
     operation: contentLibrary.removeFileMany

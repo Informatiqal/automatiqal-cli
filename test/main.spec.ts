@@ -26,9 +26,6 @@ async function runProcess(args: string[]): Promise<IProcessReturn> {
 }
 
 describe("Automatiqal Tests", function () {
-  this.slow(1000);
-  this.timeout(60000);
-
   it("automatiqalCLI-example-1", async () => {
     const args = [
       "--file",
@@ -48,6 +45,8 @@ describe("Automatiqal Tests", function () {
       "./runbook-examples/automatiqalCLI-example-2.yaml",
       "--variables",
       "./runbook-examples/automatiqalCLI.variables.yaml",
+      "--output",
+      "./output.json"
     ];
 
     const result = await runProcess(args);
