@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 
 import { AutomatiqalCLI } from "./lib/CLI";
 import { printHelp } from "./lib/help";
-import { generateSample } from "./lib/sample";
+import { generateSampleWindows, generateSampleSaaS } from "./lib/sample";
 import { Logger } from "./lib/Logger";
 
 import { IArguments } from "./lib/interfaces";
@@ -16,7 +16,8 @@ import { IArguments } from "./lib/interfaces";
 
   if (process.argv.length == 2) printHelp();
   if (argv.help || argv.h) printHelp();
-  if (argv.sample || argv.s) generateSample(argv.sample || argv.s);
+  if (argv["sample-win"]) generateSampleWindows(argv["sample-win"]);
+  if (argv["sample-saas"]) generateSampleSaaS(argv["sample-saas"]);
 
   // file argument not provided
   if (!argv.file && !argv.f) {
@@ -73,8 +74,8 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "json",
     "output",
     "o",
-    "sample",
-    "s",
+    "sample-win",
+    "sample-saas",
     "help",
     "h",
     "variables",

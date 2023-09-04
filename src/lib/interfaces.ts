@@ -20,13 +20,13 @@ export interface IArguments {
    */
   o?: string;
   /**
-   * Generate sample runbook and variable files
+   * Generate QSEoW sample runbook and variable files
    */
-  sample?: string;
+  "sample-win"?: string;
   /**
-   * See: sample
+   * Generate SaaS sample runbook and variable files
    */
-  s?: string;
+  "sample-saas"?: string;
   /**
    * Display the help
    */

@@ -197,10 +197,10 @@ export class AutomatiqalCLI {
    */
   private emittersSet() {
     const _this = this;
-    this.automatiqal.emitter.on("task:result", async function (a) {
+    this.automatiqal.emitter.on("task:result", function (a) {
       const b: ITaskResult = a as any;
 
-      if (b.task.details.hasOwnProperty("file"))
+      if (b.task.details && b.task.details.hasOwnProperty("file"))
         (b.task.details as any).file = "<BINARY CONTENT>";
 
       if (b.task.operation.indexOf(".export") > -1) {

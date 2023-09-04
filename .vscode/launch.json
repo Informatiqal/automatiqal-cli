@@ -33,7 +33,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Sample",
+            "name": "Sample Windows",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
             "preLaunchTask": "npm: build",
@@ -48,7 +48,7 @@
                 "--preserve-symlinks"
             ],
             "args": [
-                "-s"
+                "--sample-win"
             ]
         },
         {
@@ -57,7 +57,7 @@
             "name": "Show help",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
-            "preLaunchTask": "npm: build-tsc",
+            "preLaunchTask": "npm: build",
             "outFiles": [
                 "${workspaceRoot}/dist/**/*.js"
             ],
@@ -707,5 +707,52 @@
                 // "test.json",
             ]
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "SaaS Sample",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--ss",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "SaaS Test 1",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "./runbook-examples/SaaS/automatiqalCLI-example-SaaS-1.yaml",
+                "--variables",
+                "./runbook-examples/SaaS/automatiqalCLI.variables.SaaS.yaml",
+                "--output",
+                "test.json"
+            ]
+        }
     ]
 }
