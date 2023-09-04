@@ -1,15 +1,15 @@
 import { writeFileSync } from "fs";
 import { dump } from "js-yaml";
 
-export function generateSample(format: string) {
+export function generateSampleWindows(format: string) {
   if (!format) format = "yaml";
 
   const qseowSample = {
     name: "Sample run book",
+    edition: "windows",
     environment: {
       host: "${host}",
       port: 4242,
-      edition: "windows",
       authentication: {
         cert: "${certificate}",
         key: "${certificate_key}",
@@ -99,10 +99,86 @@ ${dump(qseowSample, {
   console.log(`\u2705 "automatiqal-sample.yaml" generated!`);
   console.log(`\u2705 "automatiqal-sample.variables.yaml" generated!`);
   console.log("");
+  console.log(`\u2705 \x1b[33mMore examples can be found at:\x1b[0m`);
   console.log(
-    `\u2705 \x1b[33mMore examples can be found at:\x1b[0m`
+    "    - https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples"
   );
-  console.log("    - https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples")
-  console.log("    - https://github.com/Informatiqal/automatiqal-recipes")
+  console.log("    - https://github.com/Informatiqal/automatiqal-recipes");
+  process.exit(0);
+}
+
+export function generateSampleSaaS(format: string) {
+  if (!format) format = "yaml";
+
+  const saasSample = {
+    name: "Sample run book",
+    edition: "saas",
+    environment: {
+      host: "${host}",
+      port: 443,
+      authentication: {
+        token: "${api_key}",
+      },
+    },
+    tasks: [
+      {
+        name: "Create new space",
+        operation: "space.create",
+        details: {
+          name: "My new space",
+          type: "shared",
+        },
+      },
+      {
+        name: "Import brand new app",
+        operation: "app.import",
+        details: {
+          file: "path/to/the/qvf",
+        },
+      },
+      {
+        name: "Add app to space",
+        operation: "app.addToSpace",
+        source: "Import brand new app",
+        details: {
+          spaceId: "$${Create new space}"
+        }
+      },
+    ],
+  };
+
+  const variables = `host=tenant.eu.qlikcloud.com
+api_key=generated-api-key`;
+
+  try {
+    writeFileSync(
+      ".\\automatiqal-sample-saas.yaml",
+      `# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook_saas.json?raw=true
+
+${dump(saasSample, {
+  // indent: 4,
+  lineWidth: 300,
+})}`
+    );
+  } catch (e) {
+    console.log(`\u274C ERROR: Unable to create sample file"`);
+    console.log(e.message);
+  }
+
+  try {
+    writeFileSync(".\\automatiqal-sample-saas.variables.yaml", variables);
+  } catch (e) {
+    console.log(`\u274C ERROR: Unable to create sample variables file"`);
+    console.log(e.message);
+  }
+
+  console.log(`\u2705 "automatiqal-sample-saas.yaml" generated!`);
+  console.log(`\u2705 "automatiqal-sample-saas.variables.yaml" generated!`);
+  console.log("");
+  console.log(`\u2705 \x1b[33mMore examples can be found at:\x1b[0m`);
+  console.log(
+    "    - https://github.com/Informatiqal/automatiqal-cli/tree/main/runbook-examples"
+  );
+  console.log("    - https://github.com/Informatiqal/automatiqal-recipes");
   process.exit(0);
 }

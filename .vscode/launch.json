@@ -725,7 +725,7 @@
                 "--preserve-symlinks"
             ],
             "args": [
-                "--ss",
+                "--sample-saas",
             ]
         },
         {

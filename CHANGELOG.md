@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.4] - 2023-09-04
+
+- dependency updates
+- started testing with SaaS based runbooks
+- small fixes related to SaaS runbooks
+- `--sample` command is no split into two commands: `--sample-win` and `--sample-saas`
+
 ## [0.7.3] - 2023-06-07
 
 - when uploading files use `createReadStream` instead of `readFileSync`. This should lower the resource usage when dealing with large files
