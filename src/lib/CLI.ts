@@ -200,10 +200,26 @@ export class AutomatiqalCLI {
     this.automatiqal.emitter.on("task:result", function (a) {
       const b: ITaskResult = a as any;
 
+      let isExportCommand = false;
+
+      if (
+        _this.runBook.edition == "windows" &&
+        b.task.operation.indexOf(".export") > -1
+      )
+        isExportCommand = true;
+
+      const exportCommandsSaaS = ["extension.download", "app.export"];
+
+      if (
+        _this.runBook.edition == "saas" &&
+        exportCommandsSaaS.includes(b.task.operation)
+      )
+        isExportCommand = true;
+
       if (b.task.details && b.task.details.hasOwnProperty("file"))
         (b.task.details as any).file = "<BINARY CONTENT>";
 
-      if (b.task.operation.indexOf(".export") > -1) {
+      if (isExportCommand == true) {
         // TODO: is this needed? The schema validation should prevent this already?
         // if ((!b.task.details as any).location) {
         //   _this.logger.error(
@@ -211,11 +227,15 @@ export class AutomatiqalCLI {
         //   );
         // }
         try {
+          // write the exports data
           _this.writeExports(
             Array.isArray(b.data) ? b.data : [b.data],
             (b.task.details as any).location
           );
 
+          // replace the export data with placeholder
+          // the placeholder will be visible if we have to
+          // output the task data
           if (Array.isArray(b.data)) {
             if (b.data && b.data.length > 0) {
               b.data = b.data.map((r: any) => {

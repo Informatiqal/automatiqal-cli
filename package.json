@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -82,13 +82,13 @@
     "rollup-plugin-polyfill-node": "^0.12.0",
     "ts-node": "10.9.1",
     "tslib": "^2.6.2",
-    "typedoc": "0.25.0",
+    "typedoc": "0.25.1",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "@informatiqal/variables-loader": "0.0.6",
     "@p-mcgowan/minimist": "^2.1.0",
-    "automatiqal": "^0.3.0",
+    "automatiqal": "^0.3.2",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
     "semver": "^7.5.4",

@@ -10,6 +10,7 @@ lerna-debug.log*
 .npmrc
 test.json
 automatiqalCLI-example-16.yaml
+automatiqalCLI.variables.SaaS.yaml
 automatiqal-sample.yaml
 automatiqal-sample-saas.yaml
 # Diagnostic reports (https://nodejs.org/api/report.html)
