@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.5] - 2023-09-04
+
+- handle binary data masking for SaaS operations in the output
+
 ## [0.7.4] - 2023-09-04
 
 - dependency updates
