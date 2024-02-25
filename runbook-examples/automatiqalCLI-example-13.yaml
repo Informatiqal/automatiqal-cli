@@ -23,30 +23,27 @@ tasks:
       name: New external task
       path: c:\ProgramFiles\Qlik\Sense\ServiceDispatcher\Node\node.exe
       parameters: d:\dev\temp\index.js
-  - name: Add trigger schema to task
-    operation: externalTask.addTriggerSchema
-    filter: name eq 'New external task'
+  - name: Add daily schema trigger to task
+    operation: schemaTrigger.create
     details:
       name: Simple daily trigger
       repeat: Daily
       repeatEvery: 1
       startDate: 2022-02-07T14:30:00.000
-  - name: Add multiple trigger schema to task
-    operation: externalTask.addTriggerMany
-    filter: name eq 'New external task'
+      task:
+        id: $${Create reload task}
+  - name: Add monthly schema trigger to task
+    operation: schemaTrigger.create
     details:
-      - name: Weekly trigger
-        repeat: Weekly
-        startDate: 2022-02-07T12:30:00.000
-        daysOfWeek:
-          - Monday
-          - Wednesday
-          - Sunday
-      - name: Monthly trigger
-        repeat: Monthly
-        enabled: false
-        startDate: 2022-02-07T13:30:00.000
-        daysOfMonth: [1, 5, 10]
+      name: Simple monthly trigger
+      repeat: Monthly
+      enabled: true
+      daysOfMonth:
+        - 1
+        - 5
+        - 10
+      task:
+        id: $${Create reload task}
   - name: Update external task
     operation: externalTask.update
     filter: name eq 'New external task'

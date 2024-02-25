@@ -27,13 +27,17 @@ tasks:
     details:
       name: Test reload task (Updated)
   - name: Add composite trigger to task
-    operation: reloadTask.addTriggerComposite
-    source: Create reload task
+    description: Create daily trigger for reload task
+    operation: compositeTrigger.create
     details:
       name: New composite trigger
+      enabled: true
+      task:
+        id: $${Create reload task}
       eventTasks:
         - state: success
           name: Reload License Monitor
+          id: some-other-task-id-here
   - name: Update composite trigger
     operation: compositeTrigger.update
     source: Add composite trigger to task
@@ -46,29 +50,14 @@ tasks:
     operation: compositeTrigger.remove
     source: Add composite trigger to task
   - name: Add trigger schema to task
-    operation: reloadTask.addTriggerSchema
+    operation: schemaTrigger.create
     source: Create reload task
     details:
       name: Simple daily trigger
       repeat: Daily
       repeatEvery: 1
-      startDate: 2022-02-07T14:30:00.000
-  - name: Add multiple trigger schema to task
-    operation: reloadTask.addTriggerMany
-    source: Create reload task
-    details:
-      - name: Weekly trigger
-        repeat: Weekly
-        startDate: 2022-02-07T12:30:00.000
-        daysOfWeek:
-          - Monday
-          - Wednesday
-          - Sunday
-      - name: Monthly trigger
-        repeat: Monthly
-        enabled: false
-        startDate: 2022-02-07T13:30:00.000
-        daysOfMonth: [1, 5, 10] # different way to specify list/array items
+      task:
+        id: $${Create reload task}
   - name: Remove reload task
     operation: reloadTask.remove
     source: Create reload task
