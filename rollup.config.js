@@ -5,7 +5,6 @@ import { readFileSync } from "fs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
-import resolve from "@rollup/plugin-node-resolve";
 
 const pkg = JSON.parse(readFileSync("./package.json"));
 
@@ -19,13 +18,13 @@ export default [
       format: "es",
     },
 
-    external: ["fs", "https", "os"],
+    external: ["fs", "https", "os", "events"],
     plugins: [
       del({
         targets: "dist/*",
       }),
+      nodeResolve(),
       json(),
-      resolve(),
       commonjs(),
       typescript(),
       replace({
