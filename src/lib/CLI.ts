@@ -5,6 +5,7 @@ import {
   readFileSync,
   writeFileSync,
 } from "fs";
+import * as readline from "node:readline";
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
@@ -43,14 +44,15 @@ export class AutomatiqalCLI {
     this.rawRunBook = downloadedRunbook;
     this.logger = Logger.getInstance(this.argv.r || this.argv.result);
 
+    // if the runbook is downloaded then clean it first
+    // by removing commented and empty lines
+    if (this.rawRunBook) this.rawRunBook = this.cleanDownloadedFile();
+
     // if the runbook was not an url
     // try and read the file
     if (!this.rawRunBook) {
       try {
-        this.rawRunBook = readFileSync(
-          this.argv.file || this.argv.f,
-          "utf8"
-        ).toString();
+        this.rawRunBook = this.readRunbookFile();
       } catch (e) {
         this.logger.error(e.message, 1000);
       }
@@ -463,5 +465,33 @@ export class AutomatiqalCLI {
     }
 
     return baseLocation;
+  }
+
+  private readRunbookFile() {
+    const lines: string[] = [];
+
+    readFileSync(this.argv.file || this.argv.f)
+      .toString()
+      .split("\n")
+      .forEach((line) => {
+        const re = new RegExp(/^( +)?#( +)?/, "g");
+        if (!re.test(line) && line != "" && line != "\r" && line != "\r\n")
+          lines.push(line);
+      });
+
+    return lines.join("\n");
+  }
+
+  private cleanDownloadedFile() {
+    const rawLines = this.rawRunBook.split("\n");
+    const lines: string[] = [];
+
+    rawLines.forEach((line) => {
+      const re = new RegExp(/^( +)?#( +)?/, "g");
+      if (!re.test(line) && line != "" && line != "\r" && line != "\r\n")
+        lines.push(line);
+    });
+
+    return lines.join("\n");
   }
 }
