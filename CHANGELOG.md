@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.7.9] - 2024-05-31
+
+- clean the runbook from any commented and empty lines before processing it [#245](https://github.com/Informatiqal/automatiqal-cli/issues/245)
+- dependency updates
+
 ## [0.7.8] - 2024-05-29
 
 - dependency updates

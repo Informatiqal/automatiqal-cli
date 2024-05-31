@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -72,7 +72,7 @@
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "20.12.12",
+    "@types/node": "20.12.13",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
     "dotenv": "16.4.5",

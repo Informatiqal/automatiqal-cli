@@ -120,6 +120,33 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "App Example (download)",
+            "program": "${workspaceFolder}/src/index.ts",
+            "sourceMaps": true,
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceRoot}/dist/**/*.js"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "externalTerminal",
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ],
+            "args": [
+                "--file",
+                "https://raw.githubusercontent.com/Informatiqal/automatiqal-cli/main/runbook-examples/automatiqalCLI-example-1.yaml",
+                "--variables",
+                "./runbook-examples/automatiqalCLI.variables.yaml",
+                "--output",
+                "test.json",
+                "--global"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "App Example Environment Variables",
             "program": "${workspaceFolder}/src/index.ts",
             "sourceMaps": true,
