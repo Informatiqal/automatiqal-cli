@@ -20,6 +20,14 @@ export interface IArguments {
    */
   o?: string;
   /**
+   * Path where to store the summary result
+   */
+  summary?: boolean;
+  /**
+   * See: summary
+   */
+  s?: boolean;
+  /**
    * Generate QSEoW sample runbook and variable files
    */
   "sample-win"?: string;
