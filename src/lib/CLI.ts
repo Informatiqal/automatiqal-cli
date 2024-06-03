@@ -145,8 +145,8 @@ export class AutomatiqalCLI {
     try {
       this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
     } catch (e) {
-      if (e.context) this.logger.error(e.context);
-      if (e.message) this.logger.error(e.message);
+      if (e.context) throw new Error(e.context);
+      if (e.message) throw new Error(e.message);
     }
 
     this.emittersSet();

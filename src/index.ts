@@ -46,7 +46,16 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
       });
   }
 
-  const runner = new AutomatiqalCLI(argv, downloadedRunbook);
+  let runner: AutomatiqalCLI;
+
+  try {
+    runner = new AutomatiqalCLI(argv, downloadedRunbook);
+  } catch (e) {
+    const message = `Error(s) while initializing! Schema issue?\n\n${e.message}`;
+    if (argv.summary || argv.s) writeSummary(message);
+    logger.error(message);
+  }
+
   runner
     .run()
     .then((data) => {
@@ -67,11 +76,13 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
       logger.error(e.message);
     });
 
-  function writeSummary() {
+  function writeSummary(error?: string) {
+    const toWrite = error || logger.messages.join("\n");
+
     try {
-      writeFileSync(argv.s || argv.summary, logger.messages.join("\n"));
+      writeFileSync(argv.s || argv.summary, toWrite);
     } catch (e) {
-      this.error(e.message, 1005);
+      logger.error(e.message, 1005);
     }
   }
 
@@ -87,8 +98,7 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
     try {
       writeFileSync(argv.o || argv.output, JSON.stringify(data, null, 4));
     } catch (e) {
-      console.log(`Error while writing output messages`);
-      console.log(e.message);
+      logger.error(e.message, 1005);
     }
   }
 })();
