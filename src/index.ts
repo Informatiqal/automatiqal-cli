@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, writeFileSync } from "fs";
 import { minimist } from "@p-mcgowan/minimist";
 import fetch from "node-fetch";
 
@@ -8,10 +8,11 @@ import { generateSampleWindows, generateSampleSaaS } from "./lib/sample";
 import { Logger } from "./lib/Logger";
 
 import { IArguments } from "./lib/interfaces";
+import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 (async function () {
   const argv: IArguments = minimist(process.argv.slice(2));
-  const logger = Logger.getInstance(argv.r || argv.result);
+  const logger = Logger.getInstance();
   checkArguments(argv, logger);
 
   if (process.argv.length == 2) printHelp();
@@ -45,7 +46,16 @@ import { IArguments } from "./lib/interfaces";
       });
   }
 
-  const runner = new AutomatiqalCLI(argv, downloadedRunbook);
+  let runner: AutomatiqalCLI;
+
+  try {
+    runner = new AutomatiqalCLI(argv, downloadedRunbook);
+  } catch (e) {
+    const message = `Error(s) while initializing! Schema issue?\n\n${e.message}`;
+    if (argv.summary || argv.s) writeSummary(message);
+    logger.error(message);
+  }
+
   runner
     .run()
     .then((data) => {
@@ -54,16 +64,43 @@ import { IArguments } from "./lib/interfaces";
         const msg = `${new Date().toISOString()}\tFinished`;
         logger.info(msg);
 
-        if (argv.r || argv.result) logger.writeOutput();
+        if (argv.o || argv.output) writeResult(data);
+        if (argv.s || argv.summary) writeSummary();
+      } else {
+        printRawData(data);
       }
-
-      if (argv.raw) printOut(data);
 
       process.exit(0);
     })
     .catch((e) => {
       logger.error(e.message);
     });
+
+  function writeSummary(error?: string) {
+    const toWrite = error || logger.messages.join("\n");
+
+    try {
+      writeFileSync(argv.s || argv.summary, toWrite);
+    } catch (e) {
+      logger.error(e.message, 1005);
+    }
+  }
+
+  function printRawData(data) {
+    try {
+      console.log(JSON.stringify(data, null, 4));
+    } catch (e) {
+      logger.error(e.message, 1005);
+    }
+  }
+
+  function writeResult(data: ITaskResult[]) {
+    try {
+      writeFileSync(argv.o || argv.output, JSON.stringify(data, null, 4));
+    } catch (e) {
+      logger.error(e.message, 1005);
+    }
+  }
 })();
 
 function checkArguments(argv: IArguments, logger: Logger): void {
@@ -92,6 +129,8 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "result",
     "r",
     "raw",
+    "summary",
+    "s",
   ];
 
   const unknownArguments = Object.keys(argv).filter(
@@ -100,12 +139,4 @@ function checkArguments(argv: IArguments, logger: Logger): void {
 
   if (unknownArguments.length > 0)
     logger.error(`Unknown argument(s): \n${unknownArguments.join("\n")}`);
-}
-
-function printOut(data) {
-  try {
-    console.log(JSON.stringify(data, null, 4));
-  } catch (e) {
-    // logger.error(e.message, 1005);
-  }
 }

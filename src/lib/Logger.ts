@@ -18,13 +18,11 @@ export class Logger {
     1014: "Variable(s) value not found",
     9999: "INTERNAL ERROR",
   };
-  constructor(saveOutput) {
-    this.saveOutput = saveOutput;
-  }
+  constructor() {}
 
-  public static getInstance(saveOutput): Logger {
+  public static getInstance(): Logger {
     if (!Logger.instance) {
-      Logger.instance = new Logger(saveOutput);
+      Logger.instance = new Logger();
     }
     return Logger.instance;
   }
@@ -41,7 +39,6 @@ export class Logger {
       this.messages.push(message);
     }
 
-    if (this.saveOutput) this.writeOutput();
     process.exit(1);
   }
 
@@ -71,15 +68,7 @@ export class Logger {
     }
     message.push(status);
 
+    this.messages.push(message.join("\t"));
     console.log(message.join("\t"));
-  }
-
-  writeOutput() {
-    try {
-      writeFileSync(this.saveOutput, this.messages.join("\n"));
-    } catch (e) {
-      console.log(`Error while writing output messages`);
-      console.log(e.message);
-    }
   }
 }

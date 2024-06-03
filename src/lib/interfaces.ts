@@ -20,6 +20,14 @@ export interface IArguments {
    */
   o?: string;
   /**
+   * Path where to store the summary result
+   */
+  summary?: string;
+  /**
+   * See: summary
+   */
+  s?: string;
+  /**
    * Generate QSEoW sample runbook and variable files
    */
   "sample-win"?: string;
@@ -86,14 +94,6 @@ export interface IArguments {
    * See: inline
    */
   i?: string;
-  /**
-   * Path where to store the runbook messages output
-   */
-  result: string;
-  /**
-   * See result
-   */
-  r: string;
   /**
    * Output the full result directly in the console
    */

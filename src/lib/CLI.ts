@@ -5,7 +5,6 @@ import {
   readFileSync,
   writeFileSync,
 } from "fs";
-import * as readline from "node:readline";
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
@@ -42,7 +41,7 @@ export class AutomatiqalCLI {
     this.argv = argv;
     this.result = [];
     this.rawRunBook = downloadedRunbook;
-    this.logger = Logger.getInstance(this.argv.r || this.argv.result);
+    this.logger = Logger.getInstance();
 
     // if the runbook is downloaded then clean it first
     // by removing commented and empty lines
@@ -146,8 +145,8 @@ export class AutomatiqalCLI {
     try {
       this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
     } catch (e) {
-      if (e.context) this.logger.error(e.context);
-      if (e.message) this.logger.error(e.message);
+      if (e.context) throw new Error(e.context);
+      if (e.message) throw new Error(e.message);
     }
 
     this.emittersSet();
@@ -157,8 +156,6 @@ export class AutomatiqalCLI {
     if (!this.argv.raw) this.printRunbookDetails();
 
     await this.automatiqal.run();
-
-    if (this.argv.output || this.argv.o) this.writeOut();
 
     return this.result;
   }
@@ -268,7 +265,7 @@ export class AutomatiqalCLI {
 
       _this.result.push(b);
 
-      if (!_this.argv.raw)
+      if (!_this.argv.raw) {
         _this.logger.taskEntry(
           b.timings.start,
           b.timings.end,
@@ -276,9 +273,7 @@ export class AutomatiqalCLI {
           b.task.name,
           b.status
         );
-      // _this.logger.info(
-      //   `${b.timings.start}\t${b.timings.end}\t${b.timings.totalSeconds}(s)\t"${b.task.name}"\t${b.status}`
-      // );
+      }
     });
 
     this.automatiqal.emitter.on("runbook:result", function (r) {});
@@ -286,22 +281,8 @@ export class AutomatiqalCLI {
     this.automatiqal.emitter.on("runbook:log", function (l) {});
 
     this.automatiqal.emitter.on("error", function (errorMessage) {
-      console.log(errorMessage);
+      _this.logger.error(errorMessage);
     });
-  }
-
-  /**
-   * @description if "output" flag is present - write the result to a file
-   */
-  private writeOut() {
-    try {
-      writeFileSync(
-        this.argv.output || this.argv.o,
-        JSON.stringify(this.result, null, 4)
-      );
-    } catch (e) {
-      this.logger.error(e.message, 1005);
-    }
   }
 
   /**
@@ -417,13 +398,15 @@ export class AutomatiqalCLI {
   private printRunbookDetails() {
     this.logger.info(`CLI Version   : __VERSION`);
     this.logger.info(`Runbook file  : ${this.argv.file || this.argv.f}`);
+    this.logger.info(`Runbook name  : ${this.runBook.name}`);
+
     if (this.argv.v || this.argv.var || this.argv.variables)
       this.logger.info(
         `Variables file: ${this.argv.v || this.argv.var || this.argv.variables}`
       );
-    this.logger.info(`Runbook name  : ${this.runBook.name}`);
     if (this.runBook.description)
       this.logger.info(`Description: ${this.runBook.description}`);
+
     this.logger.info(`Start time    : ${new Date().toISOString()}`);
     this.logger.info(`---`);
 
