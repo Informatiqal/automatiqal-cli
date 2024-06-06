@@ -13,6 +13,7 @@ export function printHelp() {
     "--global,      -g     Use global variable file as source of variables values ($HOME/.automatiqal)",
     "--env,         -e     Use environment variables as source of variables values",
     "--inline,      -i     Provide inline/command variables values",
+    "--listvars     -l     List the defined variables in the runbook. Runbook itself is not ran",
     "--json                Indicates that the run book file is in JSON format",
     "--output,      -o     Saves the result in the provided path",
     "--raw                 Print the result in the console. All other console messages are suppressed",

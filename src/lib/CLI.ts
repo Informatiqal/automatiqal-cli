@@ -11,6 +11,7 @@ import { homedir } from "os";
 import { load as yamlLoad } from "js-yaml";
 import { Automatiqal } from "automatiqal";
 import { varLoader } from "@informatiqal/variables-loader";
+import { printTable, Table } from "console-table-printer";
 
 import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
@@ -132,6 +133,11 @@ export class AutomatiqalCLI {
       this.replaceVariables();
 
     this.runbookSet();
+
+    if (argv.listvars || argv.l) {
+      this.printDefinedVariables();
+      process.exit(0);
+    }
 
     if ((this.runBook.environment.authentication as any).cert) {
       this.prepareCertificates();
@@ -508,5 +514,33 @@ export class AutomatiqalCLI {
     });
 
     return lines.join("\n");
+  }
+
+  private printDefinedVariables() {
+    console.log(`Distinct variables defined:`);
+
+    const counts = {};
+
+    for (const num of this.runbookVariablesList) {
+      counts[num] = counts[num] ? counts[num] + 1 : 1;
+    }
+
+    const table = new Table({
+      columns: [
+        { name: "Variable", alignment: "left" },
+        { name: "Occurrences", alignment: "right" },
+      ],
+    });
+
+    Object.entries(counts).map(([key, value]) => {
+      table.addRow({
+        Variable: key,
+        Occurrences: value,
+      });
+    });
+
+    table.printTable();
+
+    console.log("");
   }
 }

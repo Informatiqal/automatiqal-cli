@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.10.0] - 2024-06-06
+
+- new argument `--listvars`/`l`. When provided the CLI will just output the list of variables that are defined/expected in the runbook
+
 ## [0.9.0] - 2024-06-06
 
 - handle `app.uploadMany` case, where only `location` is passed and have to converted to list of files

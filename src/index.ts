@@ -118,6 +118,8 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "variables",
     "var",
     "v",
+    "l",
+    "listvars",
     "connect",
     "c",
     "global",

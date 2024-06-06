@@ -57,7 +57,15 @@ export interface IArguments {
   v?: string;
   /**
    * Test connectivity. No task as ran
+   */ 
+  /**
+   * List the defined variables in the specified runbook
    */
+  listvars?: string;
+  /**
+   * See: listvars
+   */
+  l?: string;  
   connect?: boolean;
   /**
    * See: connect
