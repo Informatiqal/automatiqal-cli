@@ -1,5 +1,3 @@
-import { writeFileSync } from "fs";
-
 export class Logger {
   static instance: Logger;
   private saveOutput: string;

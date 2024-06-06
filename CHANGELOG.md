@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.0] - 2024-06-06
+
+- handle `app.uploadMany` case, where only `location` is passed and have to converted to list of files
+- dependency updates
+
 ## [0.8.0] - 2024-06-03
 
 - new `summary`/`s` argument. When provided will store the summary output to the provided path (file)  [#246](https://github.com/Informatiqal/automatiqal-cli/issues/246)

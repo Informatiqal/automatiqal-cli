@@ -3,6 +3,7 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
+  readdirSync,
   writeFileSync,
 } from "fs";
 import { Agent } from "https";
@@ -16,6 +17,7 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 import { Logger } from "./Logger";
 
 import { IArguments } from "./interfaces";
+import * as path from "path";
 
 export class AutomatiqalCLI {
   private argv: IArguments;
@@ -342,6 +344,36 @@ export class AutomatiqalCLI {
 
           return d;
         });
+      }
+
+      //TODO: any other operations that follow the xxxMany import/upload path?
+      // app.uploadMany have to be handled separately because we have to read
+      // the folder content first and then transform to read streams
+      if (task.operation == "app.uploadMany") {
+        if (task.details && (task.details as any)["location"]) {
+          // check if the folder actually exists
+          if (!existsSync((task.details as any)["location"]))
+            this.logger.error("Folder do not exists", 1007);
+
+          const files = readdirSync((task.details as any)["location"]).filter(
+            (f) => path.extname(f).toLowerCase() == ".qvf"
+          );
+
+          // no qvf files were found. We are importing qvf files after all
+          if (files.length == 0)
+            this.logger.error(
+              `No qvf files files in the location: ${
+                (task.details as any)["location"]
+              }`
+            );
+
+          task.details = files.map((f) => ({
+            file: createReadStream(
+              `${(task.details as any)["location"]}\\${f}`
+            ),
+            name: path.basename(f, path.extname(f)),
+          }));
+        }
       }
     }
   }
