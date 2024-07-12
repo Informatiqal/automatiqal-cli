@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.10.1] - 2024-07-12
+
+- `--disableValidation, -d` - skip schema validation option. Useful in small amount of cases
+- dependency updates
+
 ## [0.10.0] - 2024-06-06
 
 - new argument `--listvars`/`l`. When provided the CLI will just output the list of variables that are defined/expected in the runbook

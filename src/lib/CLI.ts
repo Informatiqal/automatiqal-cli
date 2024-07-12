@@ -151,7 +151,13 @@ export class AutomatiqalCLI {
     if (!this.argv.c && !this.argv.connect) this.readBuffers();
 
     try {
-      this.automatiqal = new Automatiqal(this.runBook, this.httpsAgent);
+      const disableSchemaValidation =
+        this.argv.disableValidation || this.argv.d;
+
+      this.automatiqal = new Automatiqal(this.runBook, {
+        httpsAgent: this.httpsAgent,
+        disableSchemaValidation: disableSchemaValidation || false,
+      });
     } catch (e) {
       if (e.context) throw new Error(e.context);
       if (e.message) throw new Error(e.message);

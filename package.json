@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -77,7 +77,7 @@
     "@types/node": "20.14.10",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
-    "automatiqal": "^0.4.0",
+    "automatiqal": "^0.4.1",
     "console-table-printer": "^2.12.1",
     "dotenv": "16.4.5",
     "esm": "^3.2.25",
