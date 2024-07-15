@@ -8,17 +8,18 @@ import {
 } from "fs";
 import { Agent } from "https";
 import { homedir } from "os";
-import { load as yamlLoad } from "js-yaml";
+import { load as yamlLoad, dump as yamlDump } from "js-yaml";
 import { Automatiqal } from "automatiqal";
 import { varLoader } from "@informatiqal/variables-loader";
 import { printTable, Table } from "console-table-printer";
 
-import { IRunBook } from "automatiqal/dist/RunBook/RunBook.interfaces";
+import { IRunBook, ITask } from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 import { Logger } from "./Logger";
 
 import { IArguments } from "./interfaces";
 import * as path from "path";
+import { schemaURL } from "./sample";
 
 export class AutomatiqalCLI {
   private argv: IArguments;
@@ -29,7 +30,7 @@ export class AutomatiqalCLI {
   private automatiqal: Automatiqal;
   private rawRunBook: string;
   private runbookVariablesList: string[];
-  private variablesValues: { [x: string]: string };
+  private variablesValues: { [x: string]: string | number | boolean };
   private emitterMessages: string[];
   private specialVariables = [
     "GUID",
@@ -57,6 +58,31 @@ export class AutomatiqalCLI {
         this.rawRunBook = this.readRunbookFile();
       } catch (e) {
         this.logger.error(e.message, 1000);
+      }
+    }
+
+    this.runbookSet();
+    this.importExternalYamlFiles();
+    this.rawRunBook = JSON.stringify(this.runBook);
+
+    if (this.argv.compile) {
+      const yamlRunbook = yamlDump(this.runBook);
+      const output = `${schemaURL}\n\n${yamlRunbook}`;
+
+      if (this.argv.compile == true) {
+        console.log(output);
+        process.exit(1);
+      }
+
+      if (typeof this.argv.compile == "string") {
+        try {
+          writeFileSync(this.argv.compile, output);
+          console.log(`Compiled schema was saved in "${this.argv.compile}"`)
+          process.exit(1);
+        } catch (e) {
+          console.log(e.message);
+          process.exit(1);
+        }
       }
     }
 
@@ -129,10 +155,15 @@ export class AutomatiqalCLI {
       this.argv.env ||
       this.argv.i ||
       this.argv.inline
-    )
-      this.replaceVariables();
+    ) {
+      this.rawRunBook = this.replaceVariables(
+        this.rawRunBook,
+        this.variablesValues
+      );
+      this.runBook = JSON.parse(this.rawRunBook);
+    }
 
-    this.runbookSet();
+    this.checkExportPaths();
 
     if (argv.listvars || argv.l) {
       this.printDefinedVariables();
@@ -195,8 +226,6 @@ export class AutomatiqalCLI {
         this.logger.error(e.message, 1003);
       }
     }
-
-    this.checkExportPaths(this.runBook.tasks);
 
     if (this.argv.c || this.argv.connect) {
       this.runBook.tasks = [
@@ -283,8 +312,9 @@ export class AutomatiqalCLI {
         _this.logger.taskEntry(
           b.timings.start,
           b.timings.end,
-          `${b.timings.totalSeconds}(s)`,
-          b.task.name,
+          `${b.timings.totalSeconds}`,
+          b.task.name.replace(/(.{27})..+/, "$1..."),
+          `${(b.data as []).length}`,
           b.status
         );
       }
@@ -393,17 +423,22 @@ export class AutomatiqalCLI {
   /**
    * @description replace all runbook variables with their content
    */
-  private replaceVariables() {
-    Object.entries(this.variablesValues).forEach(([varName, varValue]) => {
+  private replaceVariables(
+    text: string,
+    vars: { [x: string]: string | number | boolean }
+  ) {
+    Object.entries(vars).forEach(([varName, varValue]) => {
       try {
         const v = "\\$\\{" + varName + "\\}";
         const re = new RegExp(v, "g");
 
-        this.rawRunBook = this.rawRunBook.replace(re, varValue.toString());
+        text = text.replace(re, varValue.toString());
       } catch (e) {
         this.logger.error(e.message, 9999);
       }
     });
+
+    return text;
   }
 
   // TODO: dont like this much. Refactor at some point
@@ -457,22 +492,23 @@ export class AutomatiqalCLI {
     this.logger.taskEntry(
       "START TIME".padEnd(24, " "),
       "END TIME".padEnd(24, " "),
-      "DURATION",
+      "DURATION(s)",
       "TASK NAME".padEnd(30, " "),
+      "ENTITIES".padEnd(10, " "),
       "STATUS"
     );
   }
 
-  private checkExportPaths(tasks: any) {
+  private checkExportPaths() {
     let nonExistingPaths = [];
 
-    tasks.forEach((task) => {
-      if (task.details?.location) {
-        const isValidPath = existsSync(task.details?.location);
+    this.runBook.tasks.forEach((task) => {
+      if (task.details?.["location"]) {
+        const isValidPath = existsSync(task.details?.["location"]);
 
         if (!isValidPath)
           nonExistingPaths.push(
-            `Initial check: Export path for task "${task.name}" do not exists "${task.details.location}"`
+            `Initial check: Export path for task "${task.name}" do not exists "${task.details["location"]}"`
           );
       }
     });
@@ -548,5 +584,42 @@ export class AutomatiqalCLI {
     table.printTable();
 
     console.log("");
+  }
+
+  private importExternalYamlFiles(): void {
+    for (let i = 0; i < this.runBook.tasks.length; i++) {
+      if (this.runBook.tasks[i]["import"]) {
+        const externalFileContent = this.readImportFile(
+          this.runBook.tasks[i]["import"]["path"] ||
+            this.runBook.tasks[i]["import"],
+          this.runBook.tasks[i]["import"]["vars"] || []
+        );
+
+        this.runBook.tasks.splice(i, 1, ...externalFileContent);
+      }
+    }
+  }
+
+  private readImportFile(
+    path: string,
+    variables: { [k: string]: string | number | boolean }[]
+  ) {
+    const exists = existsSync(path);
+
+    const v = {};
+    variables.map((v1) => {
+      Object.entries(v1).forEach(([key, value]) => {
+        v[key] = value;
+      });
+    });
+
+    if (!exists) this.logger.error(`Import file not found: ${path}`);
+
+    let fileContent = readFileSync(path).toString();
+    fileContent = this.replaceVariables(fileContent, v);
+
+    const parsedContent = yamlLoad(fileContent);
+
+    return parsedContent as ITask[];
   }
 }

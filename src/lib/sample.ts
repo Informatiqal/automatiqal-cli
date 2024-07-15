@@ -1,6 +1,8 @@
 import { writeFileSync } from "fs";
 import { dump } from "js-yaml";
 
+export const schemaURL = `# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook.json?raw=true`;
+
 export function generateSampleWindows(format: string) {
   if (!format) format = "yaml";
 
@@ -77,7 +79,7 @@ user_name=SOME-USER`;
   try {
     writeFileSync(
       ".\\automatiqal-sample.yaml",
-      `# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook.json?raw=true
+      `${schemaURL}
 
 ${dump(qseowSample, {
   // indent: 4,
@@ -141,8 +143,8 @@ export function generateSampleSaaS(format: string) {
         operation: "app.addToSpace",
         source: "Import brand new app",
         details: {
-          spaceId: "$${Create new space}"
-        }
+          spaceId: "$${Create new space}",
+        },
       },
     ],
   };
@@ -153,7 +155,7 @@ api_key=generated-api-key`;
   try {
     writeFileSync(
       ".\\automatiqal-sample-saas.yaml",
-      `# yaml-language-server: $schema=https://github.com/Informatiqal/automatiqal-cli-schema/blob/main/schemas/runbook_saas.json?raw=true
+      `${schemaURL}
 
 ${dump(saasSample, {
   // indent: 4,

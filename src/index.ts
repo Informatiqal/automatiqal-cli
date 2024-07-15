@@ -133,6 +133,9 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "raw",
     "summary",
     "s",
+    "disableValidation",
+    "d",
+    "compile"
   ];
 
   const unknownArguments = Object.keys(argv).filter(

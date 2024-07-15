@@ -52,18 +52,15 @@ export class Logger {
     endTime: string,
     duration: string,
     taskName: string,
+    entities: string,
     status: string
   ) {
     const message = [];
+    message.push(taskName.padEnd(30, " "));
     message.push(startTime);
     message.push(endTime);
     message.push(duration.padEnd(8, " "));
-
-    if (taskName.length <= 30) {
-      message.push(taskName.padEnd(30, " "));
-    } else {
-      message.push(`${taskName.slice(0, 30 - 3)}...`);
-    }
+    message.push(entities.padEnd(10, " "));
     message.push(status);
 
     this.messages.push(message.join("\t"));

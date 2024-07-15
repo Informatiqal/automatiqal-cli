@@ -77,7 +77,7 @@
     "@types/node": "20.14.10",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
-    "automatiqal": "^0.4.1",
+    "automatiqal": "^0.4.3",
     "console-table-printer": "^2.12.1",
     "dotenv": "16.4.5",
     "esm": "^3.2.25",

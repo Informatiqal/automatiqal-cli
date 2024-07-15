@@ -114,4 +114,8 @@ export interface IArguments {
    * See: disableValidation
    */
   d?: boolean;
+  /**
+   *
+   */
+  compile?: string | boolean;
 }
