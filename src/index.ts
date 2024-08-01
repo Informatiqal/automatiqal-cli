@@ -11,7 +11,15 @@ import { IArguments } from "./lib/interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 (async function () {
-  const argv: IArguments = minimist(process.argv.slice(2));
+  const argvRaw: IArguments = minimist(process.argv.slice(2));
+  
+  // make sure that the provided arguments are lower cased before
+  // do anything with them
+  const argv = {} as IArguments;
+  Object.entries(argvRaw).map(
+    ([key, value]) => (argv[(key as unknown as string).toLowerCase()] = value)
+  );
+
   const logger = Logger.getInstance(argv.summary || argv.s);
   checkArguments(argv, logger);
 

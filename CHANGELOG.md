@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.11.1] - 2024-08-01
+
+- make the provided arguments lower case (not the values) [#261](https://github.com/Informatiqal/automatiqal-cli/issues/261)
+
 ## [0.11.0] - 2024-08-01
 
 - import tasks from external files [#256](https://github.com/Informatiqal/automatiqal-cli/issues/256)
