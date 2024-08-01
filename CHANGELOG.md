@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.11.0] - 2024-08-01
+
+- import tasks from external files [#256](https://github.com/Informatiqal/automatiqal-cli/issues/256)
+- new command `compile` will import all external files, replace all variables (if needed) and will produce single runbook [#256](https://github.com/Informatiqal/automatiqal-cli/issues/256)
+- dependency updates
+
+## [0.10.1] - 2024-07-12
+
+- `--disableValidation, -d` - skip schema validation option. Useful in small amount of cases
+- dependency updates
+
 ## [0.10.0] - 2024-06-06
 
 - new argument `--listvars`/`l`. When provided the CLI will just output the list of variables that are defined/expected in the runbook

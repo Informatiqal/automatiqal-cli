@@ -12,7 +12,7 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 (async function () {
   const argv: IArguments = minimist(process.argv.slice(2));
-  const logger = Logger.getInstance();
+  const logger = Logger.getInstance(argv.summary || argv.s);
   checkArguments(argv, logger);
 
   if (process.argv.length == 2) printHelp();
@@ -21,21 +21,18 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
   if (argv["sample-saas"]) generateSampleSaaS(argv["sample-saas"]);
 
   // file argument not provided
-  if (!argv.file && !argv.f) {
-    logger.error(undefined, 1001);
-  }
+  if (!argv.file && !argv.f) logger.error(undefined, 1001);
 
   // variables file argument is provided but the file is not found
-  if (argv.v || argv.var || argv.variables) {
+  if (argv.v || argv.var || argv.variables)
     if (!existsSync(argv.v || argv.var || argv.variables))
       logger.error("", 1011);
-  }
 
   let downloadedRunbook: string | undefined = undefined;
   const regex = /(https?:\/\/[^\s]+)/;
   const urlMatching = (argv.file || argv.f).match(regex);
   // if the provided file argument is an url -> download its content
-  if (urlMatching) {
+  if (urlMatching)
     await fetch(argv.file || argv.f)
       .then((res) => res.text())
       .then((text) => {
@@ -44,7 +41,6 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
       .catch((e) => {
         logger.error(e.message, 1013);
       });
-  }
 
   let runner: AutomatiqalCLI;
 
@@ -133,6 +129,9 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "raw",
     "summary",
     "s",
+    "disableValidation",
+    "d",
+    "compile",
   ];
 
   const unknownArguments = Object.keys(argv).filter(

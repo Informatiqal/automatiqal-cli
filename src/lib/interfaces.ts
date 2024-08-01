@@ -57,7 +57,7 @@ export interface IArguments {
   v?: string;
   /**
    * Test connectivity. No task as ran
-   */ 
+   */
   /**
    * List the defined variables in the specified runbook
    */
@@ -65,7 +65,7 @@ export interface IArguments {
   /**
    * See: listvars
    */
-  l?: string;  
+  l?: string;
   connect?: boolean;
   /**
    * See: connect
@@ -106,4 +106,16 @@ export interface IArguments {
    * Output the full result directly in the console
    */
   raw?: boolean;
+  /**
+   * Do not perform schema validation on start
+   */
+  disableValidation?: boolean;
+  /**
+   * See: disableValidation
+   */
+  d?: boolean;
+  /**
+   *
+   */
+  compile?: string | boolean;
 }
