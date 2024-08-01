@@ -1,5 +1,5 @@
 runbook-examples/compiled.yaml
-runbook-examples/import_test_1.yaml
+runbook-examples/import_test_*
 runbook-examples/test.yaml
 test.txt
 summary.txt

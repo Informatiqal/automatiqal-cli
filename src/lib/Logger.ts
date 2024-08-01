@@ -1,6 +1,9 @@
+import { writeFileSync } from "fs";
+
 export class Logger {
   static instance: Logger;
   private saveOutput: string;
+  private summaryPath: string;
   messages: string[] = [];
   private errors = {
     1000: "While reading the runbook file",
@@ -16,11 +19,13 @@ export class Logger {
     1014: "Variable(s) value not found",
     9999: "INTERNAL ERROR",
   };
-  constructor() {}
+  constructor(summaryPath: string) {
+    this.summaryPath = summaryPath;
+  }
 
-  public static getInstance(): Logger {
+  public static getInstance(summaryPath: string): Logger {
     if (!Logger.instance) {
-      Logger.instance = new Logger();
+      Logger.instance = new Logger(summaryPath);
     }
     return Logger.instance;
   }
@@ -36,6 +41,9 @@ export class Logger {
       console.log(message);
       this.messages.push(message);
     }
+
+    if (this.summaryPath)
+      writeFileSync(this.summaryPath, this.messages.join("\n"));
 
     process.exit(1);
   }

@@ -30,6 +30,7 @@ export class AutomatiqalCLI {
   private automatiqal: Automatiqal;
   private rawRunBook: string;
   private runbookVariablesList: string[];
+  // private runbookVariablesValues: { [k: string]: any } = {};
   private variablesValues: { [x: string]: string | number | boolean };
   private emitterMessages: string[];
   private specialVariables = [
@@ -45,7 +46,7 @@ export class AutomatiqalCLI {
     this.argv = argv;
     this.result = [];
     this.rawRunBook = downloadedRunbook;
-    this.logger = Logger.getInstance();
+    this.logger = Logger.getInstance(argv.summary || argv.s);
 
     // if the runbook is downloaded then clean it first
     // by removing commented and empty lines
@@ -77,7 +78,7 @@ export class AutomatiqalCLI {
       if (typeof this.argv.compile == "string") {
         try {
           writeFileSync(this.argv.compile, output);
-          console.log(`Compiled schema was saved in "${this.argv.compile}"`)
+          console.log(`Compiled schema was saved in "${this.argv.compile}"`);
           process.exit(1);
         } catch (e) {
           console.log(e.message);
@@ -325,6 +326,7 @@ export class AutomatiqalCLI {
     this.automatiqal.emitter.on("runbook:log", function (l) {});
 
     this.automatiqal.emitter.on("error", function (errorMessage) {
+      //TODO: here. exit?
       _this.logger.error(errorMessage);
     });
   }
@@ -432,6 +434,7 @@ export class AutomatiqalCLI {
         const v = "\\$\\{" + varName + "\\}";
         const re = new RegExp(v, "g");
 
+        // this.runbookVariablesValues[varName] = varValue;
         text = text.replace(re, varValue.toString());
       } catch (e) {
         this.logger.error(e.message, 9999);
@@ -587,16 +590,26 @@ export class AutomatiqalCLI {
   }
 
   private importExternalYamlFiles(): void {
-    for (let i = 0; i < this.runBook.tasks.length; i++) {
-      if (this.runBook.tasks[i]["import"]) {
-        const externalFileContent = this.readImportFile(
-          this.runBook.tasks[i]["import"]["path"] ||
-            this.runBook.tasks[i]["import"],
-          this.runBook.tasks[i]["import"]["vars"] || []
-        );
+    let parsed = false;
 
-        this.runBook.tasks.splice(i, 1, ...externalFileContent);
+    while (parsed == false) {
+      let haveImport = false;
+
+      for (let i = 0; i < this.runBook.tasks.length; i++) {
+        if (this.runBook.tasks[i]["import"]) {
+          const externalFileContent = this.readImportFile(
+            this.runBook.tasks[i]["import"]["path"] ||
+              this.runBook.tasks[i]["import"],
+            this.runBook.tasks[i]["import"]["vars"] || []
+          );
+
+          this.runBook.tasks.splice(i, 1, ...externalFileContent);
+
+          haveImport = true;
+        }
       }
+
+      if (haveImport == false) parsed = true;
     }
   }
 
