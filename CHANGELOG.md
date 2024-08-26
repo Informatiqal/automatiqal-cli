@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.11.2] - 2024-08-26
+
+- dependency updates
+  - includes the [Task conditions](https://github.com/informatiqal/automatiqal/issues/230)
+
 ## [0.11.1] - 2024-08-01
 
 - make the provided arguments lower case (not the values) [#261](https://github.com/Informatiqal/automatiqal-cli/issues/261)

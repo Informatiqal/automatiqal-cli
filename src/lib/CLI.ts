@@ -93,6 +93,11 @@ export class AutomatiqalCLI {
       .match(/(?<!\$)(\${)(.*?)(?=})/g)
       .map((v) => v.substring(2));
 
+    if (argv.listvars || argv.l) {
+      this.printDefinedVariables();
+      process.exit(0);
+    }
+
     // TODO: simplify this maybe?
     // Check if there are variables in the runbook
     // but no variables sources was provided
@@ -165,11 +170,6 @@ export class AutomatiqalCLI {
     }
 
     this.checkExportPaths();
-
-    if (argv.listvars || argv.l) {
-      this.printDefinedVariables();
-      process.exit(0);
-    }
 
     if ((this.runBook.environment.authentication as any).cert) {
       this.prepareCertificates();
