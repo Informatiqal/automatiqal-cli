@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.11.5] - 2024-09-12
+
+- dependency updates (including latest Automatiqal version)
+
 ## [0.11.4] - 2024-09-06
 
 - update to latest version of Automatiqal
