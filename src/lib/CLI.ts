@@ -9,11 +9,16 @@ import {
 import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad, dump as yamlDump } from "js-yaml";
+import csvToJson from "convert-csv-to-json";
 import { Automatiqal } from "automatiqal";
 import { varLoader } from "@informatiqal/variables-loader";
 import { printTable, Table } from "console-table-printer";
 
-import { IRunBook, ITask } from "automatiqal/dist/RunBook/RunBook.interfaces";
+import {
+  ILoop,
+  IRunBook,
+  ITask,
+} from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 import { Logger } from "./Logger";
 
@@ -170,6 +175,7 @@ export class AutomatiqalCLI {
     }
 
     this.checkExportPaths();
+    this.importExternalLoopFiles();
 
     if ((this.runBook.environment.authentication as any).cert) {
       this.prepareCertificates();
@@ -587,6 +593,54 @@ export class AutomatiqalCLI {
     table.printTable();
 
     console.log("");
+  }
+
+  private importExternalLoopFiles(): void {
+    for (let i = 0; i < this.runBook.tasks.length; i++) {
+      let task = this.runBook.tasks[i];
+      if (task["loop"] && task["loop"]["location"]) {
+        if (!task["loop"]["format"])
+          this.logger.error(
+            `Import loop file format not specified for task "${task.name}"`
+          );
+
+        const formats = ["csv", "json", "yaml"];
+        if (formats.indexOf(task["loop"]["format"]) == -1)
+          this.logger.error(
+            `Specified file format is not supported for task "${task.name}". Supported formats are: csv, json and yaml`
+          );
+
+        const exists = existsSync(task["loop"]["location"]);
+        if (!exists)
+          this.logger.error(
+            `Import loop file not found: ${path}. For task "${task.name}"`
+          );
+
+        let values: ILoop[] = [];
+
+        if (task["loop"]["format"] == "csv") {
+          values = csvToJson
+            .fieldDelimiter(",")
+            .getJsonFromCsv(task["loop"]["location"]) as ILoop[];
+        }
+
+        if (task["loop"]["format"] == "yaml") {
+          const fileContent = readFileSync(task["loop"]["location"]).toString();
+
+          values = yamlLoad(fileContent) as ILoop[];
+        }
+
+        if (task["loop"]["format"] == "json") {
+          const fileContent = readFileSync(task["loop"]["location"]).toString();
+
+          values = JSON.parse(fileContent) as ILoop[];
+        }
+
+        this.runBook.tasks[i].loop = {
+          values: values,
+        };
+      }
+    }
   }
 
   private importExternalYamlFiles(): void {

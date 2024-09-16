@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.11.5",
+  "version": "0.12.0",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -74,11 +74,12 @@
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "22.5.4",
+    "@types/node": "22.5.5",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
-    "automatiqal": "^0.8.1",
+    "automatiqal": "^0.8.2",
     "console-table-printer": "^2.12.1",
+    "convert-csv-to-json": "^2.49.0",
     "dotenv": "16.4.5",
     "esm": "^3.2.25",
     "js-yaml": "^4.1.0",

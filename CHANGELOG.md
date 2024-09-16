@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.12.0] - 2024-09-16
+
+- loop values can be provided from external files (csv, json and yaml) [#269](https://github.com/Informatiqal/automatiqal-cli/issues/269)
+- dependency updates
+
 ## [0.11.5] - 2024-09-12
 
 - dependency updates (including latest Automatiqal version)
