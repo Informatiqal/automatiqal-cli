@@ -15,6 +15,7 @@ import { varLoader } from "@informatiqal/variables-loader";
 import { printTable, Table } from "console-table-printer";
 
 import {
+  IEnvironment,
   ILoop,
   IRunBook,
   ITask,
@@ -31,7 +32,7 @@ export class AutomatiqalCLI {
   private runBook: IRunBook;
   private logger: Logger;
   private result: ITaskResult[];
-  private httpsAgent: any;
+  private httpsAgent: Agent | { [k: string]: Agent } = {};
   private automatiqal: Automatiqal;
   private rawRunBook: string;
   private runbookVariablesList: string[];
@@ -171,18 +172,31 @@ export class AutomatiqalCLI {
         this.rawRunBook,
         this.variablesValues
       );
+      this.rawRunBook = this.rawRunBook.replace(/\\/g, "\\\\");
       this.runBook = JSON.parse(this.rawRunBook);
     }
 
     this.checkExportPaths();
     this.importExternalLoopFiles();
 
-    if ((this.runBook.environment.authentication as any).cert) {
-      this.prepareCertificates();
-    } else {
-      this.httpsAgent = new Agent({
-        rejectUnauthorized: false,
+    if (Array.isArray(this.runBook.environment)) {
+      this.runBook.environment.map((env) => {
+        if ((env.authentication as any).cert) {
+          this.prepareCertificates(env);
+        } else {
+          this.httpsAgent[env.name] = new Agent({
+            rejectUnauthorized: false,
+          });
+        }
       });
+    } else {
+      if ((this.runBook.environment.authentication as any).cert) {
+        this.prepareCertificates(this.runBook.environment);
+      } else {
+        this.httpsAgent = new Agent({
+          rejectUnauthorized: false,
+        });
+      }
     }
 
     // no need to read any files if only connection is being tested
@@ -341,23 +355,19 @@ export class AutomatiqalCLI {
    * @description if the authentication is certificates based
    *     read the certificates and prepare the httpsAgent
    */
-  private prepareCertificates() {
+  private prepareCertificates(env: IEnvironment) {
     {
       let cert: Buffer;
       let key: Buffer;
 
       try {
-        cert = readFileSync(
-          (this.runBook.environment.authentication as any).cert
-        );
-        key = readFileSync(
-          (this.runBook.environment.authentication as any).key
-        );
+        cert = readFileSync((env.authentication as any).cert);
+        key = readFileSync((env.authentication as any).key);
       } catch (e) {
         this.logger.error(e.message, 1006);
       }
 
-      this.httpsAgent = new Agent({
+      this.httpsAgent[env.name] = new Agent({
         rejectUnauthorized: false,
         cert: cert,
         key: key,
