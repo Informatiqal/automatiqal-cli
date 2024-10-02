@@ -77,7 +77,7 @@
     "@types/node": "22.7.4",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
-    "automatiqal": "^0.9.1",
+    "automatiqal": "^0.10.0",
     "console-table-printer": "^2.12.1",
     "convert-csv-to-json": "^2.49.0",
     "dotenv": "16.4.5",
