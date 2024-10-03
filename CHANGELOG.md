@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.0] - 2024-10-03
+
+- changes related to the new `dryRyn` option in `Automatiqal`
+  - new argument/flag - `dryRun`
+  - if its a dry run then do not read any files that will be imported/uploaded (if any)
+  - if dry run then print extra message in the console indicating that this is indeed dry run
+- dependency updates
+
 ## [0.13.0] - 2024-09-29
 
 - update to the latest `Automatiqal` and make the appropriate changes to handle multiple environments requirement

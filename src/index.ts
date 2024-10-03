@@ -12,7 +12,7 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 
 (async function () {
   const argvRaw: IArguments = minimist(process.argv.slice(2));
-  
+
   // make sure that the provided arguments are lower cased before
   // do anything with them
   const argv = {} as IArguments;
@@ -65,7 +65,7 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
     .then((data) => {
       if (!argv.raw) {
         logger.info(`---`);
-        const msg = `${new Date().toISOString()}\tFinished`;
+        const msg = `\nFinished    : ${new Date().toISOString()}`;
         logger.info(msg);
 
         if (argv.o || argv.output) writeResult(data);
@@ -137,9 +137,10 @@ function checkArguments(argv: IArguments, logger: Logger): void {
     "raw",
     "summary",
     "s",
-    "disableValidation",
+    "disablevalidation",
     "d",
     "compile",
+    "dryrun",
   ];
 
   const unknownArguments = Object.keys(argv).filter(

@@ -109,13 +109,17 @@ export interface IArguments {
   /**
    * Do not perform schema validation on start
    */
-  disableValidation?: boolean;
+  disablevalidation?: boolean;
   /**
    * See: disableValidation
    */
   d?: boolean;
   /**
-   *
+   *  Combine all runbook files into one
    */
   compile?: string | boolean;
+  /**
+   * Run all tasks but do not perform any alterations
+   */
+  dryrun?: boolean;
 }

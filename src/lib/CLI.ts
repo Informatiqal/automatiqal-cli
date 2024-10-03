@@ -54,6 +54,8 @@ export class AutomatiqalCLI {
     this.rawRunBook = downloadedRunbook;
     this.logger = Logger.getInstance(argv.summary || argv.s);
 
+    if (!this.argv.hasOwnProperty("dryrun")) this.argv.dryrun = false;
+
     // if the runbook is downloaded then clean it first
     // by removing commented and empty lines
     if (this.rawRunBook) this.rawRunBook = this.cleanDownloadedFile();
@@ -176,7 +178,8 @@ export class AutomatiqalCLI {
       this.runBook = JSON.parse(this.rawRunBook);
     }
 
-    this.checkExportPaths();
+    if (this.argv.dryrun == false) this.checkExportPaths();
+
     this.importExternalLoopFiles();
 
     if (Array.isArray(this.runBook.environment)) {
@@ -199,16 +202,20 @@ export class AutomatiqalCLI {
       }
     }
 
-    // no need to read any files if only connection is being tested
-    if (!this.argv.c && !this.argv.connect) this.readBuffers();
+    // dont read any files if:
+    // - connectivity is being tested
+    // - its dry run
+    if (!this.argv.c && !this.argv.connect && !this.argv.dryrun)
+      this.readBuffers();
 
     try {
       const disableSchemaValidation =
-        this.argv.disableValidation || this.argv.d;
+        this.argv.disablevalidation || this.argv.d;
 
       this.automatiqal = new Automatiqal(this.runBook, {
         httpsAgent: this.httpsAgent,
         disableSchemaValidation: disableSchemaValidation || false,
+        dryRun: argv.dryrun,
       });
     } catch (e) {
       if (e.context) throw new Error(e.context);
@@ -282,7 +289,7 @@ export class AutomatiqalCLI {
       if (b.task.details && b.task.details.hasOwnProperty("file"))
         (b.task.details as any).file = "<BINARY CONTENT>";
 
-      if (isExportCommand == true) {
+      if (isExportCommand == true && _this.argv.dryrun == false) {
         // TODO: is this needed? The schema validation should prevent this already?
         // if ((!b.task.details as any).location) {
         //   _this.logger.error(
@@ -504,6 +511,18 @@ export class AutomatiqalCLI {
       );
     if (this.runBook.description)
       this.logger.info(`Description: ${this.runBook.description}`);
+
+    if (this.argv.dryrun == true) {
+      this.logger.info(
+        `\n-------------------------------------------------------------`
+      );
+      this.logger.info(
+        `----- DRY RUN ----- DRY RUN ----- DRY RUN ----- DRY RUN -----`
+      );
+      this.logger.info(
+        `-------------------------------------------------------------\n`
+      );
+    }
 
     this.logger.info(`Start time    : ${new Date().toISOString()}`);
     this.logger.info(`---`);

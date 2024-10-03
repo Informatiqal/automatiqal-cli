@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -77,7 +77,7 @@
     "@types/node": "22.7.4",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
-    "automatiqal": "^0.9.1",
+    "automatiqal": "^0.10.0",
     "console-table-printer": "^2.12.1",
     "convert-csv-to-json": "^2.49.0",
     "dotenv": "16.4.5",
@@ -85,7 +85,7 @@
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
     "nyc": "17.1.0",
-    "rollup": "^4.22.5",
+    "rollup": "^4.24.0",
     "rollup-plugin-delete": "2.1.0",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "semver": "^7.6.3",

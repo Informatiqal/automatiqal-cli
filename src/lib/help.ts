@@ -20,6 +20,7 @@ export function printHelp() {
     "--raw                 Print the result in the console. All other console messages are suppressed",
     "--summary,     -s     Saves the summary to a file",
     "--connect,     -c     Test the connectivity. No tasks are ran",
+    "--dryRun,             Run all tasks but only retrieve info for the entities and do not alter them (import/update/remove/export etc)",
     "--sample-win,  -sw    Generate sample run book and variables files in the current folder for QSEoW",
     "--sample-saas, -ss    Generate sample run book and variables files in the current folder for Qlik Cloud/SaaS",
     "--help,        -h     Shows this message",
