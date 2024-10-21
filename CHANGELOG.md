@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.15.0] - 2024-10-21
+
+- dependency updates
+  - including the new `pause` command from Automatiqal
+
 ## [0.14.0] - 2024-10-03
 
 - changes related to the new `dryRyn` option in `Automatiqal`

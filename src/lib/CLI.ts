@@ -19,6 +19,7 @@ import {
   ILoop,
   IRunBook,
   ITask,
+  ITaskFull,
 } from "automatiqal/dist/RunBook/RunBook.interfaces";
 import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
 import { Logger } from "./Logger";
@@ -270,67 +271,69 @@ export class AutomatiqalCLI {
     this.automatiqal.emitter.on("task:result", function (a) {
       const b: ITaskResult = a as any;
 
-      let isExportCommand = false;
+      if (b.status != "Skip") {
+        let isExportCommand = false;
 
-      if (
-        _this.runBook.edition == "windows" &&
-        b.task.operation.indexOf(".export") > -1
-      )
-        isExportCommand = true;
+        if (
+          _this.runBook.edition == "windows" &&
+          b.task.operation.indexOf(".export") > -1
+        )
+          isExportCommand = true;
 
-      const exportCommandsSaaS = ["extension.download", "app.export"];
+        const exportCommandsSaaS = ["extension.download", "app.export"];
 
-      if (
-        _this.runBook.edition == "saas" &&
-        exportCommandsSaaS.includes(b.task.operation)
-      )
-        isExportCommand = true;
+        if (
+          _this.runBook.edition == "saas" &&
+          exportCommandsSaaS.includes(b.task.operation)
+        )
+          isExportCommand = true;
 
-      if (b.task.details && b.task.details.hasOwnProperty("file"))
-        (b.task.details as any).file = "<BINARY CONTENT>";
+        if (b.task.details && b.task.details.hasOwnProperty("file"))
+          (b.task.details as any).file = "<BINARY CONTENT>";
 
-      if (isExportCommand == true && _this.argv.dryrun == false) {
-        // TODO: is this needed? The schema validation should prevent this already?
-        // if ((!b.task.details as any).location) {
-        //   _this.logger.error(
-        //     `ERROR: "${b.task.name}" is missing "location" parameter`
-        //   );
-        // }
-        try {
-          // write the exports data
-          _this.writeExports(
-            Array.isArray(b.data) ? b.data : [b.data],
-            (b.task.details as any).location
-          );
+        if (isExportCommand == true && _this.argv.dryrun == false) {
+          // TODO: is this needed? The schema validation should prevent this already?
+          // if ((!b.task.details as any).location) {
+          //   _this.logger.error(
+          //     `ERROR: "${b.task.name}" is missing "location" parameter`
+          //   );
+          // }
+          try {
+            // write the exports data
+            _this.writeExports(
+              Array.isArray(b.data) ? b.data : [b.data],
+              (b.task.details as any).location
+            );
 
-          // replace the export data with placeholder
-          // the placeholder will be visible if we have to
-          // output the task data
-          if (Array.isArray(b.data)) {
-            if (b.data && b.data.length > 0) {
-              b.data = b.data.map((r: any) => {
-                if (r.file) r.file = "<BINARY CONTENT>";
+            // replace the export data with placeholder
+            // the placeholder will be visible if we have to
+            // output the task data
+            if (Array.isArray(b.data)) {
+              if (b.data && b.data.length > 0) {
+                b.data = b.data.map((r: any) => {
+                  if (r.file) r.file = "<BINARY CONTENT>";
 
-                return r;
-              });
+                  return r;
+                });
+              }
             }
+          } catch (e) {
+            _this.logger.error(
+              `Error in "${b.task.name}". Failed to write file: "${e.path}"`
+            );
           }
-        } catch (e) {
-          _this.logger.error(
-            `Error in "${b.task.name}". Failed to write file: "${e.path}"`
-          );
         }
-      }
 
-      // TODO: move this section inside the try ... catch section above
-      if (b.task.operation == "contentLibrary.exportMany") {
-        if ((b.data as any).length > 0) {
-          b.data = (b.data as any).map((d) => {
-            return d.map((f) => {
-              f.file = "<BINARY CONTENT>";
-              return f;
+        // TODO: move this section inside the try ... catch section above
+        if (b.task.operation == "contentLibrary.exportMany") {
+          if ((b.data as any).length > 0) {
+            b.data = (b.data as any).map((d) => {
+              return d.map((f) => {
+                f.file = "<BINARY CONTENT>";
+                return f;
+              });
             });
-          });
+          }
         }
       }
 
@@ -338,12 +341,13 @@ export class AutomatiqalCLI {
 
       if (!_this.argv.raw) {
         _this.logger.taskEntry(
-          b.timings.start,
-          b.timings.end,
-          `${b.timings.totalSeconds}`,
+          (b.timings.start || " ").padEnd(24, " "),
+          (b.timings.end || " ").padEnd(24, " "),
+          `${b.timings.totalSeconds || " "}`,
           b.task.name.replace(/(.{27})..+/, "$1..."),
-          `${(b.data as []).length}`,
-          b.status
+          `${(b.data as []).length || 0}`,
+          b.status,
+          b.skipReason
         );
       }
     });
@@ -533,7 +537,8 @@ export class AutomatiqalCLI {
       "DURATION(s)",
       "TASK NAME".padEnd(30, " "),
       "ENTITIES".padEnd(10, " "),
-      "STATUS"
+      "STATUS",
+      "SKIP REASON"
     );
   }
 
@@ -542,6 +547,8 @@ export class AutomatiqalCLI {
 
     this.runBook.tasks.forEach((task) => {
       if (task.details?.["location"]) {
+        if (task.hasOwnProperty("skip") && task.skip == true) return;
+
         const isValidPath = existsSync(task.details?.["location"]);
 
         if (!isValidPath)
@@ -665,7 +672,7 @@ export class AutomatiqalCLI {
           values = JSON.parse(fileContent) as ILoop[];
         }
 
-        this.runBook.tasks[i].loop = {
+        (this.runBook.tasks[i] as ITaskFull).loop = {
           values: values,
         };
       }

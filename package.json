@@ -1,6 +1,6 @@
 {
   "name": "automatiqal-cli",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "CLI wrapper for automatiqal",
   "author": {
     "email": "info@informatiqal.com",
@@ -68,16 +68,16 @@
   "devDependencies": {
     "@informatiqal/variables-loader": "^0.0.6",
     "@p-mcgowan/minimist": "^2.1.0",
-    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-replace": "^6.0.1",
-    "@rollup/plugin-typescript": "^12.1.0",
+    "@rollup/plugin-typescript": "^12.1.1",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "22.7.4",
+    "@types/node": "22.7.7",
     "@types/node-fetch": "^2.6.11",
     "@types/semver": "^7.5.8",
-    "automatiqal": "^0.10.0",
+    "automatiqal": "^0.11.0",
     "console-table-printer": "^2.12.1",
     "convert-csv-to-json": "^2.49.0",
     "dotenv": "16.4.5",
@@ -90,8 +90,8 @@
     "rollup-plugin-polyfill-node": "^0.13.0",
     "semver": "^7.6.3",
     "ts-node": "10.9.2",
-    "tslib": "^2.7.0",
-    "typedoc": "0.26.7",
+    "tslib": "^2.8.0",
+    "typedoc": "0.26.10",
     "typescript": "^5.0.4",
     "vitest": "^1.5.2"
   }

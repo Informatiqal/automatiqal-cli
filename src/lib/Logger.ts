@@ -61,7 +61,8 @@ export class Logger {
     duration: string,
     taskName: string,
     entities: string,
-    status: string
+    status: string,
+    skipReason: string
   ) {
     const message = [];
     message.push(taskName.padEnd(30, " "));
@@ -69,7 +70,8 @@ export class Logger {
     message.push(endTime);
     message.push(duration.padEnd(8, " "));
     message.push(entities.padEnd(10, " "));
-    message.push(status);
+    message.push(status.padEnd(20, " "));
+    message.push(skipReason);
 
     this.messages.push(message.join("\t"));
     console.log(message.join("\t"));
