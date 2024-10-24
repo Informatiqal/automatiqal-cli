@@ -186,7 +186,7 @@ export class AutomatiqalCLI {
     if (Array.isArray(this.runBook.environment)) {
       this.runBook.environment.map((env) => {
         if ((env.authentication as any).cert) {
-          this.prepareCertificates(env);
+          this.prepareCertificates(env, true);
         } else {
           this.httpsAgent[env.name] = new Agent({
             rejectUnauthorized: false,
@@ -195,7 +195,7 @@ export class AutomatiqalCLI {
       });
     } else {
       if ((this.runBook.environment.authentication as any).cert) {
-        this.prepareCertificates(this.runBook.environment);
+        this.prepareCertificates(this.runBook.environment, false);
       } else {
         this.httpsAgent = new Agent({
           rejectUnauthorized: false,
@@ -366,7 +366,7 @@ export class AutomatiqalCLI {
    * @description if the authentication is certificates based
    *     read the certificates and prepare the httpsAgent
    */
-  private prepareCertificates(env: IEnvironment) {
+  private prepareCertificates(env: IEnvironment, isEnvArray: boolean) {
     {
       let cert: Buffer;
       let key: Buffer;
@@ -378,11 +378,19 @@ export class AutomatiqalCLI {
         this.logger.error(e.message, 1006);
       }
 
-      this.httpsAgent[env.name] = new Agent({
-        rejectUnauthorized: false,
-        cert: cert,
-        key: key,
-      });
+      if (isEnvArray == true) {
+        this.httpsAgent[env.name] = new Agent({
+          rejectUnauthorized: false,
+          cert: cert,
+          key: key,
+        });
+      } else {
+        this.httpsAgent = new Agent({
+          rejectUnauthorized: false,
+          cert: cert,
+          key: key,
+        });
+      }
     }
   }
 
@@ -529,6 +537,7 @@ export class AutomatiqalCLI {
     }
 
     this.logger.info(`Start time    : ${new Date().toISOString()}`);
+    this.logger.info(``);
     this.logger.info(`---`);
 
     this.logger.taskEntry(
