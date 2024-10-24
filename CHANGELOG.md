@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.15.1] - 2024-10-24
+
+- fix issue with `rejectUnauthorized` for single env certificate based runbooks
+- dependency updates
+
 ## [0.15.0] - 2024-10-21
 
 - dependency updates
