@@ -80,7 +80,7 @@
     "automatiqal": "^0.11.1",
     "console-table-printer": "^2.12.1",
     "convert-csv-to-json": "^2.49.0",
-    "dotenv": "16.4.5",
+    "dotenv": "16.5.0",
     "esm": "^3.2.25",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
