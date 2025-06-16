@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.15.2] - 2025-06-16
+
+- dependency updates
+
 ## [0.15.1] - 2024-10-24
 
 - fix issue with `rejectUnauthorized` for single env certificate based runbooks
@@ -71,7 +75,7 @@
 
 ## [0.8.0] - 2024-06-03
 
-- new `summary`/`s` argument. When provided will store the summary output to the provided path (file)  [#246](https://github.com/Informatiqal/automatiqal-cli/issues/246)
+- new `summary`/`s` argument. When provided will store the summary output to the provided path (file) [#246](https://github.com/Informatiqal/automatiqal-cli/issues/246)
 - dependency updates
 
 ## [0.7.9] - 2024-05-31

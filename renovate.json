@@ -1,5 +1,28 @@
 {
   "extends": [
     "config:base"
+  ],
+  "ignoreDeps": [
+    "@rollup/plugin-commonjs",
+    "@rollup/plugin-json",
+    "@rollup/plugin-node-resolve",
+    "@rollup/plugin-replace",
+    "@rollup/plugin-typescript",
+    "@types/js-yaml",
+    "@types/node",
+    "@types/node-fetch",
+    "@types/semver",
+    "dotenv",
+    "esm",
+    "nyc",
+    "rollup",
+    "rollup-plugin-delete",
+    "rollup-plugin-polyfill-node",
+    "semver",
+    "ts-node",
+    "tslib",
+    "typedoc",
+    "typescript",
+    "vitest"
   ]
 }
