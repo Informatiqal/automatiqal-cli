@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.15.3] - 2025-06-23
+
+- fix a bug when there are no variables in the runbook [#295](https://github.com/Informatiqal/automatiqal-cli/issues/295)
+- dependency updates
+
 ## [0.15.2] - 2025-06-16
 
 - dependency updates
