@@ -36,7 +36,7 @@ export class AutomatiqalCLI {
   private httpsAgent: Agent | { [k: string]: Agent } = {};
   private automatiqal: Automatiqal;
   private rawRunBook: string;
-  private runbookVariablesList: string[];
+  private runbookVariablesList: string[] = [];
   // private runbookVariablesValues: { [k: string]: any } = {};
   private variablesValues: { [x: string]: string | number | boolean };
   private emitterMessages: string[];
@@ -98,9 +98,10 @@ export class AutomatiqalCLI {
 
     // match all strings in between ${ and }
     // and exclude $${...} ones
-    this.runbookVariablesList = this.rawRunBook
-      .match(/(?<!\$)(\${)(.*?)(?=})/g)
-      .map((v) => v.substring(2));
+    const matchAllVariables = this.rawRunBook.match(/(?<!\$)(\${)(.*?)(?=})/g);
+    // if any match/variables at all
+    if (matchAllVariables)
+      this.runbookVariablesList = matchAllVariables.map((v) => v.substring(2));
 
     if (argv.listvars || argv.l) {
       this.printDefinedVariables();
