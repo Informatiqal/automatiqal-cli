@@ -10,9 +10,11 @@ import { Agent } from "https";
 import { homedir } from "os";
 import { load as yamlLoad, dump as yamlDump } from "js-yaml";
 import csvToJson from "convert-csv-to-json";
+import jsonexport from "jsonexport";
 import { Automatiqal } from "automatiqal";
+import { flatten } from "flat";
 import { varLoader } from "@informatiqal/variables-loader";
-import { printTable, Table } from "console-table-printer";
+import { Table } from "console-table-printer";
 
 import {
   IEnvironment,
@@ -21,7 +23,7 @@ import {
   ITask,
   ITaskFull,
 } from "automatiqal/dist/RunBook/RunBook.interfaces";
-import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
+import { IRunBookResult, ITaskResult } from "automatiqal/dist/RunBook/Runner";
 import { Logger } from "./Logger";
 
 import { IArguments } from "./interfaces";
@@ -269,7 +271,7 @@ export class AutomatiqalCLI {
    */
   private emittersSet() {
     const _this = this;
-    this.automatiqal.emitter.on("task:result", function (a) {
+    this.automatiqal.emitter.on("task:result", async function (a) {
       const b: ITaskResult = a as any;
 
       if (b.status != "Skip") {
@@ -335,6 +337,52 @@ export class AutomatiqalCLI {
               });
             });
           }
+        }
+
+        // is the task have an export option
+        if ((b.task as ITaskFull).hasOwnProperty("export") && b.data) {
+          try {
+            if (
+              !(b.task as ITaskFull).export["format"] ||
+              (b.task as ITaskFull).export["format"] == "json"
+            ) {
+              writeFileSync(
+                (b.task as ITaskFull).export.location,
+                JSON.stringify(b.data, null, 4)
+              );
+            }
+
+            if ((b.task as ITaskFull).export["format"] == "csv") {
+              //@ts-ignore
+              let taskData = b.data.map((bb) => bb.details);
+
+              let rows = [];
+
+              await Promise.all(
+                taskData.map((o) => {
+                  rows.push(flatten(o));
+                })
+              );
+
+              if (b.task["export"]?.columns) {
+                const newData = _this.filterCSVColumns(
+                  b.task["export"].columns,
+                  rows
+                );
+
+                const csvData = await jsonexport(newData);
+
+                try {
+                  writeFileSync((b.task as ITaskFull).export.location, csvData);
+                } catch (e) {}
+              } else {
+                const csvData = await jsonexport(rows);
+                try {
+                  writeFileSync((b.task as ITaskFull).export.location, csvData);
+                } catch (e) {}
+              }
+            }
+          } catch (e) {}
         }
       }
 
@@ -734,5 +782,55 @@ export class AutomatiqalCLI {
     const parsedContent = yamlLoad(fileContent);
 
     return parsedContent as ITask[];
+  }
+
+  private filterCSVColumns(columns: string[], data: any[]) {
+    if (data.length == 0) return data;
+
+    let keys = data.map((d) => Object.keys(d)).flat();
+    keys = [...new Set(keys)];
+
+    // includeColumns
+    const includeColumns = columns.filter((f1) => !f1.startsWith("!"));
+    // excludeColumns
+    const excludeColumns = columns.filter((f1) => f1.startsWith("!"));
+
+    let filteredKeys = [];
+
+    includeColumns.forEach((f1) => {
+      const k = keys.filter((k1) => this.matchRuleShort(k1, f1));
+      filteredKeys = [...filteredKeys, ...k];
+    });
+
+    excludeColumns.forEach((f1) => {
+      filteredKeys = filteredKeys.filter(
+        (k1) => !this.matchRuleShort(k1, f1.replace("!", ""))
+      );
+    });
+
+    filteredKeys = [...new Set(filteredKeys)];
+
+    const d1 = data.map((d) => {
+      keys.map((key) => {
+        if (!filteredKeys.includes(key)) delete d[key];
+      });
+
+      return d;
+    });
+
+    data = d1;
+    // keys.map((key) => {
+    //   // if (!filteredKeys.includes(key)) delete data[key];
+    // });
+
+    return data;
+  }
+
+  private matchRuleShort(str, rule) {
+    var escapeRegex = (str) =>
+      str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return new RegExp(
+      "^" + rule.split("*").map(escapeRegex).join(".*") + "$"
+    ).test(str);
   }
 }
