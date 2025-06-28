@@ -4,10 +4,12 @@
         "disablevalidation",
         "dryrun",
         "Informatiqal",
+        "jsonexport",
         "listvars",
         "prestart",
         "qseow",
-        "runbooks"
+        "runbooks",
+        "unparse"
     ],
     "yaml.schemas": {
         "D:\\DEV\\GHQ_ROOT\\github.com\\Informatiqal\\automatiqal-cli-schema\\runbook.json": ".qrac.yaml",

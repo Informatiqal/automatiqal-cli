@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.16.0] - 2025-06-28
+
+- Ability to export raw data to `csv` or `json`. When `csv` export its possible to export subset of columns [#296](https://github.com/Informatiqal/automatiqal-cli/issues/296)
+- dependency updates
+
 ## [0.15.3] - 2025-06-23
 
 - fix a bug when there are no variables in the runbook [#295](https://github.com/Informatiqal/automatiqal-cli/issues/295)
