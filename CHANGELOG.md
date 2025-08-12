@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.17.0] - 2025-08-12
+
+- the new version of `Automatiqal` allows usage of `constants` and `weighted constants` (more to be added in the documentation). CLI have to respect that and checks if the defined variables are going to be used later as a constant or are actually missing
+- dependency updates
+
 ## [0.16.0] - 2025-06-28
 
 - Ability to export raw data to `csv` or `json`. When `csv` export its possible to export subset of columns [#296](https://github.com/Informatiqal/automatiqal-cli/issues/296)

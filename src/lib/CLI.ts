@@ -151,11 +151,28 @@ export class AutomatiqalCLI {
       ignore: this.specialVariables,
     });
 
-    if (variablesData.missing)
-      this.logger.error(
-        variablesData.missing.map((v) => `  - ${v}`).join("\n"),
-        1014
+    if (variablesData.missing) {
+      // if there are missing variables and there is no constants
+      // definition then all these variables are missing
+      if (!this.runBook.constants)
+        this.logger.error(
+          variablesData.missing.map((v) => `  - ${v}`).join("\n"),
+          1014
+        );
+
+      // first check the constants definition for the missing variables
+      const actuallyMissingVariables = variablesData.missing.filter(
+        (v) => !this.runBook.constants[v]
       );
+
+      // if even after the constants check some of the variable are missing
+      // then declare them as missing and break the run
+      if (actuallyMissingVariables.length > 0)
+        this.logger.error(
+          actuallyMissingVariables.map((v) => `  - ${v}`).join("\n"),
+          1014
+        );
+    }
 
     this.variablesValues = variablesData.values;
 
