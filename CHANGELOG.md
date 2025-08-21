@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.17.1] - 2025-08-21
+
+- dependency updates. And more specifically `automatiqal` includes the new `selection` methods
+
 ## [0.17.0] - 2025-08-12
 
 - the new version of `Automatiqal` allows usage of `constants` and `weighted constants` (more to be added in the documentation). CLI have to respect that and checks if the defined variables are going to be used later as a constant or are actually missing
