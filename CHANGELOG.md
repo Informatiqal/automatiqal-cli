@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.18.0] - 2025-09-15
+
+- dependency updates. And more specifically `automatiqal` includes:
+  - new task option - `parallel`. The option is used for concurrent or batch processing with optional delay between the iterations
+  - global `delay` option to wait X seconds **before** each task (excluding the first one)
+
 ## [0.17.1] - 2025-08-21
 
 - dependency updates. And more specifically `automatiqal` includes the new `selection` methods
