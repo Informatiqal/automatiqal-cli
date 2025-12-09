@@ -55,9 +55,7 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
   try {
     runner = new AutomatiqalCLI(argv, downloadedRunbook);
   } catch (e) {
-    const message = `Error(s) while initializing! Schema issue?\n\n${e.message}`;
-    if (argv.summary || argv.s) writeSummary(message);
-    logger.error(message);
+    logger.error(`Error(s) while initializing! Schema issue?\n\n${e.message}`);
   }
 
   runner
@@ -69,7 +67,6 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
         logger.info(msg);
 
         if (argv.o || argv.output) writeResult(data);
-        if (argv.s || argv.summary) writeSummary();
       } else {
         printRawData(data);
       }
@@ -79,16 +76,6 @@ import { ITaskResult } from "automatiqal/dist/RunBook/Runner";
     .catch((e) => {
       logger.error(e.message);
     });
-
-  function writeSummary(error?: string) {
-    const toWrite = error || logger.messages.join("\n");
-
-    try {
-      writeFileSync(argv.s || argv.summary, toWrite);
-    } catch (e) {
-      logger.error(e.message, 1005);
-    }
-  }
 
   function printRawData(data) {
     try {

@@ -1,10 +1,9 @@
-import { writeFileSync } from "fs";
+import { appendFileSync, existsSync, writeFileSync } from "fs";
 
 export class Logger {
   static instance: Logger;
   private saveOutput: string;
   private summaryPath: string;
-  messages: string[] = [];
   private errors = {
     1000: "While reading the runbook file",
     1001: "Please provide file location",
@@ -21,6 +20,9 @@ export class Logger {
   };
   constructor(summaryPath: string) {
     this.summaryPath = summaryPath;
+
+    // clear the content of the summary file (if exists) or creates new empty one
+    if (this.summaryPath) writeFileSync(this.summaryPath, "", { flush: true });
   }
 
   public static getInstance(summaryPath: string): Logger {
@@ -34,25 +36,26 @@ export class Logger {
     if (errorId) {
       const genericError = `\u274C ERROR: ${this.errors[errorId]}`;
       console.log(genericError);
-      this.messages.push(genericError);
+      if (this.summaryPath)
+        appendFileSync(this.summaryPath, `\n${genericError}`);
+
+      process.exit(1);
     }
 
     if (message) {
       console.log(message);
-      this.messages.push(message);
+      if (this.summaryPath) appendFileSync(this.summaryPath, `\n${message}`);
+
+      process.exit(1);
     }
-
-    if (this.summaryPath)
-      writeFileSync(this.summaryPath, this.messages.join("\n"));
-
-    process.exit(1);
   }
 
   debug() {}
 
   info(message: string) {
     console.log(message);
-    this.messages.push(message);
+    if (this.summaryPath)
+      appendFileSync(this.summaryPath, `\n${message}`, { flush: true });
   }
 
   taskEntry(
@@ -73,7 +76,10 @@ export class Logger {
     message.push(status.padEnd(20, " "));
     message.push(skipReason);
 
-    this.messages.push(message.join("\t"));
     console.log(message.join("\t"));
+    if (this.summaryPath)
+      appendFileSync(this.summaryPath, `\n${message.join("\t")}`, {
+        flush: true,
+      });
   }
 }
