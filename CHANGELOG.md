@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.18.1] - 2025-12-09
+
+- Summary file is populating while the runbook is running and not only when all tasks are finished [#305](https://github.com/Informatiqal/automatiqal-cli/issues/305)
+- dependency updates
+
 ## [0.18.0] - 2025-09-15
 
 - dependency updates. And more specifically `automatiqal` includes:

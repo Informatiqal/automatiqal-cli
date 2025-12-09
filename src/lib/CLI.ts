@@ -588,7 +588,7 @@ export class AutomatiqalCLI {
         `Variables file: ${this.argv.v || this.argv.var || this.argv.variables}`
       );
     if (this.runBook.description)
-      this.logger.info(`Description: ${this.runBook.description}`);
+      this.logger.info(`Description   : ${this.runBook.description}`);
 
     if (this.argv.dryrun == true) {
       this.logger.info(
