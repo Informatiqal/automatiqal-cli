@@ -79,7 +79,7 @@
     "@types/semver": "^7.7.1",
     "automatiqal": "^0.15.1",
     "console-table-printer": "^2.14.6",
-    "convert-csv-to-json": "^3.6.0",
+    "convert-csv-to-json": "^4.0.0",
     "dotenv": "17.2.2",
     "esm": "^3.2.25",
     "flat": "^6.0.1",
